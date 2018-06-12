@@ -1,5 +1,6 @@
 .mtf-layout {
-    width: 100%;
+    text-align: center;
+    width: 80%;
     top: 10px;
     position: relative;
     margin: auto;
@@ -8,7 +9,7 @@
 header.mtf-header {
     width: 100%;
     background-color: #404041;
-    height: auto;
+    height:17.7vh;
 }
 
 .mtf-question-text {
@@ -16,6 +17,31 @@ header.mtf-header {
     color: white;
     font-size: 100%;
     line-height: normal;
+    text-align: center;
+    height: 24vh;
+}
+.mtf-question-text-exapand{
+    padding: 17px 10px 16px 10px;
+    color: white;
+    font-size: 100%;
+    line-height: normal;
+    text-align: center;
+    height: 24vh;
+    overflow: hidden;
+    display: -webkit-box;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    color: white;
+}
+.mtf-question-text-exapand>p{
+    margin-top: -3%;
+}
+.mtf-question-text-collapse{
+    margin-right: auto;
+    width: 79%;
+    display: -webkit-inline-box;
+    color: white;
     text-align: center;
 }
 

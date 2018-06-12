@@ -2,7 +2,11 @@ var QS_MTFTemplate = {};
 
 QS_MTFTemplate.htmlLayout = "<div class='mtf-layout'>\
     <header class='mtf-header'>\
-      <div class='mtf-question-text'><%= question.data.question.text %>\</div>\
+    <% if(question.data.question.text.length<85){ %> \
+        <div class='mtf-question-text-collapse'><%= question.data.question.text %>\</div>\
+      <%}else{ %> \
+        <div class='mtf-question-text-exapand' onclick='QS_MTFTemplate.expandQuestion(event)'><%= question.data.question.text %>\</div>\
+       <% } %> \
     </header>\
     <div class='mtf-hori-container'>\
       <% _.each(question.data.option.optionsLHS,function(val,key){ %>\
@@ -38,5 +42,17 @@ QS_MTFTemplate.htmlLayout = "<div class='mtf-layout'>\
       <% });%>\
     </div>\
 </div>";
+
+QS_MTFTemplate.expandQuestion = function (event) {
+  if ($(event.target.parentElement).hasClass('mtf-question-text-exapand')) {
+    $(event.target.parentElement).addClass("mtf-question-text-collapse");
+    $(event.target.parentElement).removeClass("mtf-question-text-exapand");
+    $(".mtf-header").css('height', '34vh');
+  } else {
+    $(event.target.parentElement).removeClass("mtf-question-text-collapse");
+    $(event.target.parentElement).addClass("mtf-question-text-exapand");
+    $(".mtf-header").css('height', '17.7vh');
+  }
+};
 
 //# sourceURL=QS_MTFTemplate.js
