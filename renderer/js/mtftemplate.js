@@ -1,7 +1,7 @@
 var QS_MTFTemplate = {}; 
 
 QS_MTFTemplate.htmlLayout = "<div class='mtf-layout'>\
-    <header class='mtf-header' id='scrollbar'>\
+    <header class='mtf-header'>\
     <div class='mtf-question-text'><%= question.data.question.text %>\</div>\
     </header>\
     <div class='mtf-hori-container'>\
