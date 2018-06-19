@@ -6,7 +6,7 @@
 angular.module('mtfApp', [])
   .controller('mtfQuestionFormController', ['$scope', '$rootScope', function($scope, $rootScope) {
     $scope.formVaild = false;
-    $scope.indexCount = 4;
+    $scope.indexCount = 3;
     $scope.mtfConfiguartion = {
       'questionConfig': {
         'isText': true,
@@ -124,14 +124,14 @@ angular.module('mtfApp', [])
         'image': '',
         'audio': '',
         'hint': '',
-        'index': $scope.indexCount
+        'index': ($scope.mtfFormData.option.optionsLHS.length) +1
       };
       var optionRHS = {
         'text': '',
         'image': '',
         'audio': '',
         'hint': '',
-        'mapIndex': $scope.indexCount++
+        'mapIndex': ($scope.mtfFormData.option.optionsLHS.length) +1
       };
       if ($scope.mtfFormData.option.optionsLHS.length < 5) {
         $scope.mtfFormData.option.optionsLHS.push(optionLHS);
@@ -140,7 +140,6 @@ angular.module('mtfApp', [])
     }
     //on click next the form validation function called
     $scope.formValidation = function() {
-      console.log($scope.mtfFormData);
       var opSel = false;
       var valid = false;
       //check form valid and lhs should be more than 3
@@ -171,9 +170,17 @@ angular.module('mtfApp', [])
       return (formValid && opSel) ? true : false;
     }
     $scope.deletePair = function(id) {
+      $scope.indexCount--;
       $scope.mtfFormData.option.optionsLHS.splice(id, 1);
       $scope.mtfFormData.option.optionsRHS.splice(id, 1);
-      //}
+      // var elementId = id + 1;
+      // $scope.mtfFormData.option.optionsLHS = $scope.mtfFormData.option.optionsLHS.filter(function(item) { 
+      //   return item.index !== elementId;
+      // });
+      // $scope.mtfFormData.option.optionsRHS = $scope.mtfFormData.option.optionsRHS.filter(function(item) { 
+      //   return item.mapIndex !== elementId;
+      // });
+      // console.log("After deleting",$scope.mtfFormData);
     }
     $scope.addImage = function(id, type) {
       ecEditor.dispatchEvent('org.ekstep.assetbrowser:show', {
