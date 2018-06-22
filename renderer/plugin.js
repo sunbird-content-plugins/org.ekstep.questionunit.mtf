@@ -12,15 +12,29 @@ org.ekstep.questionunitmtf.RendererPlugin = org.ekstep.contentrenderer.questionU
   _render: true,
   _selectedAnswers: [],
   _dragulaContainers: [],
+  _constant: {
+    horizontal: "Horizontal",
+    vertial : "Vertical"
+  },
   setQuestionTemplate: function () {
-    this._question.template = QS_MTFTemplate.htmlLayout;
+    MTFController.initTemplate(this);// eslint-disable-line no-undef
   },
   preQuestionShow: function (event) {
     this._super(event);
+    var templateTypeContent;
+    if (this._question.config.layout == this._constant.vertial) { // eslint-disable-line no-undef
+      templateTypeContent = MTFController.getVerticalLayout;      
+    }else{
+      templateTypeContent = MTFController.getHorizontalLayout;  //default is horizontal
+    }
+
+    this._question.template = "<div class='mtf-layout' id='mtf-container'>" + MTFController.getQuestionContent() + templateTypeContent() + "</div>";
+    
 
     var instance = this;
-    QS_MTFTemplate.optionsWidth = undefined;
-    QS_MTFTemplate.selAns = [];
+    MTFController.optionsWidth = undefined;
+    MTFController.optionsHeight = undefined;
+    MTFController.selAns = [];
     this._selectedAnswers = [];
     //RHS options data shuffle
     this._question.data.option.optionsRHS = _.shuffle(this._question.data.option.optionsRHS);
@@ -31,21 +45,33 @@ org.ekstep.questionunitmtf.RendererPlugin = org.ekstep.contentrenderer.questionU
         "index": lhsOptions[lhs].index,
         "selText": ""
       };
-      QS_MTFTemplate.selAns.push(emptyBox);
+      MTFController.selAns.push(emptyBox);
     }
     if (this._question.state && this._question.state.val) {
       this._selectedAnswers = this._question.state.val.lhs;
-      QS_MTFTemplate.selAns = this._question.state.val.lhs;
+      MTFController.selAns = this._question.state.val.lhs;
       this._question.data.option.optionsRHS = this._question.state.val.rhs;
     }
     QSTelemetryLogger.logEvent(QSTelemetryLogger.EVENT_TYPES.ASSESS); // eslint-disable-line no-undef
+
+    //here have to change based on the type of the question whether horizontal or vertial length (currently horizontal)
     if (lhsOptions.length == 3) {
-      QS_MTFTemplate.optionsWidth = 'width33';
+      MTFController.optionsWidth = 'width33';
     } else if (lhsOptions.length == 4) {
-      QS_MTFTemplate.optionsWidth = 'width25';
+      MTFController.optionsWidth = 'width25';
     } else if (lhsOptions.length == 5) {
-      QS_MTFTemplate.optionsWidth = 'width20';
+      MTFController.optionsWidth = 'width20';
     }
+
+    //this height[NUMBER]option is a class to apply for vertical mtf template based on number of option
+    if (lhsOptions.length == 3) {
+      MTFController.optionsHeight = 'height3option';
+    } else if (lhsOptions.length == 4) {
+      MTFController.optionsHeight = 'height4option';
+    } else if (lhsOptions.length == 5) {
+      MTFController.optionsHeight = 'height5option';
+    }
+
     _.each(lhsOptions, function (v, k) {
       var lhs = 'left' + (k + 1);
       var rhs = 'right' + (k + 1);
@@ -141,6 +167,49 @@ org.ekstep.questionunitmtf.RendererPlugin = org.ekstep.contentrenderer.questionU
   },
   logTelemetryItemResponse: function (data) {
     QSTelemetryLogger.logEvent(QSTelemetryLogger.EVENT_TYPES.RESPONSE, {"type": "INPUT", "values": data});
+  },
+
+    /**
+   * provide media url to audio image
+   * @memberof org.ekstep.questionunit.mcq
+   * @returns {String} url.
+   */
+  getAudioIcon:function(){
+    return this.getAssetUrl(org.ekstep.pluginframework.pluginManager.resolvePluginResource(this._manifest.id, this._manifest.ver, "renderer/assets/audio.png"));
+  },
+   /**
+   * provide media url to asset
+   * @memberof org.ekstep.questionunit.mcq
+   * @param {String} url from question set.
+   * @returns {String} url.
+   */
+  getAssetUrl:function(url){
+    if(isbrowserpreview){// eslint-disable-line no-undef
+      return url;
   }
+    else{
+      return 'file:///' + EkstepRendererAPI.getBaseURL()+ url;
+    }
+  },
+  /**
+   * play audio once at a time
+   * @memberof org.ekstep.questionunit.mcq
+   * @param {String} audio from question set.
+   */
+  playAudio: function (audio) {
+    audio = this.getAssetUrl(audio);
+    if (this._lastAudio && (this._lastAudio != audio)) { // eslint-disable-line no-undef
+      this._currentAudio.pause(); // eslint-disable-line no-undef
+    }
+    if (!this._currentAudio || this._currentAudio.paused) { // eslint-disable-line no-undef
+      this._currentAudio = new Audio(audio); // eslint-disable-line no-undef
+      this._currentAudio.play(); // eslint-disable-line no-undef
+      this._lastAudio = audio; // eslint-disable-line no-undef
+    } else {
+      this._currentAudio.pause(); // eslint-disable-line no-undef
+      this._currentAudio.currentTime = 0 // eslint-disable-line no-undef
+    }
+  },
+
 });
 //# sourceURL=questionunitMTFPlugin.js

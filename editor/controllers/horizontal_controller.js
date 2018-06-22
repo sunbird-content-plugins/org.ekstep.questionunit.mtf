@@ -10,19 +10,19 @@ angular.module('mtfApp', [])
     $scope.mtfConfiguartion = {
       'questionConfig': {
         'isText': true,
-        'isImage': false,
-        'isAudio': false,
+        'isImage': true,
+        'isAudio': true,
         'isHint': false
       },
       'optionsConfig': [{
         'isText': true,
-        'isImage': false,
-        'isAudio': false,
+        'isImage': true,
+        'isAudio': true,
         'isHint': false
       }, {
         'isText': true,
-        'isImage': false,
-        'isAudio': false,
+        'isImage': true,
+        'isAudio': true,
         'isHint': false
       }]
     };

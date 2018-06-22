@@ -41,10 +41,10 @@
                                         <div class="one column row segment-column">
                                             <div class="column right floated">
                                                 <span class="custom-bottom-label">Add: </span>
-                                                <span class="custom-bottom-segment ui icon" ng-if="mtfFormData.question.image.length <= 0 && mtfConfiguartion.questionConfig.isImage" data-tooltip="Add image" data-inverted=""><i class="image large icon"></i></span>
-                                                <span class="custom-bottom-segment ui icon" ng-if="mtfFormData.question.image.length > 0" data-tooltip="Edit image" data-inverted=""><i class="image large icon"></i></span>
-                                                <span class="custom-bottom-segment ui icon" ng-if="mtfFormData.question.audio.length <= 0" data-tooltip="Add audio" data-inverted=""><i class="music large icon"></i></span>
-                                                <span class="custom-bottom-segment ui icon" ng-if="mtfFormData.question.audio.length > 0" data-tooltip="Edit audio" data-inverted=""><i class="music large icon"></i></span>
+                                                <span ng-click="addImage('q');generateTelemetry({type: 'TOUCH', id: 'button', target: {id: 'questionunit-mtf-add-image', ver: '', type: 'button'}});" class="custom-bottom-segment ui icon" ng-if="mtfFormData.question.image.length <= 0 && mtfConfiguartion.questionConfig.isImage" data-tooltip="Add image" data-inverted=""><i class="image large icon"></i></span>
+                                                <span ng-click="addImage('q');generateTelemetry({type: 'TOUCH', id: 'button', target: {id: 'questionunit-mtf-add-image', ver: '', type: 'button'}});" class="custom-bottom-segment ui icon" ng-if="mtfFormData.question.image.length > 0" data-tooltip="Edit image" data-inverted=""><i class="image large icon"></i></span>
+                                                <span ng-click="addAudio('q');generateTelemetry({type: 'TOUCH', id: 'button', target: {id: 'questionunit-mtf-add-audio', ver: '', type: 'button'}})" class="custom-bottom-segment ui icon" ng-if="mtfFormData.question.audio.length <= 0" data-tooltip="Add audio" data-inverted=""><i class="music large icon"></i></span>
+                                                <span ng-click="addAudio('q');generateTelemetry({type: 'TOUCH', id: 'button', target: {id: 'questionunit-mtf-add-audio', ver: '', type: 'button'}})" class="custom-bottom-segment ui icon" ng-if="mtfFormData.question.audio.length > 0" data-tooltip="Edit audio" data-inverted=""><i class="music large icon"></i></span>
                                             </div>
                                         </div>
                                     </div>
@@ -88,15 +88,15 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="ui secondary segment custom-sec-segment" ng-if="mtfConfiguartion.optionsConfig.isImage || mtfConfiguartion.optionsConfig.isAudio">
+                                            <div class="ui secondary segment custom-sec-segment" ng-if="mtfConfiguartion.optionsConfig[0].isImage || mtfConfiguartion.optionsConfig[0].isAudio">
                                                 <div class="ui grid">
                                                     <div class="row">
                                                         <div class="column right aligned">
                                                             <span class="custom-bottom-label">Add: </span>
-                                                            <span class="custom-bottom-segment ui icon" ng-if="mtfFormData.option.optionsLHS[$index].image.length <= 0" data-tooltip="Add image" data-inverted=""><i class="image large icon"></i></span>
-                                                            <span class="custom-bottom-segment ui icon" ng-if="mtfFormData.option.optionsLHS[$index].image.length > 0" data-tooltip="Edit image" data-inverted=""><i class="image large icon"></i></span>
-                                                            <span class="custom-bottom-segment ui icon" ng-if="mtfFormData.option.optionsLHS[$index].audio.length <= 0" data-tooltip="Add audio" data-inverted=""><i class="music large icon"></i></span>
-                                                            <span class="custom-bottom-segment ui icon" ng-if="mtfFormData.option.optionsLHS[$index].audio.length > 0" data-tooltip="Edit audio" data-inverted=""><i class="music large icon"></i></span>
+                                                            <span ng-click="addImage(key, 'LHS')" class="custom-bottom-segment ui icon" ng-if="mtfFormData.option.optionsLHS[$index].image.length <= 0" data-tooltip="Add image" data-inverted=""><i class="image large icon"></i></span>
+                                                            <span ng-click="addImage(key, 'LHS')" class="custom-bottom-segment ui icon" ng-if="mtfFormData.option.optionsLHS[$index].image.length > 0" data-tooltip="Edit image" data-inverted=""><i class="image large icon"></i></span>
+                                                            <span ng-click="addAudio(key, 'LHS')" class="custom-bottom-segment ui icon" ng-if="mtfFormData.option.optionsLHS[$index].audio.length <= 0" data-tooltip="Add audio" data-inverted=""><i class="music large icon"></i></span>
+                                                            <span ng-click="addAudio(key, 'LHS')" class="custom-bottom-segment ui icon" ng-if="mtfFormData.option.optionsLHS[$index].audio.length > 0" data-tooltip="Edit audio" data-inverted=""><i class="music large icon"></i></span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -132,15 +132,15 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="ui secondary segment custom-sec-segment" ng-if="mtfConfiguartion.optionsConfig.isImage || mtfConfiguartion.optionsConfig.isAudio">
+                                            <div class="ui secondary segment custom-sec-segment" ng-if="mtfConfiguartion.optionsConfig[0].isImage || mtfConfiguartion[0].optionsConfig.isAudio">
                                                 <div class="ui grid">
                                                     <div class="row">
                                                         <div class="column right aligned">
                                                             <span class="custom-bottom-label">Add: </span>
-                                                            <span class="custom-bottom-segment ui icon" ng-if="mtfFormData.option.optionsRHS[$index].image.length <= 0" data-tooltip="Add image" data-inverted=""><i class="image large icon"></i></span>
-                                                            <span class="custom-bottom-segment ui icon" ng-if="mtfFormData.option.optionsRHS[$index].image.length > 0" data-tooltip="Edit image" data-inverted=""><i class="image large icon"></i></span>
-                                                            <span class="custom-bottom-segment ui icon" ng-if="mtfFormData.option.optionsRHS[$index].audio.length <= 0" data-tooltip="Add audio" data-inverted=""><i class="music large icon"></i></span>
-                                                            <span class="custom-bottom-segment ui icon" ng-if="mtfFormData.option.optionsRHS[$index].audio.length > 0" data-tooltip="Edit audio" data-inverted=""><i class="music large icon"></i></span>
+                                                            <span ng-click="addImage(key, 'RHS')" class="custom-bottom-segment ui icon" ng-if="mtfFormData.option.optionsRHS[$index].image.length <= 0" data-tooltip="Add image" data-inverted=""><i class="image large icon"></i></span>
+                                                            <span ng-click="addImage(key, 'RHS')" class="custom-bottom-segment ui icon" ng-if="mtfFormData.option.optionsRHS[$index].image.length > 0" data-tooltip="Edit image" data-inverted=""><i class="image large icon"></i></span>
+                                                            <span ng-click="addAudio(key, 'RHS')" class="custom-bottom-segment ui icon" ng-if="mtfFormData.option.optionsRHS[$index].audio.length <= 0" data-tooltip="Add audio" data-inverted=""><i class="music large icon"></i></span>
+                                                            <span ng-click="addAudio(key, 'RHS')" class="custom-bottom-segment ui icon" ng-if="mtfFormData.option.optionsRHS[$index].audio.length > 0" data-tooltip="Edit audio" data-inverted=""><i class="music large icon"></i></span>
                                                         </div>
                                                     </div>
                                                 </div>
