@@ -1,7 +1,7 @@
 /**
  *
- * Question Unit plugin to render a MCQ question
- * @class org.ekstep.questionunit.mcq
+ * Question Unit plugin to render a MTF question
+ * @class org.ekstep.questionunit.mtf
  * @extends org.ekstep.contentrenderer.questionUnitPlugin
  * @author Manoj Chandrashekar <manoj.chandrashekar@tarento.com>
  */
@@ -167,49 +167,6 @@ org.ekstep.questionunitmtf.RendererPlugin = org.ekstep.contentrenderer.questionU
   },
   logTelemetryItemResponse: function (data) {
     QSTelemetryLogger.logEvent(QSTelemetryLogger.EVENT_TYPES.RESPONSE, {"type": "INPUT", "values": data});
-  },
-
-    /**
-   * provide media url to audio image
-   * @memberof org.ekstep.questionunit.mcq
-   * @returns {String} url.
-   */
-  getAudioIcon:function(){
-    return this.getAssetUrl(org.ekstep.pluginframework.pluginManager.resolvePluginResource(this._manifest.id, this._manifest.ver, "renderer/assets/audio.png"));
-  },
-   /**
-   * provide media url to asset
-   * @memberof org.ekstep.questionunit.mcq
-   * @param {String} url from question set.
-   * @returns {String} url.
-   */
-  getAssetUrl:function(url){
-    if(isbrowserpreview){// eslint-disable-line no-undef
-      return url;
   }
-    else{
-      return 'file:///' + EkstepRendererAPI.getBaseURL()+ url;
-    }
-  },
-  /**
-   * play audio once at a time
-   * @memberof org.ekstep.questionunit.mcq
-   * @param {String} audio from question set.
-   */
-  playAudio: function (audio) {
-    audio = this.getAssetUrl(audio);
-    if (this._lastAudio && (this._lastAudio != audio)) { // eslint-disable-line no-undef
-      this._currentAudio.pause(); // eslint-disable-line no-undef
-    }
-    if (!this._currentAudio || this._currentAudio.paused) { // eslint-disable-line no-undef
-      this._currentAudio = new Audio(audio); // eslint-disable-line no-undef
-      this._currentAudio.play(); // eslint-disable-line no-undef
-      this._lastAudio = audio; // eslint-disable-line no-undef
-    } else {
-      this._currentAudio.pause(); // eslint-disable-line no-undef
-      this._currentAudio.currentTime = 0 // eslint-disable-line no-undef
-    }
-  },
-
 });
 //# sourceURL=questionunitMTFPlugin.js
