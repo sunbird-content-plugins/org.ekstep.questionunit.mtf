@@ -178,6 +178,7 @@ angular.module('mtfApp', []).controller('mtfQuestionFormController', ['$scope', 
       formValid;
     //check form valid and lhs should be more than 3
     formValid = $scope.mtfForm.$valid && $scope.mtfFormData.option.optionsLHS.length > 2;
+    $scope.submitted = true;
     _.isEmpty($scope.questionMedia.image) ? 0 : tempArray.push($scope.questionMedia.image);
     _.isEmpty($scope.questionMedia.audio) ? 0 : tempArray.push($scope.questionMedia.audio);
     _.each($scope.optionsMedia.image, function(key) {
@@ -193,8 +194,10 @@ angular.module('mtfApp', []).controller('mtfQuestionFormController', ['$scope', 
     $scope.mtfFormData.media = $scope.editMedia;
     formConfig.formData = $scope.mtfFormData;
     if (formValid) {
+      $scope.selLbl = 'success';
       formConfig.isValid = true;
     } else {
+      $scope.selLbl = 'error';
       formConfig.isValid = false;
     }
     return formConfig;
