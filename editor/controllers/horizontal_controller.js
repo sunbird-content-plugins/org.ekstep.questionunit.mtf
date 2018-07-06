@@ -173,14 +173,6 @@ angular.module('mtfApp', [])
       $scope.indexCount--;
       $scope.mtfFormData.option.optionsLHS.splice(id, 1);
       $scope.mtfFormData.option.optionsRHS.splice(id, 1);
-      // var elementId = id + 1;
-      // $scope.mtfFormData.option.optionsLHS = $scope.mtfFormData.option.optionsLHS.filter(function(item) { 
-      //   return item.index !== elementId;
-      // });
-      // $scope.mtfFormData.option.optionsRHS = $scope.mtfFormData.option.optionsRHS.filter(function(item) { 
-      //   return item.mapIndex !== elementId;
-      // });
-      // console.log("After deleting",$scope.mtfFormData);
     }
     $scope.addImage = function(id, type) {
       ecEditor.dispatchEvent('org.ekstep.assetbrowser:show', {
