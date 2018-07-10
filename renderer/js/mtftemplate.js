@@ -31,7 +31,7 @@ MTFController.getQuestionContent = function () {
     <% } %> \
     <% if(question.data.question.audio){ %> \
       <div class='mtf-question-audio'>\
-        <img class='qc-question-audio-image' src='<%=MTFController.pluginInstance.getAudioIcon() %>'  onclick=MTFController.pluginInstance.playAudio('<%= question.data.question.audio %>') > \
+        <img class='qc-question-audio-image' src='<%=MTFController.pluginInstance.getAudioIcon('renderer/assets/audio.png') %>'  onclick=MTFController.pluginInstance.playAudio({src:'<%= question.data.question.audio %>'}) > \
       </div>\
     <% } %> \
   </header>";
@@ -52,7 +52,7 @@ MTFController.getHorizontalLayout = function () {
               \<%= val.text %>\
               <% if(val.audio){ %> \
                 <span class='mtf-hori-opt-audio-image' >\
-                  <img src='<%=MTFController.pluginInstance.getAudioIcon() %>' onclick=MTFController.pluginInstance.playAudio('<%= val.audio %>') \>\
+                  <img src='<%=MTFController.pluginInstance.getAudioIcon('renderer/assets/audio.png') %>' onclick=MTFController.pluginInstance.playAudio({src:'<%= val.audio %>'}) \>\
                 </span>\
                 <% } %>\
             </p>\
@@ -83,7 +83,7 @@ MTFController.getHorizontalLayout = function () {
               <%= val.text %>\
               <% if(val.audio){ %> \
                 <span class='mtf-hori-opt-audio-image' >\
-                  <img  src='<%=MTFController.pluginInstance.getAudioIcon() %>' onclick=MTFController.pluginInstance.playAudio('<%= val.audio %>') \>\
+                  <img  src='<%=MTFController.pluginInstance.getAudioIcon('renderer/assets/audio.png') %>' onclick=MTFController.pluginInstance.playAudio({src:'<%= val.audio %>'}) \>\
                 </span>\
                 <% } %>\
               </p> \
@@ -111,7 +111,7 @@ MTFController.getVerticalLayout = function () {
                 \<%= val.text %>\
                 <% if(val.audio){ %> \
                   <span class='mtf-vert-opt-audio-image' >\
-                    <img src='<%=MTFController.pluginInstance.getAudioIcon() %>' onclick=MTFController.pluginInstance.playAudio('<%= val.audio %>') \>\
+                    <img src='<%=MTFController.pluginInstance.getAudioIcon('renderer/assets/audio.png') %>' onclick=MTFController.pluginInstance.playAudio({src:'<%= val.audio %>'}) \>\
                   </span>\
                 <% } %>\
               </p>\
@@ -141,7 +141,7 @@ MTFController.getVerticalLayout = function () {
               <p onclick='MTFController.showImageModel(event, \"background-image\")' style=\"background-size:100% 100%; background-image:url('<%= val.image %>');\">\
                 <% if(val.audio){ %> \
                   <span class='mtf-vert-opt-audio-image' >\
-                    <img  src='<%=MTFController.pluginInstance.getAudioIcon() %>' onclick=MTFController.pluginInstance.playAudio('<%= val.audio %>') \>\
+                    <img  src='<%=MTFController.pluginInstance.getAudioIcon('renderer/assets/audio.png') %>' onclick=MTFController.pluginInstance.playAudio({src:'<%= val.audio %>'}) \>\
                   </span>\
                 <% } %>\
                 <%= val.text %>\
