@@ -129,7 +129,7 @@ angular.module('mtfApp', []).controller('mtfQuestionFormController', ['$scope', 
      */
     EventBus.listeners['org.ekstep.questionunit.mtf:editquestion'] = [];
     ecEditor.addEventListener('org.ekstep.questionunit.mtf:editquestion', $scope.editMtfQuestion, $scope);
-    ecEditor.dispatchEvent("org.ekstep.questionunit:compiled");
+    ecEditor.dispatchEvent("org.ekstep.questionunit:ready");
   }
   /**
    * for edit flow
