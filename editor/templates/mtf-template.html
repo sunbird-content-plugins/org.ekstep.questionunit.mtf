@@ -13,7 +13,7 @@
                                     <div class="ui grid">
                                         <div class="twelve wide column">
                                             <div class="form-group segment textBoxDiv">
-                                                <textarea class="form-control textboxQ" ng-class="{'has-success':mtfForm.question.$valid, 'has-error': submitted && mtfForm.question.$error.required}" placeholder="Enter the question" name="mtfQuestion" ng-model="mtfFormData.question.text" maxlength="220" ng-init="$ctrl.focused = false" ng-focus="$ctrl.focused = true;" ng-blur="$ctrl.focused = false" ng-required="!(mtfFormData.question.text.length)"></textarea>
+                                                <textarea class="form-control textboxQ" ng-class="{'has-success':mtfForm.question.$valid, 'has-error': submitted && mtfForm.question.$error.required}" placeholder="Enter the question" name="mtfQuestion" ng-model="mtfFormData.question.text" ng-init="$ctrl.focused = false" ng-focus="$ctrl.focused = true;" ng-blur="$ctrl.focused = false" ng-required="!(mtfFormData.question.text.length)"></textarea>
                                             </div>
                                         </div>
                                         <!-- <div class="one wide column text-len">
@@ -24,14 +24,14 @@
                                                 <img src="{{mtfFormData.question.image}}" class="imgWidth"/>
                                             </div>
                                             <div class="one wide column" ng-if="mtfFormData.question.image.length > 0">
-                                                <a href="" class="deleteMedia" data-tooltip="Delete image" data-inverted=""><i id="mtf-question-image" class="trash large icon delete-icon" ng-click="deleteImage('q');generateTelemetry({type: 'TOUCH', id: 'button', target: {id: 'questionunit-mtf-delete-image', ver: '', type: 'button'}});"></i></a>
+                                                <a href="" class="deleteMedia" data-tooltip="Delete image" data-inverted=""><i id="mtf-question-image" class="trash large icon delete-icon" ng-click="deleteImage('','q');generateTelemetry({type: 'TOUCH', id: 'button', target: {id: 'questionunit-mtf-delete-image', ver: '', type: 'button'}});"></i></a>
                                             </div>
                                             <div class="one wide column" ng-if="mtfFormData.question.audio.length > 0">
-                                                <audio src="{{mtfFormData.question.audio}}" controls controlsList="nodownload" preload="none" class="audio-container myAudio" ng-click="addAudio('q');generateTelemetry({type: 'TOUCH', id: 'button', target: {id: 'questionunit-mtf-add-audio', ver: '', type: 'button'}});" data-tooltip="Play audio" data-inverted="">
+                                                <audio src="{{mtfFormData.question.audio}}" controls controlsList="nodownload" preload="none" class="audio-container myAudio" ng-click="addAudio("",'q');generateTelemetry({type: 'TOUCH', id: 'button', target: {id: 'questionunit-mtf-add-audio', ver: '', type: 'button'}});" data-tooltip="Play audio" data-inverted="">
                                                 </audio>
                                             </div>
                                             <div class="one wide column" ng-if="mtfFormData.question.audio.length > 0">
-                                                <a href="" ng-click="deleteAudio('q');generateTelemetry({type: 'TOUCH', id: 'button', target: {id: 'questionunit-mtf-delete-audio', ver: '', type: 'button'}});" class="deleteMedia" data-tooltip="Delete audio" data-inverted=""><i class="trash large icon delete-icon"></i></a>
+                                                <a href="" ng-click="deleteAudio('','q');generateTelemetry({type: 'TOUCH', id: 'button', target: {id: 'questionunit-mtf-delete-audio', ver: '', type: 'button'}});" class="deleteMedia" data-tooltip="Delete audio" data-inverted=""><i class="trash large icon delete-icon"></i></a>
                                             </div>
                                         </div>
                                     </div>
