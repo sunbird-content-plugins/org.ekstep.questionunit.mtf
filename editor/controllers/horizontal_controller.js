@@ -6,7 +6,7 @@
 angular.module('mtfApp', [])
   .controller('mtfQuestionFormController', ['$scope', '$rootScope', function($scope, $rootScope) {
     $scope.formVaild = false;
-    $scope.indexCount = 3;
+    $scope.defaultOptions = 3;
     $scope.mtfConfiguartion = {
       'questionConfig': {
         'isText': true,
@@ -170,10 +170,11 @@ angular.module('mtfApp', [])
       return (formValid && opSel) ? true : false;
     }
     $scope.deletePair = function(id) {
-      $scope.indexCount--;
+      $scope.defaultOptions--;
       $scope.mtfFormData.option.optionsLHS.splice(id, 1);
       $scope.mtfFormData.option.optionsRHS.splice(id, 1);
     }
+
     $scope.addImage = function(id, type) {
       ecEditor.dispatchEvent('org.ekstep.assetbrowser:show', {
         type: 'image',
