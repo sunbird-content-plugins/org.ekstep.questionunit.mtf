@@ -4,6 +4,7 @@ QS_MTFTemplate.htmlLayout = "<div class='mtf-layout'>\
     <header class='mtf-header'>\
       <div class='mtf-question-text'><%= question.data.question.text %>\</div>\
     </header>\
+    <div class='mtf-options-layout'>\
     <div class='mtf-hori-container'>\
       <% _.each(question.data.option.optionsLHS,function(val,key){ %>\
         <div class='mtf-hori-option <%= QS_MTFTemplate.optionsWidth %>'>\
@@ -37,6 +38,6 @@ QS_MTFTemplate.htmlLayout = "<div class='mtf-layout'>\
         </div>\
       <% });%>\
     </div>\
-</div>";
+</div></div>";
 
 //# sourceURL=QS_MTFTemplate.js

@@ -57,8 +57,8 @@
       "category": "MTF",
       "editor":
       {
-        "templateURL": "editor/templates/horizontal_template.html",
-        "controllerURL": "editor/controllers/horizontal_controller.js",
+        "templateURL": "editor/templates/mtf-template.html",
+        "controllerURL": "editor/controllers/mtf_controller.js",
         "template": "horizontalMTF",
         "controller": "QuestionFormController"
       }

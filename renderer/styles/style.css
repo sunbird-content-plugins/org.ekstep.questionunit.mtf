@@ -6,17 +6,20 @@
 }
 
 header.mtf-header {
-    width: 100%;
+    width: 87%;
+    margin-left: 9%;
     background-color: #404041;
     height: auto;
 }
 
 .mtf-question-text {
-    padding: 17px 10px 16px 10px;
+    padding: 4px 10px 16px 10px;
     color: white;
     font-size: 100%;
     line-height: normal;
     text-align: center;
+    overflow-y: scroll;
+    height: 19vh;
 }
 
 .mtf-hori-container {
@@ -159,6 +162,11 @@ header.mtf-header {
 
 .cont-dragula.ex-over {
     background-color: rgba(255, 255, 255, 0.3);
+}
+.mtf-options-layout{
+    width: 84%;
+    margin-left: 9%;
+    margin-top: 4%;
 }
 
 .gu-mirror {
