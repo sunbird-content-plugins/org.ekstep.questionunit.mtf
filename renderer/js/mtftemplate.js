@@ -2,7 +2,7 @@ var QS_MTFTemplate = {};
 
 QS_MTFTemplate.htmlLayout = "<div class='mtf-layout'>\
     <header class='mtf-header'>\
-      <div class='mtf-question-text'><%= question.data.question.text %>\</div>\
+    <div class='mtf-question-text'><%= question.data.question.text %>\</div>\
     </header>\
     <div class='mtf-hori-container'>\
       <% _.each(question.data.option.optionsLHS,function(val,key){ %>\
