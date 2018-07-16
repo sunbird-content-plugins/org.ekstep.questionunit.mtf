@@ -1,12 +1,10 @@
-/**
+/*
  * Plugin to create MTF question
  * @class org.ekstep.questionunitmtf:mtfQuestionFormController
  * Sachin<sachin.kumar@goodworklabs.com>
  */
 angular.module('mtfApp', ['org.ekstep.question'])
   .controller('mtfQuestionFormController', ['$scope', '$rootScope', 'questionServices', function($scope, $rootScope, $questionServices) {
-    $scope.formVaild = false;
-    $scope.indexCount = 4;
     $scope.mtfConfiguartion = {
       'questionConfig': {
         'isText': true,
@@ -75,6 +73,7 @@ angular.module('mtfApp', ['org.ekstep.question'])
         'questionCount': 0
       }
     };
+  $scope.indexPair = 4;
     $scope.questionMedia = {};
     $scope.optionsMedia = {
       'image': [],
@@ -82,94 +81,133 @@ angular.module('mtfApp', ['org.ekstep.question'])
     };
     $scope.mtfFormData.media = [];
     $scope.editMedia = [];
-    var questionInput = CKEDITOR.replace('mtfQuestion', {
-      customConfig: CKEDITOR.basePath + "config.js",
-      skin: 'moono-lisa,' + CKEDITOR.basePath + "skins/moono-lisa/",
-      contentsCss: CKEDITOR.basePath + "contents.css"
+  var questionInput = CKEDITOR.replace('mtfQuestion', {// eslint-disable-line no-undef
+    customConfig: CKEDITOR.basePath + "config.js",// eslint-disable-line no-undef
+    skin: 'moono-lisa,' + CKEDITOR.basePath + "skins/moono-lisa/",// eslint-disable-line no-undef
+    contentsCss: CKEDITOR.basePath + "contents.css"// eslint-disable-line no-undef
     });
     questionInput.on('change', function() {
       $scope.mtfFormData.question.text = this.getData();
     });
     questionInput.on('focus', function() {
-      $scope.generateTelemetry({type: 'TOUCH', id: 'input', target: {id: 'questionunit-mtf-question', ver: '', type: 'input'}})
-    });
-    angular.element('.innerScroll').on('scroll',function(){
-      $scope.generateTelemetry({type: 'SCROLL', id: 'form', target: {id: 'questionunit-mtf-form', ver: '', type: 'form'}})
-    });
-    $scope.init = function() {
-      if (!ecEditor._.isUndefined($scope.questionEditData)) {
-        var data = $scope.questionEditData.data;
-        $scope.mtfFormData.question = data.question;
-        $scope.mtfFormData.option = data.option;
-        $scope.editMedia = $scope.questionEditData.media;
-        if ($scope.mtfFormData.option.length < 3) {
-          $scope.mtfFormData.option.splice(3, 1);
-        }
+    $scope.generateTelemetry({
+      type: 'TOUCH',
+      id: 'input',
+      target: {
+        id: 'questionunit-mtf-question',
+        ver: '',
+        type: 'input'
       }
-      $scope.$parent.$on('question:form:val', function(event) {
-        if ($scope.formValidation()) {
-          /*if dynamic question assign how many questions are create that count to $scope.mtfFormData.questionCount
-          Or else assign 1*/
-          $scope.mtfFormData.questionCount = 1;
-          $scope.$emit('question:form:valid', $scope.mtfFormData);
-        } else {
-          $scope.$emit('question:form:inValid', $scope.mtfFormData);
-        }
-      })
-    }
+    })
+  });
+  angular.element('.innerScroll').on('scroll', function() {
+    $scope.generateTelemetry({
+     type: 'SCROLL',
+      id: 'form',
+      target: {
+        id: 'questionunit-mtf-form',
+        ver: '',
+        type: 'form'
+      }
+    })
+  });
+  $scope.init = function() {
+    /**
+     * editor:questionunit.mtf:call form validation.
+     * @event org.ekstep.questionunit.mtf:validateform
+     * @memberof org.ekstep.questionunit.mtf.horizontal_controller
+     */
+    $scope.mtfPluginInstance = org.ekstep.pluginframework.pluginManager.getPluginManifest("org.ekstep.questionunit.mtf");
+    EventBus.listeners['org.ekstep.questionunit.mtf:validateform'] = [];
+    ecEditor.addEventListener('org.ekstep.questionunit.mtf:validateform', function(event, callback) {
+      var validationRes = $scope.formValidation();
+      callback(validationRes.isValid, validationRes.formData);
+    }, $scope);
+    /**
+     * editor:questionunit.ftb:call form edit the question.
+     * @event org.ekstep.questionunit.ftb:editquestion
+     * @memberof org.ekstep.questionunit.ftb.horizontal_controller
+     */
+    EventBus.listeners['org.ekstep.questionunit.mtf:editquestion'] = [];
+    ecEditor.addEventListener('org.ekstep.questionunit.mtf:editquestion', $scope.editMtfQuestion, $scope);
+    ecEditor.dispatchEvent("org.ekstep.questionunit:ready");
+  }
+  /**
+   * for edit flow
+   * @memberof org.ekstep.questionunit.mtf.horizontal_controller
+   * @param {event} event data.
+   * @param {question} data data.
+   */
+  $scope.editMtfQuestion = function(event, data) {
+    var qdata = data.data;
+    $scope.mtfFormData.question = qdata.question;
+    $scope.mtfFormData.option = qdata.option;
+    $scope.editMedia = qdata.media;
+  }
+  /**
+   * add the pair in mtf
+   * @memberof org.ekstep.questionunit.mtf.horizontal_controller
+   */
     $scope.addPair = function() {
-
       var optionLHS = {
         'text': '',
         'image': '',
         'audio': '',
         'hint': '',
-        'index': $scope.indexCount
+      'index': $scope.indexPair
       };
       var optionRHS = {
         'text': '',
         'image': '',
         'audio': '',
         'hint': '',
-        'mapIndex': $scope.indexCount++
+      'mapIndex': $scope.indexPair++
       };
       if ($scope.mtfFormData.option.optionsLHS.length < 5) {
         $scope.mtfFormData.option.optionsLHS.push(optionLHS);
         $scope.mtfFormData.option.optionsRHS.push(optionRHS);
       }
     }
-    //on click next the form validation function called
-    $scope.formValidation = function() {
-      console.log($scope.mtfFormData);
-      var opSel = false;
-      var valid = false;
-      //check form valid and lhs should be more than 3
-      var formValid = $scope.mtfForm.$valid && $scope.mtfFormData.option.optionsLHS.length > 2;
-      $scope.submitted = true;
-      if (formValid) {
-        opSel = true;
-        $scope.selLbl = 'success';
-      } else {
-        opSel = false;
-        $scope.selLbl = 'error';
-      }
-      var tempArray = [];
-      _.isEmpty($scope.questionMedia.image) ? 0 : tempArray.push($scope.questionMedia.image);
-      _.isEmpty($scope.questionMedia.audio) ? 0 : tempArray.push($scope.questionMedia.audio);
-      _.each($scope.optionsMedia.image, function(key, val) {
-        tempArray.push(key);
-      });
-      _.each($scope.optionsMedia.audio, function(key, val) {
-        tempArray.push(key);
-      });
-      var temp = tempArray.filter(function(element) {
-        return element !== undefined;
-      });
-      $scope.editMedia = _.union($scope.editMedia, temp);
-      $scope.mtfFormData.media = $scope.editMedia;
-      console.log("Form data", $scope.mtfFormData);
-      return (formValid && opSel) ? true : false;
+      /**
+   * check form validation
+   * @memberof org.ekstep.questionunit.mtf.horizontal_controller
+   * @returns {Object} question data.
+   */
+  $scope.formValidation = function() {
+    var formConfig = {},
+      temp, tempArray = [],
+      formValid;
+    //check form valid and lhs should be more than 3
+    formValid = $scope.mtfForm.$valid && $scope.mtfFormData.option.optionsLHS.length > 2;
+    $scope.submitted = true;
+    _.isEmpty($scope.questionMedia.image) ? 0 : tempArray.push($scope.questionMedia.image);
+    _.isEmpty($scope.questionMedia.audio) ? 0 : tempArray.push($scope.questionMedia.audio);
+    _.each($scope.optionsMedia.image, function(key) {
+      tempArray.push(key);
+    });
+    _.each($scope.optionsMedia.audio, function(key) {
+      tempArray.push(key);
+    });
+    temp = tempArray.filter(function(element) {
+      return element !== undefined;
+    });
+    $scope.editMedia = _.union($scope.editMedia, temp);
+    $scope.mtfFormData.media = $scope.editMedia;
+    formConfig.formData = $scope.mtfFormData;
+    if (formValid) {
+      $scope.selLbl = 'success';
+      formConfig.isValid = true;
+    } else {
+      $scope.selLbl = 'error';
+      formConfig.isValid = false;
     }
+    return formConfig;
+  }
+  /**
+   * delete the pair in mtf
+   * @memberof org.ekstep.questionunit.mtf.horizontal_controller
+   * @param {Integer} id data.
+   */
     $scope.deletePair = function(id) {
       $scope.mtfFormData.option.optionsLHS.splice(id, 1);
       $scope.mtfFormData.option.optionsRHS.splice(id, 1);
