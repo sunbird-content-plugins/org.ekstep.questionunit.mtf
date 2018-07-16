@@ -13,7 +13,7 @@
                                     <div class="ui grid">
                                         <div class="twelve wide column">
                                             <div class="form-group segment textBoxDiv">
-                                                <textarea class="form-control textboxQ" ng-class="{'has-success':mtfForm.question.$valid, 'has-error': submitted && mtfForm.question.$error.required}" placeholder="Enter the question" name="mtfQuestion" ng-model="mtfFormData.question.text" maxlength="220" ng-init="$ctrl.focused = false" ng-focus="$ctrl.focused = true;" ng-blur="$ctrl.focused = false" ng-required="!(mtfFormData.question.text.length)"></textarea>
+                                                <textarea class="form-control textboxQ" ng-class="{'has-success':mtfForm.question.$valid, 'has-error': submitted && mtfForm.question.$error.required}" placeholder="Enter the question" name="mtfQuestion" ng-model="mtfFormData.question.text" ng-init="$ctrl.focused = false" ng-focus="$ctrl.focused = true;" ng-blur="$ctrl.focused = false" ng-required="!(mtfFormData.question.text.length)"></textarea>
                                             </div>
                                         </div>
                                         <!-- <div class="one wide column text-len">
@@ -132,7 +132,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="ui secondary segment custom-sec-segment" ng-if="mtfConfiguartion.optionsConfig[0].isImage || mtfConfiguartion[0].optionsConfig.isAudio">
+                                            <div class="ui secondary segment custom-sec-segment" ng-if="mtfConfiguartion.optionsConfig[0].isImage || mtfConfiguartion.optionsConfig[0].isAudio">
                                                 <div class="ui grid">
                                                     <div class="row">
                                                         <div class="column right aligned">
