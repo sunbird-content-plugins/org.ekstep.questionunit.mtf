@@ -27,6 +27,10 @@
       {
         "type": "css",
         "src": "editor/styles/style.css"
+      },
+      {
+        "type": "js",
+        "src": "editor/controllers/mtf-controller.js"
       }],
     "menu": [],
     "init-data":
@@ -57,8 +61,8 @@
       "category": "MTF",
       "editor":
       {
-        "templateURL": "editor/templates/horizontal_template.html",
-        "controllerURL": "editor/controllers/horizontal_controller.js",
+        "templateURL": "editor/templates/mtf-template.html",
+        "controllerURL": "editor/controllers/mtf-controller.js",
         "template": "horizontalMTF",
         "controller": "QuestionFormController"
       }
