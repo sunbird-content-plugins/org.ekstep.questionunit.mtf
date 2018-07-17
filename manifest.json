@@ -27,10 +27,6 @@
       {
         "type": "css",
         "src": "editor/styles/style.css"
-      },
-      {
-        "type": "js",
-        "src": "editor/controllers/mtf-controller.js"
       }],
     "menu": [],
     "init-data":
