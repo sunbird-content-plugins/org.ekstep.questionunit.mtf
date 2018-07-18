@@ -181,29 +181,29 @@ MTFController.showImageModel = function (event, imageSrcType) {
   $(MTFController.constant.qsMTFElement).append(templateData);
 },
 
-/**
- * onclick overlay or X button the popup will be hide
- * @memberof org.ekstep.questionunit.mtf.mtftemplate
- */
-MTFController.hideImageModel = function () {
-  $("#image-model-popup").remove();
-},
+  /**
+   * onclick overlay or X button the popup will be hide
+   * @memberof org.ekstep.questionunit.mtf.mtftemplate
+   */
+  MTFController.hideImageModel = function () {
+    $("#image-model-popup").remove();
+  },
 
-/**
- * question text if long then handle using ellipse
- * @memberof org.ekstep.questionunit.mtf.mtftemplate
- * @param {Object} event from question set.
- */
-MTFController.expandQuestion = function (event) {
-  if ($(event.target.parentElement).hasClass('collapse-ques-text')) {
-    $(event.target.parentElement).removeClass("collapse-ques-text");
-    $(event.target.parentElement).addClass("qc-expand-ques-text");
-    $("#mtf-header").css('height', '65vh');
-  } else {
-    $(event.target.parentElement).addClass("collapse-ques-text");
-    $(event.target.parentElement).removeClass("qc-expand-ques-text");
-    $("#mtf-header").css('height', '17.7vh');
-  }
-};
+  /**
+   * question text if long then handle using ellipse
+   * @memberof org.ekstep.questionunit.mtf.mtftemplate
+   * @param {Object} event from question set.
+   */
+  MTFController.expandQuestion = function (event) {
+    if ($(event.target.parentElement).hasClass('collapse-ques-text')) {
+      $(event.target.parentElement).removeClass("collapse-ques-text");
+      $(event.target.parentElement).addClass("qc-expand-ques-text");
+      $("#mtf-header").css('height', '65vh');
+    } else {
+      $(event.target.parentElement).addClass("collapse-ques-text");
+      $(event.target.parentElement).removeClass("qc-expand-ques-text");
+      $("#mtf-header").css('height', '17.7vh');
+    }
+  };
 
 //# sourceURL=MTFController.js

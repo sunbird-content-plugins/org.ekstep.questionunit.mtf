@@ -18,11 +18,11 @@ header.mtf-header {
 }
 
 .mtf-question-text {
-    padding: 17px 10px 16px 10px;
     color: white;
     font-size: 100%;
     line-height: normal;
     text-align: center;
+    padding: 7px 0px 0px 2px;
 }
 
 .mtf-hori-container {
