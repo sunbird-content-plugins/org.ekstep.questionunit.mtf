@@ -178,6 +178,11 @@ angular.module('mtfApp', []).controller('mtfQuestionFormController', ['$scope', 
       formValid;
     //check form valid and lhs should be more than 3
     formValid = $scope.mtfForm.$valid && $scope.mtfFormData.option.optionsLHS.length > 2;
+     if(!($scope.mtfFormData.question.text.length || $scope.mtfFormData.question.image.length || $scope.mtfFormData.question.audio.length)){
+        $('.questionTextBox').addClass("ck-error");
+      }else{
+        $('.questionTextBox').removeClass("ck-error");
+      }
     $scope.submitted = true;
     _.isEmpty($scope.questionMedia.image) ? 0 : tempArray.push($scope.questionMedia.image);
     _.isEmpty($scope.questionMedia.audio) ? 0 : tempArray.push($scope.questionMedia.audio);
