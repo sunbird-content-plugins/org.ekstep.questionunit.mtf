@@ -288,6 +288,9 @@ angular.module('mtfApp', []).controller('mtfQuestionFormController', ['$scope', 
     $scope.generateTelemetry(telemetryObject)
   }
 
+  /**
+   * Callbacks object to be passed to the directive to manage selected media
+   */
   $scope.callbacks = {
     deleteMedia: $scope.deleteMedia,
     addMedia: $scope.addMedia,
@@ -299,12 +302,14 @@ angular.module('mtfApp', []).controller('mtfQuestionFormController', ['$scope', 
    * @param {Object} data telemetry data
    */
   $scope.generateTelemetry = function (data) {
-    data.plugin = data.plugin || {
-      "id": $scope.mtfPluginInstance.id,
-      "ver": $scope.mtfPluginInstance.ver
+    if (data) {
+      data.plugin = data.plugin || {
+        "id": $scope.mtfPluginInstance.id,
+        "ver": $scope.mtfPluginInstance.ver
+      }
+      data.form = data.form || 'question-creation-mtf-form';
+      questionServices.generateTelemetry(data);
     }
-    data.form = data.form || 'question-creation-mtf-form';
-    questionServices.generateTelemetry(data);
   }
 }]);
 //# sourceURL=mtf-controller.js
