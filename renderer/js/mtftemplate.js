@@ -20,7 +20,7 @@ MTFController.getQuestionContent = function () {
   return "<header class='mtf-header'>\
     <div class='question-image'>\
     <% if(question.data.question.image){ %> \
-      <img class='mtf-question-image' onclick='MTFController.showImageModel(event)' src='<%= question.data.question.image %>' \> \
+      <img class='mtf-question-image' onclick='MTFController.showImageModel(event, \"<%= question.data.question.image %>\")' src='<%= question.data.question.image %>' \> \
     <%}else{ %> \
     <% } %> \
     </div>\
@@ -48,7 +48,7 @@ MTFController.getHorizontalLayout = function () {
         <div class='mtf-hori-ques-option' >\
           <div class='mtf-hori-ques-text'>\
             <div  class='mtf-hori-ques-text-inner'>\
-            <p onclick='MTFController.showImageModel(event, \"background-image\")' style=\"background-size:100% 100%; background-image:url(<%= val.image %>);\">\
+            <p onclick='MTFController.showImageModel(event, \"<%= val.image %>\")' style=\"background-size:100% 100%; background-image:url(<%= val.image %>);\">\
               \<%= val.text %>\
               <% if(val.audio){ %> \
                 <span class='mtf-hori-opt-audio-image' >\
@@ -79,7 +79,7 @@ MTFController.getHorizontalLayout = function () {
         <div class='mtf-hori-ques-option'>\
           <div class='mtf-hori-ques-text'>\
             <div class='mtf-hori-ques-text-inner cont-dragula' id='right<%= (key+1) %>' mapIndex='<%= val.mapIndex %>'><% if(MTFController.selAns[key].selText < 1){ %>\
-              <p onclick='MTFController.showImageModel(event, \"background-image\")' style=\"background-size:100% 100%; background-image:url('<%= val.image %>');\">\
+              <p onclick='MTFController.showImageModel(event, \"<%= val.image %>\")' style=\"background-size:100% 100%; background-image:url('<%= val.image %>');\">\
               <%= val.text %>\
               <% if(val.audio){ %> \
                 <span class='mtf-hori-opt-audio-image' >\
@@ -107,7 +107,7 @@ MTFController.getVerticalLayout = function () {
         <div class='mtf-vert-ques-option'>\
           <div class='mtf-vert-ques-text'>\
             <div class='mtf-vert-ques-text-inner' >\
-              <p onclick='MTFController.showImageModel(event, \"background-image\")' style=\"background-size:100% 100%; background-image:url(<%= val.image %>);\">\
+              <p onclick='MTFController.showImageModel(event, \"<%= val.image %>\")' style=\"background-size:100% 100%; background-image:url(<%= val.image %>);\">\
                 \<%= val.text %>\
                 <% if(val.audio){ %> \
                   <span class='mtf-vert-opt-audio-image' >\
@@ -138,7 +138,7 @@ MTFController.getVerticalLayout = function () {
         <div class='mtf-vert-ques-option'>\
           <div class='mtf-vert-ques-text'>\
             <div class='mtf-vert-ques-text-inner cont-dragula' id='right<%= (key+1) %>' mapIndex='<%= val.mapIndex %>'><% if(MTFController.selAns[key].selText < 1){ %>\
-              <p onclick='MTFController.showImageModel(event, \"background-image\")' style=\"background-size:100% 100%; background-image:url('<%= val.image %>');\">\
+              <p onclick='MTFController.showImageModel(event, \"<%= val.image %>\")' style=\"background-size:100% 100%; background-image:url('<%= val.image %>');\">\
                 <% if(val.audio){ %> \
                   <span class='mtf-vert-opt-audio-image' >\
                     <img  src='<%=MTFController.pluginInstance.getAudioIcon('renderer/assets/audio.png') %>' onclick=MTFController.pluginInstance.playAudio({src:'<%= val.audio %>'}) \>\
@@ -159,14 +159,7 @@ MTFController.getVerticalLayout = function () {
  * image will be shown in popup
  * @memberof org.ekstep.questionunit.mtf.mtftemplate
  */
-MTFController.showImageModel = function (event, imageSrcType) {
-  var eventData;
-  if (imageSrcType == "background-image") {
-    eventData = event.target.style.backgroundImage.slice(4, -1).replace(/"/g, "");
-    if (!eventData) return false; //when there is no image option
-  } else {
-    eventData = event.target.src;
-  }
+MTFController.showImageModel = function (event, imageSrc) {
   var modelTemplate = "<div class='popup' id='image-model-popup' onclick='MTFController.hideImageModel()'><div class='popup-overlay' onclick='MTFController.hideImageModel()'></div> \
   <div class='popup-full-body'> \
   <div class='font-lato assess-popup assess-goodjob-popup'> \
@@ -176,7 +169,7 @@ MTFController.showImageModel = function (event, imageSrcType) {
   </div></div>";
   var template = _.template(modelTemplate);
   var templateData = template({
-    src: eventData
+    src: imageSrc
   })
   $(MTFController.constant.qsMTFElement).append(templateData);
 },
