@@ -202,3 +202,42 @@ td.mtf-pair-destractor-td{
  border-left: 0px none !important;
   border-right: 0px none;
 }
+
+/* options */
+
+.mtf-options .selected-media-container {
+ margin-left:2%;
+}
+
+.mtf-options .selected-image-container {
+ float: left;
+ margin-right: 2%;
+ width: 46%;
+}
+
+.mtf-options .selected-audio-container {
+ float: left;
+ margin-right: 2%;
+ width: 46%;
+}
+
+.mtf-options .imgWidth{
+ width:100%;
+}
+
+.mtf-options .auto-play-container {
+ text-align: right;
+}
+
+.mtf-options .audio-container {
+ width: 80%;
+}
+
+.mtf-options .selected-audio {
+ max-width: 100%;
+ display:none;
+}
+
+.mtf-options .delete-media-container {
+ width: 20%;
+}

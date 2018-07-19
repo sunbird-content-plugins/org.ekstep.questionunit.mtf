@@ -43,6 +43,7 @@ angular.module('mtfApp', []).controller('mtfQuestionFormController', ['$scope', 
         'text': '',
         'image': '',
         'audio': '',
+        'audioName': '',
         'hint': '',
         'index': 2
       }, {
@@ -222,8 +223,9 @@ angular.module('mtfApp', []).controller('mtfQuestionFormController', ['$scope', 
 
   /**
    * invokes the asset browser to pick an image to add to either the question or the options
-   * @param {string} id if `q` then it is image for question, else for options
-   * @param {string} type if `id` is not `q` but an index, then it can be either 'LHS' or 'RHS'
+   * @param {string} type if `q` for Question, `LHS` for LHS option, `RHS` for RHS option 
+   * @param {string} index if `type` is not `q`, then it denotes the index of either 'LHS' or 'RHS' option
+   * @param {string} mediaType `image` or `audio`
    */
   $scope.addMedia = function (type, index, mediaType) {
     var mediaObject = {
@@ -244,14 +246,17 @@ angular.module('mtfApp', []).controller('mtfQuestionFormController', ['$scope', 
       if (type == 'q') {
         telemetryObject.target.id = 'questionunit-mtf-add-' + data.assetMedia.type;
         $scope.mtfFormData.question[data.assetMedia.type] = org.ekstep.contenteditor.mediaManager.getMediaOriginURL(data.assetMedia.src);
-        $scope.questionMedia[data.assetMedia.type] = media;
+        data.assetMedia.type == 'audio' ? $scope.mtfFormData.question.audioName = data.assetMedia.name :
+          $scope.questionMedia[data.assetMedia.type] = media;
       } else if (type == 'LHS') {
         telemetryObject.target.id = 'questionunit-mtf-lhs-add-' + data.assetMedia.type;
         $scope.mtfFormData.option.optionsLHS[index][data.assetMedia.type] = org.ekstep.contenteditor.mediaManager.getMediaOriginURL(data.assetMedia.src);
+        data.assetMedia.type == 'audio' ? $scope.mtfFormData.option.optionsLHS[index].audioName = data.assetMedia.name : '';
         $scope.optionsMedia[data.assetMedia.type][index] = media;
       } else if (type == 'RHS') {
         telemetryObject.target.id = 'questionunit-mtf-rhs-add-' + data.assetMedia.type;
         $scope.mtfFormData.option.optionsRHS[index][data.assetMedia.type] = org.ekstep.contenteditor.mediaManager.getMediaOriginURL(data.assetMedia.src);
+        data.assetMedia.type == 'audio' ? $scope.mtfFormData.option.optionsRHS[index].audioName = data.assetMedia.name : '';
         $scope.optionsMedia[data.assetMedia.type][index] = media;
       }
       $scope.generateTelemetry(telemetryObject)
@@ -259,6 +264,12 @@ angular.module('mtfApp', []).controller('mtfQuestionFormController', ['$scope', 
     questionServices.invokeAssetBrowser(mediaObject);
   }
 
+  /**
+   * Deletes the selected media from the question element (question, LHS or RHS options)
+   * @param {string} type 
+   * @param {Integer} index 
+   * @param {string} mediaType 
+   */
   $scope.deleteMedia = function (type, index, mediaType) {
     var telemetryObject = { type: 'TOUCH', id: 'button', target: { id: '', ver: '', type: 'button' } };
     if (type == 'q') {
@@ -283,6 +294,10 @@ angular.module('mtfApp', []).controller('mtfQuestionFormController', ['$scope', 
     qtype: 'mtf'
   }
 
+  /**
+   * Helper function to generate telemetry event
+   * @param {Object} data telemetry data
+   */
   $scope.generateTelemetry = function (data) {
     data.plugin = data.plugin || {
       "id": $scope.mtfPluginInstance.id,
