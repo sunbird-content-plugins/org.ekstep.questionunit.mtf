@@ -18,7 +18,7 @@ header.mtf-header {
 }
 
 .mtf-question-text {
-    padding: 17px 10px 16px 10px;
+    padding: 7px 0px 0px 2px;
     color: white;
     font-size: 100%;
     line-height: normal;
@@ -341,7 +341,31 @@ img.qc-question-fullimage{
     height:100%;
 }
 
-.popup{
+#image-model-popup .popup-overlay{
+    opacity:0.8;
+}
+#image-model-popup .popup-full-body{
+    width:auto;
+    margin:auto;
+}
+
+#image-model-popup .assess-popup {
+    position: relative;
+    width:fit-content;
     top:0;
-    height: 90%;
+    left:0; 
+    margin:auto;
+}
+
+#image-model-popup img.qc-question-fullimage {
+    max-width: 60vw;
+    max-height: 100%;
+}
+
+#image-model-popup .qc-popup-close-button {
+    position: absolute;
+    right: -15px;
+    top: -20px;
+    color: white;
+    font-size:20px;
 }
