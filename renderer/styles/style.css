@@ -32,19 +32,20 @@ header.mtf-header {
     width: 100%;
     display: block;
     margin-top: 2%;
-    height: 28vh;
+    height: 18vh;
 }
 
 .mtf-hori-option {
-    margin:0% 1%;
     cursor: pointer;
-    float:left;
+    display: inline-block;
     text-align: center;
     vertical-align: middle;
+    margin: 0;
     height: 100%;
 }
 
 .mtf-hori-ques-option {
+    margin: 0 7%;
     border: 1px solid #c8ccd0;
     height: 100%;
     background-size: 100% 100%;
@@ -93,15 +94,15 @@ header.mtf-header {
 }
 
 .width20 {
-    width: 18%;
+    width: 19%;
 }
 
 .width25 {
-    width: 23%;
+    width: 24%;
 }
 
 .width33 {
-    width: 31%;
+    width: 31.33%;
 }
 
 .width100 {
@@ -143,6 +144,46 @@ header.mtf-header {
     margin-right: auto;
     margin-left: auto;
     margin-top: 40px;
+}
+
+.cont-dragula {
+    height: 100%;
+    text-align: center;
+    margin-bottom: 10%
+}
+
+.cont-dragula > div,
+.gu-mirror {
+    background-color: rgba(0, 0, 0, 0.2);
+    transition: opacity 0.4s ease-in-out;
+}
+
+.cont-dragula > div {
+    cursor: move;
+    cursor: grab;
+    cursor: -moz-grab;
+    cursor: -webkit-grab;
+}
+
+.cont-dragula > p {
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    transition: opacity 0.4s ease-in-out;
+}
+
+.cont-dragula > p {
+    cursor: move;
+    cursor: grab;
+    cursor: -moz-grab;
+    cursor: -webkit-grab;
+}
+
+.cont-dragula .ex-moved {
+    background-color: #e74c3c;
+}
+
+.cont-dragula.ex-over {
+    background-color: rgba(255, 255, 255, 0.3);
 }
 
 .gu-mirror {
@@ -219,7 +260,7 @@ header.mtf-header {
 
   .mtf-vert-container {
     text-align: left;
-    width: 48%;
+    width: 33%;
     float:left;
     display: block;
     margin-top: 2%;
@@ -295,8 +336,9 @@ header.mtf-header {
     bottom: 87%;
 }
 
-#image-model-popup {
-    top:0;
+img.qc-question-fullimage{
+    width:83%;
+    height:100%;
 }
 
 #image-model-popup .popup-overlay{
@@ -317,7 +359,7 @@ header.mtf-header {
 }
 
 #image-model-popup img.qc-question-fullimage {
-   max-width: 100%;
+   max-width: 60vw;
    max-height: 100%;
 }
 
