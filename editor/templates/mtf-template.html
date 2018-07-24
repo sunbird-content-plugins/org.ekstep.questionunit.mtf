@@ -29,12 +29,20 @@
                                         <div class="one column row segment-column">
                                             <div class="column right floated">
                                                 <span class="custom-bottom-label">Add: </span>
-                                                <span ng-click="addMedia('q','','image')" class="custom-bottom-segment ui icon" 
-                                                data-tooltip="{{!mtfFormData.question.image ? 'Add Image' : 'Edit Image' }}" data-inverted="">
+                                                <span ng-click="addMedia('q','','image')" class="custom-bottom-segment ui icon" ng-if="mtfFormData.question.image.length <= 0 && mtfConfiguartion.questionConfig.isImage"
+                                                    data-tooltip="Add image" data-inverted="">
                                                     <i class="image large icon"></i>
                                                 </span>
-                                                <span ng-click="addMedia('q','','audio')" class="custom-bottom-segment ui icon" 
-                                                data-tooltip="{{!mtfFormData.question.audio ? 'Add Audio' : 'Edit Audio' }}" data-inverted="">
+                                                <span ng-click="addMedia('q','','image')" class="custom-bottom-segment ui icon" ng-if="mtfFormData.question.image.length > 0"
+                                                    data-tooltip="Edit image" data-inverted="">
+                                                    <i class="image large icon"></i>
+                                                </span>
+                                                <span ng-click="addMedia('q','','audio')" class="custom-bottom-segment ui icon" ng-if="mtfFormData.question.audio.length <= 0"
+                                                    data-tooltip="Add audio" data-inverted="">
+                                                    <i class="music large icon"></i>
+                                                </span>
+                                                <span ng-click="addMedia('q','','audio')" class="custom-bottom-segment ui icon" ng-if="mtfFormData.question.audio.length > 0"
+                                                    data-tooltip="Edit audio" data-inverted="">
                                                     <i class="music large icon"></i>
                                                 </span>
                                             </div>
@@ -77,12 +85,20 @@
                                                         <div class="row">
                                                             <div class="column right aligned">
                                                                 <span class="custom-bottom-label">Add: </span>
-                                                                <span ng-click="addMedia('LHS', key, 'image')" class="custom-bottom-segment ui icon" 
-                                                                data-tooltip="{{!mtfFormData.option.optionsLHS[$index].image ? 'Add Image' : 'Edit Image' }}" data-inverted="">
+                                                                <span ng-click="addMedia('LHS', key, 'image')" class="custom-bottom-segment ui icon" ng-if="mtfFormData.option.optionsLHS[$index].image.length <= 0"
+                                                                    data-tooltip="Add image" data-inverted="">
                                                                     <i class="image large icon"></i>
                                                                 </span>
-                                                                <span ng-click="addMedia('LHS', key, 'audio')" class="custom-bottom-segment ui icon" 
-                                                                data-tooltip="{{!mtfFormData.option.optionsLHS[$index].audio ? 'Add Audio' : 'Edit Audio' }}" data-inverted="">
+                                                                <span ng-click="addMedia('LHS', key, 'image')" class="custom-bottom-segment ui icon" ng-if="mtfFormData.option.optionsLHS[$index].image.length > 0"
+                                                                    data-tooltip="Edit image" data-inverted="">
+                                                                    <i class="image large icon"></i>
+                                                                </span>
+                                                                <span ng-click="addMedia('LHS', key, 'audio')" class="custom-bottom-segment ui icon" ng-if="mtfFormData.option.optionsLHS[$index].audio.length <= 0"
+                                                                    data-tooltip="Add audio" data-inverted="">
+                                                                    <i class="music large icon"></i>
+                                                                </span>
+                                                                <span ng-click="addMedia('LHS', key, 'audio')" class="custom-bottom-segment ui icon" ng-if="mtfFormData.option.optionsLHS[$index].audio.length > 0"
+                                                                    data-tooltip="Edit audio" data-inverted="">
                                                                     <i class="music large icon"></i>
                                                                 </span>
                                                             </div>
@@ -90,12 +106,11 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="delete-pair-row-LHS">
-                                            <span ng-click="deletePair($index);generateTelemetry({type: 'TOUCH', id: 'button', target: {id: 'questionunit-mtf-delete-pair', ver: '', type: 'button'}})"
-                                                data-tooltip="Delete Pair" data-inverted="">
-                                                <i class="trash large icon delete-icon"></i>Delete Pair</span>
-                                        </div>
+                                            <div class="delete-pair-row-LHS">
+                                                <span ng-click="deletePair($index);generateTelemetry({type: 'TOUCH', id: 'button', target: {id: 'questionunit-mtf-delete-pair', ver: '', type: 'button'}})"
+                                                    data-tooltip="Delete Pair" data-inverted="">
+                                                    <i class="trash large icon delete-icon"></i>Delete Pair</span>
+                                            </div>
                                     </td>
                                     <td class="mtf-pair-td">
                                         <div class="ui segments inner-segment" ng-class="{cardBorder: focused, 'has-errorCard': submitted && mtfForm['option.optionsRHS_' + $index].$error.required}"
@@ -124,12 +139,20 @@
                                                     <div class="row">
                                                         <div class="column right aligned">
                                                             <span class="custom-bottom-label">Add: </span>
-                                                            <span ng-click="addMedia('RHS', key, 'image')" class="custom-bottom-segment ui icon" 
-                                                            data-tooltip="{{!mtfFormData.option.optionsRHS[$index].image ? 'Add Image' : 'Edit Image' }}" data-inverted="">
+                                                            <span ng-click="addMedia('RHS', key, 'image')" class="custom-bottom-segment ui icon" ng-if="mtfFormData.option.optionsRHS[$index].image.length <= 0"
+                                                                data-tooltip="Add image" data-inverted="">
                                                                 <i class="image large icon"></i>
                                                             </span>
-                                                            <span ng-click="addMedia('RHS', key, 'audio')" class="custom-bottom-segment ui icon" 
-                                                                data-tooltip="{{!mtfFormData.option.optionsRHS[$index].audio ? 'Add Audio' : 'Edit Audio' }}" data-inverted="">
+                                                            <span ng-click="addMedia('RHS', key, 'image')" class="custom-bottom-segment ui icon" ng-if="mtfFormData.option.optionsRHS[$index].image.length > 0"
+                                                                data-tooltip="Edit image" data-inverted="">
+                                                                <i class="image large icon"></i>
+                                                            </span>
+                                                            <span ng-click="addMedia('RHS', key, 'audio')" class="custom-bottom-segment ui icon" ng-if="mtfFormData.option.optionsRHS[$index].audio.length <= 0"
+                                                                data-tooltip="Add audio" data-inverted="">
+                                                                <i class="music large icon"></i>
+                                                            </span>
+                                                            <span ng-click="addMedia('RHS', key, 'audio')" class="custom-bottom-segment ui icon" ng-if="mtfFormData.option.optionsRHS[$index].audio.length > 0"
+                                                                data-tooltip="Edit audio" data-inverted="">
                                                                 <i class="music large icon"></i>
                                                             </span>
                                                         </div>
