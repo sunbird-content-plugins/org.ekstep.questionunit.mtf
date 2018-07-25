@@ -336,9 +336,9 @@ header.mtf-header {
     bottom: 87%;
 }
 
-img.qc-question-fullimage{
-    width:83%;
-    height:100%;
+#image-model-popup {
+    top:0;
+    height:90%;
 }
 
 #image-model-popup .popup-overlay{

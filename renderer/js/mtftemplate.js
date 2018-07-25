@@ -164,8 +164,7 @@ MTFController.showImageModel = function (event, imageSrc) {
   <div class='popup-full-body'> \
   <div class='font-lato assess-popup assess-goodjob-popup'> \
     <img class='qc-question-fullimage' src=<%= src %> /> \
-    <div onclick='MTFController.hideImageModel()' class='qc-popup-close-button'>X</div> \
-    <div  class='qc-popup-close-button'>X</div> \
+    <div onclick='MTFController.hideImageModel()' class='qc-popup-close-button'>&times;</div> \
   </div></div>";
   var template = _.template(modelTemplate);
   var templateData = template({
