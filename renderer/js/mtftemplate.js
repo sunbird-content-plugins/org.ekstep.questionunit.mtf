@@ -62,12 +62,23 @@ MTFController.getHorizontalLayout = function () {
       </div>\
     <% });%>\
   </div>\
-  <div id='mtfoptionscontainerdrag' class='mtf-hori-container panel panel-body'>\
-    <% _.each(question.data.option.optionsRHS,function(val,key){ %>\
-      <div data-map-value='<%= val.text %>' data-map-index='<%= val.mapIndex %>' class='mtf-hori-option cont-dragula <%= MTFController.optionsWidth %>'>\
+  <div class='mtf-hori-container panel panel-body' id='left'>\
+    <% _.each(MTFController.selAns,function(val,key){ %>\
+      <div class='mtf-hori-option <%= MTFController.optionsWidth %>'>\
         <div class='mtf-hori-ques-option'>\
           <div class='mtf-hori-ques-text'>\
-            <div class='mtf-hori-ques-text-inner' ><% if(MTFController.selAns[key].selText < 1){ %>\
+            <div class='mtf-hori-ques-text-inner cont-dragula' id='left<%= (key+1) %>' leftindex='<%= val.index %>'><% if(val.selText.length > 0){ %> <p><%= val.selText  %> </p> <% }else{ %><%= val.selText %><% } %></div>\
+          </div>\
+        </div>\
+      </div>\
+    <% });%>\
+  </div>\
+  <div class='mtf-hori-container panel panel-body'>\
+    <% _.each(question.data.option.optionsRHS,function(val,key){ %>\
+      <div class='mtf-hori-option <%= MTFController.optionsWidth %>'>\
+        <div class='mtf-hori-ques-option'>\
+          <div class='mtf-hori-ques-text'>\
+            <div class='mtf-hori-ques-text-inner cont-dragula' id='right<%= (key+1) %>' mapIndex='<%= val.mapIndex %>'><% if(MTFController.selAns[key].selText < 1){ %>\
               <p onclick='MTFController.showImageModel(event, \"<%= val.image %>\")' style=\"background-size:100% 100%; background-image:url('<%= val.image %>');\">\
               <%= val.text %>\
               <% if(val.audio){ %> \
@@ -110,12 +121,23 @@ MTFController.getVerticalLayout = function () {
       </div>\
     <% });%>\
   </div>\
-  <div id='mtfoptionscontainerdrag' class='mtf-vert-container panel panel-body'>\
+  <div class='mtf-vert-container panel panel-body' id='left'>\
+    <% _.each(MTFController.selAns,function(val,key){ %>\
+      <div class='mtf-vert-option <%= MTFController.optionsHeight %>'>\
+        <div class='mtf-vert-ques-option'>\
+          <div class='mtf-vert-ques-text'>\
+            <div class='mtf-vert-ques-text-inner cont-dragula' id='left<%= (key+1) %>' leftindex='<%= val.index %>'><% if(val.selText.length > 0){ %> <p><%= val.selText  %> </p> <% }else{ %><%= val.selText %><% } %></div>\
+          </div>\
+        </div>\
+      </div>\
+    <% });%>\
+  </div>\
+  <div class='mtf-vert-container panel panel-body'>\
     <% _.each(question.data.option.optionsRHS,function(val,key){ %>\
       <div class='mtf-vert-option <%= MTFController.optionsHeight %>'>\
         <div class='mtf-vert-ques-option'>\
           <div class='mtf-vert-ques-text'>\
-            <div class='mtf-vert-ques-text-inner' ><% if(MTFController.selAns[key].selText < 1){ %>\
+            <div class='mtf-vert-ques-text-inner cont-dragula' id='right<%= (key+1) %>' mapIndex='<%= val.mapIndex %>'><% if(MTFController.selAns[key].selText < 1){ %>\
               <p onclick='MTFController.showImageModel(event, \"<%= val.image %>\")' style=\"background-size:100% 100%; background-image:url('<%= val.image %>');\">\
                 <% if(val.audio){ %> \
                   <span class='mtf-vert-opt-audio-image' >\

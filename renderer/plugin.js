@@ -11,6 +11,7 @@ org.ekstep.questionunitmtf.RendererPlugin = org.ekstep.contentrenderer.questionU
   _isContainer: true,
   _render: true,
   _selectedAnswers: [],
+  _dragulaContainers: [],
   _constant: {
     horizontal: "Horizontal",
     vertial : "Vertical"
@@ -70,10 +71,30 @@ org.ekstep.questionunitmtf.RendererPlugin = org.ekstep.contentrenderer.questionU
     } else if (lhsOptions.length == 5) {
       MTFController.optionsHeight = 'height5option';
     }
+
+    _.each(lhsOptions, function (v, k) {
+      var lhs = 'left' + (k + 1);
+      var rhs = 'right' + (k + 1);
+      instance._dragulaContainers.push(lhs);
+      instance._dragulaContainers.push(rhs);
+    });
+  },
+  dragulaIsContainer: function (el) {
+    return el.classList.contains('cont-dragula');
   },
   postQuestionShow: function (event) {
     var instance = this;
-    var drake = dragula([mtfoptionscontainerdrag]);
+    var drake = dragula({
+      isContainer: function (elem) {
+        return instance.dragulaIsContainer(elem);
+      },
+      accepts: function (elem, target, source, sibling) {
+        if ($(target).children().length > 0) {
+          return false;
+        }
+        return true;
+      }
+    });
     drake.on('drop', function (elem, target, source, sibling) {
       instance.onDropElement(elem, target, source, sibling, instance._question);
     });
@@ -124,9 +145,25 @@ org.ekstep.questionunitmtf.RendererPlugin = org.ekstep.contentrenderer.questionU
   },
   onDropElement: function (elem, target, source, sibling, question) {
     var instance = this;
-    $('#mtfoptionscontainerdrag .cont-dragula').each(function(index){
-      instance._selectedAnswers[index] = {'mapIndex' : $(this).data('map-index'), 'selText' : $(this).data('map-value')}
-    })
+    if (!_.isUndefined($(source).attr('mapIndex'))) {
+      var rhsData = {};
+      var text = $(target).text();
+      rhsData.mapIndex = $(source).attr('mapIndex');
+      rhsData.selText = text.trim();
+      var existEle = _.contains(instance._selectedAnswers, rhsData);
+      if (!existEle) {
+        instance._selectedAnswers[Number($(target).attr('leftindex')) - 1] = rhsData;
+        var responseData = [{
+          lhs: question.data.option.optionsLHS[($(source).attr('mapIndex') - 1)].text,
+          rhs: text.trim()
+        }];
+        instance.logTelemetryItemResponse(responseData);
+      }
+    } else {
+      instance._selectedAnswers = _.filter(instance._selectedAnswers, function (item) {
+        return item.mapIndex !== $(target).attr('mapIndex')
+      });
+    }
   },
   logTelemetryItemResponse: function (data) {
     QSTelemetryLogger.logEvent(QSTelemetryLogger.EVENT_TYPES.RESPONSE, {"type": "INPUT", "values": data});
