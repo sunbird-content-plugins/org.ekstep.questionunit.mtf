@@ -1,17 +1,20 @@
 .mtf-layout {
-    text-align: center;
     width: 80%;
-    top: 10px;
     position: relative;
-    margin: auto;
+    margin: 2% auto auto;
+    height:90vh;
+    padding-bottom:10%;
+    height: 100%;
 }
 
 header.mtf-header {
+    min-height: 17.7vh;
     width: 100%;
     background-color: #404041;
-    height: 21vh;
-    margin-bottom: 4%;
-    overflow-y: scroll;
+    height: auto;
+    color:white;
+    padding:0px 5px;
+    margin:auto;
 }
 
 .mtf-question-text {
@@ -45,26 +48,30 @@ header.mtf-header {
     margin: 0 7%;
     border: 1px solid #c8ccd0;
     height: 100%;
-}
-
-.mtf-hori-lhs-option {
-    margin: 0 7%;
-    border: 1px inset #c8ccd0;
-    height: 100%;
-}
-
-.mtfHoriRhsOption {
-    margin: 0 7%;
-    border: 1px solid #c8ccd0;
-    background-color: #ede9e3;
-    height: 100%;
-    box-shadow: 0 0 10px #c8ccd0;
+    background-size: 100% 100%;
     position: relative;
 }
 
+.mtf-hori-opt-audio-image{
+    text-align:center;
+    background:white;
+    position: absolute;
+    z-index: 1;
+    width: 4vw;
+    height:4vw;
+    bottom:0;
+    right:0;
+    border-radius:50%
+}
+
+.mtf-hori-opt-audio-image img{
+    width:73%;
+    max-width:100%;
+    max-height:100%;
+} 
+
 .mtf-hori-ques-text {
     line-height: 1.5;
-    padding: 5px;
     display: table;
     height: 100%;
     width: 100%;
@@ -75,6 +82,10 @@ header.mtf-header {
     vertical-align: middle;
     text-align: center;
     word-break: break-word;
+}
+
+.mtf-hori-ques-text-inner p{
+    height: 100%;
 }
 
 [ng-drag].dragging {
@@ -110,6 +121,19 @@ header.mtf-header {
     width: 28.33%;
 }
 
+
+.height3option{
+    height:39%;
+}
+
+.height4option{
+    height : 28%;
+}
+.height5option{
+    height : 22%;
+}
+
+
 /* dragula-specific example page styles */
 /* dragula-specific example page styles */
 .wrapper {
@@ -123,10 +147,8 @@ header.mtf-header {
 }
 
 .cont-dragula {
-    width: 29%;
     height: 100%;
     text-align: center;
-    margin-top: -4%;
     margin-bottom: 10%
 }
 
@@ -188,4 +210,163 @@ header.mtf-header {
     opacity: 0.2;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
     filter: alpha(opacity=20);
+}
+
+.question-image{
+    float:left;
+    min-height:1px;
+    width:15%;
+  }
+  
+  .mtf-question-image{
+      height: 18.5vh;
+      float: left;
+      margin-left: -1%;
+      object-fit: fill;
+  }
+  
+  .qc-question-audio-image{
+    width: 6%;
+    -webkit-filter: invert(100%);
+    margin-top: 2%;
+    display: inline-block;
+    float: right;
+  }
+  .mtf-question-audio {
+    display: inline;
+  }
+  
+  .collapse-ques-text {
+      width:74%;
+      min-height: 17.7vh;
+  overflow: hidden;
+  margin: 0px 3% 0px 2%;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 2;
+  line-height: 1.8;
+  -webkit-box-orient: vertical;
+  display: -webkit-inline-box;
+  }
+  
+  .qc-expand-ques-text{
+      width:74%;
+
+  margin: 0px 3% 0px 2%;
+  text-overflow: ellipsis;
+  line-height: 1.8;
+  -webkit-box-orient: vertical;
+  display: -webkit-inline-box;
+  }
+
+  .mtf-vert-container {
+    text-align: left;
+    width: 33%;
+    float:left;
+    display: block;
+    margin-top: 2%;
+    margin-bottom:5%;
+    height:60%;
+}
+
+.mtf-vert-option {
+    width:100%;
+    cursor: pointer;
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    margin-bottom: 5%;
+}
+
+
+.mtf-vert-ques-option {
+    margin: 0 7%;
+    border: 1px solid #c8ccd0;
+    height: 100%;
+}
+
+.mtf-vert-ques-text {
+    line-height: 1.5;
+    padding: 5px;
+    display: table;
+    height: 100%;
+    width: 100%;
+}
+
+.mtf-vert-ques-text-inner {
+    position: relative;
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+    word-break: break-word;
+}
+
+.mtf-vert-ques-text-inner p{
+    height:100%;
+    width:100%;
+}
+
+.mtf-vert-ques-image {
+    position: absolute;
+    right:0;
+    top:0;
+}
+
+.mtf-vert-opt-audio-image{
+    text-align:center;
+    background:white;
+    position: absolute;
+    z-index: 1;
+    width: 4vw;
+    height:4vw;
+    bottom:0;
+    right:0;
+    border-radius:50%
+}
+
+.mtf-vert-opt-audio-image img{
+    width:73%;
+    max-width:100%;
+    max-height:100%;
+} 
+
+.qc-popup-close-button {
+    position: absolute;
+    right: -35px;
+    color: white;
+    bottom: 87%;
+}
+
+#image-model-popup {
+    top:0;
+    height:90%;
+}
+
+#image-model-popup .popup-overlay{
+   opacity:0.8;
+}
+
+#image-model-popup .popup-full-body{
+   width:auto;
+   margin:auto;
+}
+
+#image-model-popup .assess-popup {
+   position: relative;
+   width:fit-content;
+   top:0;
+   left:0;
+   margin:auto;
+}
+
+#image-model-popup img.qc-question-fullimage {
+   max-width: 60vw;
+   max-height: 100%;
+}
+
+#image-model-popup .qc-popup-close-button {
+   position: absolute;
+   right: -15px;
+   top: -20px;
+   color: white;
+   font-size:20px;
 }

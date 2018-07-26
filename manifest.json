@@ -6,17 +6,20 @@
   "description": "",
   "publishedDate": "",
   "icon": "assets/createquestion.png",
-  "languages": ["English"],
+  "languages": [
+    "English"
+  ],
   "categories": [],
-  "keywords": ["mtfplugin"],
+  "keywords": [
+    "mtfplugin"
+  ],
   "targets": [
     {
       "id": "org.ekstep.questionset",
       "ver": 1
     }
   ],
-  "editor":
-  {
+  "editor": {
     "main": "editor/plugin.js",
     "dependencies": [
       {
@@ -27,10 +30,10 @@
       {
         "type": "css",
         "src": "editor/styles/style.css"
-      }],
+      }
+    ],
     "menu": [],
-    "init-data":
-    {
+    "init-data": {
       "type": "rect",
       "x": 10,
       "y": 2,
@@ -39,11 +42,9 @@
       "fill": "#DCDCDC"
     },
     "configManifest": [
-      {
-
-      }],
-    "help":
-    {
+      {}
+    ],
+    "help": {
       "src": "editor/help.md",
       "dataType": "text"
     }
@@ -55,16 +56,15 @@
       "title": "Match The Following",
       "disc": "",
       "category": "MTF",
-      "editor":
-      {
+      "editor": {
         "templateURL": "editor/templates/mtf-template.html",
         "controllerURL": "editor/controllers/mtf-controller.js",
         "template": "horizontalMTF",
         "controller": "QuestionFormController"
       }
-    }],
-  "renderer":
-  {
+    }
+  ],
+  "renderer": {
     "main": "renderer/plugin.js",
     "dependencies": [
       {
@@ -87,11 +87,10 @@
   },
   "dependencies": [
     {
-      "plugin": "org.ekstep.questionunit", 
+      "plugin": "org.ekstep.questionunit",
       "ver": "1.0",
       "type": "plugin",
       "scope": "all"
     }
-
   ]
 }
