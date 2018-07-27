@@ -264,6 +264,9 @@ angular.module('mtfApp', ['org.ekstep.question']).controller('mtfQuestionFormCon
         data.assetMedia.type == 'audio' ? $scope.mtfFormData.option.optionsRHS[index].audioName = data.assetMedia.name : '';
         $scope.optionsMedia[data.assetMedia.type][index] = media;
       }
+      if(!$scope.$$phase) {
+        $scope.$digest()
+      }
       $scope.generateTelemetry(telemetryObject)
     }
     questionServices.invokeAssetBrowser(mediaObject);
