@@ -3,7 +3,7 @@
  * @class org.ekstep.questionunitmcq:mtfQuestionFormController
  * Sachin<sachin.kumar@goodworklabs.com>
  */
-angular.module('mtfApp', []).controller('mtfQuestionFormController', ['$scope', '$rootScope', 'questionServices', function ($scope, $rootScope, questionServices) {
+angular.module('mtfApp', ['org.ekstep.question']).controller('mtfQuestionFormController', ['$scope', '$rootScope', 'questionServices', function ($scope, $rootScope, questionServices) {
   $scope.mtfConfiguartion = {
     'questionConfig': {
       'isText': true,
@@ -88,7 +88,7 @@ angular.module('mtfApp', []).controller('mtfQuestionFormController', ['$scope', 
   $scope.mtfFormData.media = [];
   $scope.editMedia = [];
   var questionInput = CKEDITOR.replace('mtfQuestion', {// eslint-disable-line no-undef
-    customConfig: CKEDITOR.basePath + "config.js",// eslint-disable-line no-undef
+    customConfig: ecEditor.resolvePluginResource('org.ekstep.questionunit', '1.0', "editor/ckeditor-config.js"),
     skin: 'moono-lisa,' + CKEDITOR.basePath + "skins/moono-lisa/",// eslint-disable-line no-undef
     contentsCss: CKEDITOR.basePath + "contents.css"// eslint-disable-line no-undef
   });
@@ -187,6 +187,11 @@ angular.module('mtfApp', []).controller('mtfQuestionFormController', ['$scope', 
       formValid;
     //check form valid and lhs should be more than 3
     formValid = $scope.mtfForm.$valid && $scope.mtfFormData.option.optionsLHS.length > 2;
+     if(!($scope.mtfFormData.question.text.length || $scope.mtfFormData.question.image.length || $scope.mtfFormData.question.audio.length)){
+        $('.questionTextBox').addClass("ck-error");
+      }else{
+        $('.questionTextBox').removeClass("ck-error");
+      }
     $scope.submitted = true;
     _.isEmpty($scope.questionMedia.image) ? 0 : tempArray.push($scope.questionMedia.image);
     _.isEmpty($scope.questionMedia.audio) ? 0 : tempArray.push($scope.questionMedia.audio);
@@ -258,6 +263,9 @@ angular.module('mtfApp', []).controller('mtfQuestionFormController', ['$scope', 
         $scope.mtfFormData.option.optionsRHS[index][data.assetMedia.type] = org.ekstep.contenteditor.mediaManager.getMediaOriginURL(data.assetMedia.src);
         data.assetMedia.type == 'audio' ? $scope.mtfFormData.option.optionsRHS[index].audioName = data.assetMedia.name : '';
         $scope.optionsMedia[data.assetMedia.type][index] = media;
+      }
+      if(!$scope.$$phase) {
+        $scope.$digest()
       }
       $scope.generateTelemetry(telemetryObject)
     }

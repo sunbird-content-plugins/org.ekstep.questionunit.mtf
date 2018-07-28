@@ -13,4 +13,5 @@ org.ekstep.questionunitMTF.EditorPlugin = org.ekstep.contenteditor.questionUnitP
     ecEditor.getService(ServiceConstants.POPUP_SERVICE).loadNgModules(templatePath, controllerPath);
   }
 });
- //# sourceURL=mtfpluginEditorPlugin.js
+
+//# sourceURL=mtfpluginEditorPlugin.js

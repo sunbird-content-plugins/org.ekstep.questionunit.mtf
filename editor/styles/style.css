@@ -202,7 +202,9 @@ td.mtf-pair-destractor-td{
  border-left: 0px none !important;
   border-right: 0px none;
 }
-
+.ck-error{
+  border: 1px solid red;
+}
 /* options */
 
 .mtf-options .selected-media-container {

@@ -18,12 +18,12 @@ MTFController.initTemplate = function (pluginInstance) {
  */
 MTFController.getQuestionContent = function () {
   return "<header class='mtf-header'>\
+  <% if(question.data.question.image){ %> \
     <div class='question-image'>\
-    <% if(question.data.question.image){ %> \
       <img class='mtf-question-image' onclick='MTFController.showImageModel(event, \"<%= question.data.question.image %>\")' src='<%= question.data.question.image %>' \> \
+    </div>\
     <%}else{ %> \
     <% } %> \
-    </div>\
     <% if(question.data.question.text.length<85){ %> \
       <span class='collapse-ques-text'><%= question.data.question.text %></span> \
     <%}else{ %> \
@@ -160,18 +160,19 @@ MTFController.getVerticalLayout = function () {
  * @memberof org.ekstep.questionunit.mtf.mtftemplate
  */
 MTFController.showImageModel = function (event, imageSrc) {
-  var modelTemplate = "<div class='popup' id='image-model-popup' onclick='MTFController.hideImageModel()'><div class='popup-overlay' onclick='MTFController.hideImageModel()'></div> \
+  if (imageSrc) {
+    var modelTemplate = "<div class='popup' id='image-model-popup' onclick='MTFController.hideImageModel()'><div class='popup-overlay' onclick='MTFController.hideImageModel()'></div> \
   <div class='popup-full-body'> \
   <div class='font-lato assess-popup assess-goodjob-popup'> \
     <img class='qc-question-fullimage' src=<%= src %> /> \
-    <div onclick='MTFController.hideImageModel()' class='qc-popup-close-button'>X</div> \
-    <div  class='qc-popup-close-button'>X</div> \
+    <div onclick='MTFController.hideImageModel()' class='qc-popup-close-button'>&times;</div> \
   </div></div>";
-  var template = _.template(modelTemplate);
-  var templateData = template({
-    src: imageSrc
-  })
-  $(MTFController.constant.qsMTFElement).append(templateData);
+    var template = _.template(modelTemplate);
+    var templateData = template({
+      src: imageSrc
+    })
+    $(MTFController.constant.qsMTFElement).append(templateData);
+  }
 },
 
   /**
