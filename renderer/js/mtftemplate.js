@@ -25,7 +25,7 @@ MTFController.getQuestionContent = function () {
     </div> \
     <% } %> \
     <% if(question.data.question.text.length<85){ %>\
-      <span class='question-text collapse-ques-text' ><%= question.data.question.text %></span>\
+      <span class='question-text collapse-ques-text <%= MTFController.questionTextWidth %>' ><%= question.data.question.text %></span>\
     <%}else{ %> \
       <div class='question-text collapse-ques-text <%= MTFController.questionTextWidth %>' onclick='MTFController.expandQuestion(event)'><%= question.data.question.text %></div> \
     <% } %> \
