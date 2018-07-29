@@ -25,7 +25,7 @@ MTFController.getQuestionContent = function () {
     </div> \
     <% } %> \
     <% if(question.data.question.text.length<85){ %>\
-      <span class='question-text collapse-ques-text ><%= question.data.question.text %></span>\
+      <span class='question-text collapse-ques-text' ><%= question.data.question.text %></span>\
     <%}else{ %> \
       <div class='question-text collapse-ques-text <%= MTFController.questionTextWidth %>' onclick='MTFController.expandQuestion(event)'><%= question.data.question.text %></div> \
     <% } %> \
@@ -49,13 +49,20 @@ MTFController.getHorizontalLayout = function () {
         <div class='mtf-hori-ques-option' >\
           <div class='mtf-hori-ques-text'>\
             <div  class='mtf-hori-ques-text-inner'>\
-            <p onclick='MTFController.showImageModel(event, \"<%= val.image %>\")' style=\"background-size:100% 100%; background-image:url(<%= val.image %>);\">\
-            <span class='inner-span-lhs'><%= val.text %></span>\
+            <p onclick='MTFController.showImageModel(event, \"<%= val.image %>\")' >\
+            <% if(val.image){ %> \
+              <span class='inner-image' >\
+                <span>\
+                  <img src='<%= val.image %>' /> \
+                </span>\
+              </span> \
+              <% } %> \
+              <span class='inner-span-lhs'><%= val.text %></span>\
               <% if(val.audio){ %> \
                 <span class='mtf-hori-opt-audio-image' >\
                   <img src='<%=MTFController.pluginInstance.getAudioIcon('renderer/assets/audio.png') %>' onclick=MTFController.pluginInstance.playAudio({src:'<%= val.audio %>'}) \>\
                 </span>\
-                <% } %>\
+              <% } %>\
             </p>\
             </div>\
           </div>\
@@ -80,7 +87,14 @@ MTFController.getHorizontalLayout = function () {
         <div class='mtf-hori-ques-option'>\
           <div class='mtf-hori-ques-text'>\
             <div class='mtf-hori-ques-text-inner cont-dragula' id='right<%= (key+1) %>' mapIndex='<%= val.mapIndex %>'><% if(MTFController.selAns[key].selText < 1){ %>\
-              <p onclick='MTFController.showImageModel(event, \"<%= val.image %>\")' style=\"background-size:100% 100%; background-image:url('<%= val.image %>');\">\
+              <p onclick='MTFController.showImageModel(event, \"<%= val.image %>\")' >\
+              <% if(val.image){ %> \
+                <span class='inner-image' >\
+                  <span>\
+                    <img src='<%= val.image %>' /> \
+                  </span>\
+                </span> \
+                <% } %> \
               <span class='inner-span'><%= val.text %></span>\
               <% if(val.audio){ %> \
                 <span class='mtf-hori-opt-audio-image' >\
@@ -108,8 +122,15 @@ MTFController.getVerticalLayout = function () {
         <div class='mtf-vert-ques-option'>\
           <div class='mtf-vert-ques-text'>\
             <div class='mtf-vert-ques-text-inner' >\
-              <p onclick='MTFController.showImageModel(event, \"<%= val.image %>\")' style=\"background-size:100% 100%; background-image:url(<%= val.image %>);\">\
-                \<span class='inner-span-lhs'><%= val.text %></span>\
+              <p onclick='MTFController.showImageModel(event, \"<%= val.image %>\")' >\
+              <% if(val.image){ %> \
+                <span class='inner-image' >\
+                  <span>\
+                    <img src='<%= val.image %>' /> \
+                  </span>\
+                </span> \
+                <% } %> \
+                <span class='inner-span-lhs'><%= val.text %></span>\
                 <% if(val.audio){ %> \
                   <span class='mtf-vert-opt-audio-image' >\
                     <img src='<%=MTFController.pluginInstance.getAudioIcon('renderer/assets/audio.png') %>' onclick=MTFController.pluginInstance.playAudio({src:'<%= val.audio %>'}) \>\
@@ -139,7 +160,14 @@ MTFController.getVerticalLayout = function () {
         <div class='mtf-vert-ques-option'>\
           <div class='mtf-vert-ques-text'>\
             <div class='mtf-vert-ques-text-inner cont-dragula' id='right<%= (key+1) %>' mapIndex='<%= val.mapIndex %>'><% if(MTFController.selAns[key].selText < 1){ %>\
-              <p onclick='MTFController.showImageModel(event, \"<%= val.image %>\")' style=\"background-size:100% 100%; background-image:url('<%= val.image %>');\">\
+              <p onclick='MTFController.showImageModel(event, \"<%= val.image %>\")' >\
+              <% if(val.image){ %> \
+                <span class='inner-image' >\
+                  <span>\
+                    <img src='<%= val.image %>' /> \
+                  </span>\
+                </span> \
+                <% } %> \
                 <% if(val.audio){ %> \
                   <span class='mtf-vert-opt-audio-image' >\
                     <img  src='<%=MTFController.pluginInstance.getAudioIcon('renderer/assets/audio.png') %>' onclick=MTFController.pluginInstance.playAudio({src:'<%= val.audio %>'}) \>\
