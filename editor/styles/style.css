@@ -207,6 +207,10 @@ td.mtf-pair-destractor-td{
 }
 /* options */
 
+.mtf-options .question-selected-media-container {
+  height:60px;
+}
+
 .mtf-options .selected-media-container {
  margin-left:2%;
 }

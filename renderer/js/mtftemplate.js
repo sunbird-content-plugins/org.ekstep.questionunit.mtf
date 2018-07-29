@@ -6,7 +6,7 @@ MTFController.constant = {
 
 /**
  * enables accessing plugin instance inside MTFController
- * @memberof org.ekstep.questionunit.mtf.mtftemplate
+ * @memberof org.ekstep.questionun  it.mtf.mtftemplate
  */
 MTFController.initTemplate = function (pluginInstance) {
   MTFController.pluginInstance = pluginInstance;
@@ -18,23 +18,24 @@ MTFController.initTemplate = function (pluginInstance) {
  */
 MTFController.getQuestionContent = function () {
   return "<header class='mtf-header'>\
+  <div class='<%= MTFController.questionTextImageWidth %>' > \
   <% if(question.data.question.image){ %> \
     <div class='question-image'>\
-      <img class='mtf-question-image' onclick='MTFController.showImageModel(event, \"<%= question.data.question.image %>\")' src='<%= question.data.question.image %>' \> \
-    </div>\
-    <%}else{ %> \
+      <img onclick='MTFController.showImageModel(event, \"<%= question.data.question.image %>\")' src='<%= question.data.question.image %>' \> \
+    </div> \
     <% } %> \
-    <% if(question.data.question.text.length<85){ %> \
-      <span class='collapse-ques-text'><%= question.data.question.text %></span> \
+    <% if(question.data.question.text.length<85){ %>\
+      <span class='question-text collapse-ques-text ><%= question.data.question.text %></span>\
     <%}else{ %> \
-      <div id='question-text-mtf' class='collapse-ques-text' onclick='MTFController.expandQuestion(event)'><%= question.data.question.text %></div> \
+      <div class='question-text collapse-ques-text <%= MTFController.questionTextWidth %>' onclick='MTFController.expandQuestion(event)'><%= question.data.question.text %></div> \
     <% } %> \
     <% if(question.data.question.audio){ %> \
+    </div> \
       <div class='mtf-question-audio'>\
-        <img class='qc-question-audio-image' src='<%=MTFController.pluginInstance.getAudioIcon('renderer/assets/audio.png') %>'  onclick=MTFController.pluginInstance.playAudio({src:'<%= question.data.question.audio %>'}) > \
+        <img  src='<%=MTFController.pluginInstance.getAudioIcon('renderer/assets/audio.png') %>'  onclick=MTFController.pluginInstance.playAudio({src:'<%= question.data.question.audio %>'}) > \
       </div>\
     <% } %> \
-  </header>";
+  </header>";``
 }
 
 /**
@@ -49,7 +50,7 @@ MTFController.getHorizontalLayout = function () {
           <div class='mtf-hori-ques-text'>\
             <div  class='mtf-hori-ques-text-inner'>\
             <p onclick='MTFController.showImageModel(event, \"<%= val.image %>\")' style=\"background-size:100% 100%; background-image:url(<%= val.image %>);\">\
-              \<%= val.text %>\
+            <span class='inner-span-lhs'><%= val.text %></span>\
               <% if(val.audio){ %> \
                 <span class='mtf-hori-opt-audio-image' >\
                   <img src='<%=MTFController.pluginInstance.getAudioIcon('renderer/assets/audio.png') %>' onclick=MTFController.pluginInstance.playAudio({src:'<%= val.audio %>'}) \>\
@@ -80,7 +81,7 @@ MTFController.getHorizontalLayout = function () {
           <div class='mtf-hori-ques-text'>\
             <div class='mtf-hori-ques-text-inner cont-dragula' id='right<%= (key+1) %>' mapIndex='<%= val.mapIndex %>'><% if(MTFController.selAns[key].selText < 1){ %>\
               <p onclick='MTFController.showImageModel(event, \"<%= val.image %>\")' style=\"background-size:100% 100%; background-image:url('<%= val.image %>');\">\
-              <%= val.text %>\
+              <span class='inner-span'><%= val.text %></span>\
               <% if(val.audio){ %> \
                 <span class='mtf-hori-opt-audio-image' >\
                   <img  src='<%=MTFController.pluginInstance.getAudioIcon('renderer/assets/audio.png') %>' onclick=MTFController.pluginInstance.playAudio({src:'<%= val.audio %>'}) \>\
@@ -108,7 +109,7 @@ MTFController.getVerticalLayout = function () {
           <div class='mtf-vert-ques-text'>\
             <div class='mtf-vert-ques-text-inner' >\
               <p onclick='MTFController.showImageModel(event, \"<%= val.image %>\")' style=\"background-size:100% 100%; background-image:url(<%= val.image %>);\">\
-                \<%= val.text %>\
+                \<span class='inner-span-lhs'><%= val.text %></span>\
                 <% if(val.audio){ %> \
                   <span class='mtf-vert-opt-audio-image' >\
                     <img src='<%=MTFController.pluginInstance.getAudioIcon('renderer/assets/audio.png') %>' onclick=MTFController.pluginInstance.playAudio({src:'<%= val.audio %>'}) \>\
@@ -144,7 +145,7 @@ MTFController.getVerticalLayout = function () {
                     <img  src='<%=MTFController.pluginInstance.getAudioIcon('renderer/assets/audio.png') %>' onclick=MTFController.pluginInstance.playAudio({src:'<%= val.audio %>'}) \>\
                   </span>\
                 <% } %>\
-                <%= val.text %>\
+                <span class='inner-span'><%= val.text %></span>\
               </p> \
               <% } %>\
             </div>\
@@ -192,11 +193,11 @@ MTFController.showImageModel = function (event, imageSrc) {
     if ($(event.target.parentElement).hasClass('collapse-ques-text')) {
       $(event.target.parentElement).removeClass("collapse-ques-text");
       $(event.target.parentElement).addClass("qc-expand-ques-text");
-      $("#mtf-header").css('height', '65vh');
+      $(".mtf-header").css('height', '65vh');
     } else {
       $(event.target.parentElement).addClass("collapse-ques-text");
       $(event.target.parentElement).removeClass("qc-expand-ques-text");
-      $("#mtf-header").css('height', '17.7vh');
+      $(".mtf-header").css('height', '17.7vh');
     }
   };
 

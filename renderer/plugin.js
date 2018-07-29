@@ -78,6 +78,16 @@ org.ekstep.questionunitmtf.RendererPlugin = org.ekstep.contentrenderer.questionU
       instance._dragulaContainers.push(lhs);
       instance._dragulaContainers.push(rhs);
     });
+
+    if(this._question.data.question.image && this._question.data.question.image) {
+      MTFController.questionTextWidth = "question-text-with-media"
+    } else if (this._question.data.question.image) {
+      MTFController.questionTextWidth = "question-text-with-image"
+    } else if (this._question.data.question.audio) {
+      MTFController.questionTextWidth = "question-text-with-audio"
+    } else {
+      MTFController.questionTextWidth = "question-text-no-media"
+    }
   },
   dragulaIsContainer: function (el) {
     return el.classList.contains('cont-dragula');
