@@ -49,7 +49,7 @@ MTFController.getHorizontalLayout = function () {
         <div class='mtf-hori-ques-option' >\
           <div class='mtf-hori-ques-text'>\
             <div  class='mtf-hori-ques-text-inner'>\
-            <p onclick='MTFController.showImageModel(event, \"<%= val.image %>\")' >\
+            <p <% if(val.image) { %>  class='v-align-bottom' <% } else { %> class='v-align-middle' <% } %>  onclick='MTFController.showImageModel(event, \"<%= val.image %>\")' >\
             <% if(val.image){ %> \
               <span class='inner-image' >\
                 <span>\
@@ -57,7 +57,7 @@ MTFController.getHorizontalLayout = function () {
                 </span>\
               </span> \
               <% } %> \
-              <span class='inner-span-lhs'><%= val.text %></span>\
+              <span <% if(val.image) { %>  class='text-highlight-lhs-rhs' <% } %> ><%= val.text %></span>\
               <% if(val.audio){ %> \
                 <span class='mtf-hori-opt-audio-image' >\
                   <img src='<%=MTFController.pluginInstance.getAudioIcon('renderer/assets/audio.png') %>' onclick=MTFController.pluginInstance.playAudio({src:'<%= val.audio %>'}) \>\
@@ -87,7 +87,7 @@ MTFController.getHorizontalLayout = function () {
         <div class='mtf-hori-ques-option'>\
           <div class='mtf-hori-ques-text'>\
             <div class='mtf-hori-ques-text-inner cont-dragula' id='right<%= (key+1) %>' mapIndex='<%= val.mapIndex %>'><% if(MTFController.selAns[key].selText < 1){ %>\
-              <p onclick='MTFController.showImageModel(event, \"<%= val.image %>\")' >\
+              <p <% if(val.image) { %>  class='v-align-bottom' <% } else { %> class='v-align-middle' <% } %> onclick='MTFController.showImageModel(event, \"<%= val.image %>\")' >\
               <% if(val.image){ %> \
                 <span class='inner-image' >\
                   <span>\
@@ -95,7 +95,7 @@ MTFController.getHorizontalLayout = function () {
                   </span>\
                 </span> \
                 <% } %> \
-              <span class='inner-span'><%= val.text %></span>\
+              <span <% if(val.image) { %>  class='text-highlight-lhs-rhs' <% } %> ><%= val.text %></span>\
               <% if(val.audio){ %> \
                 <span class='mtf-hori-opt-audio-image' >\
                   <img  src='<%=MTFController.pluginInstance.getAudioIcon('renderer/assets/audio.png') %>' onclick=MTFController.pluginInstance.playAudio({src:'<%= val.audio %>'}) \>\
@@ -122,7 +122,7 @@ MTFController.getVerticalLayout = function () {
         <div class='mtf-vert-ques-option'>\
           <div class='mtf-vert-ques-text'>\
             <div class='mtf-vert-ques-text-inner' >\
-              <p onclick='MTFController.showImageModel(event, \"<%= val.image %>\")' >\
+              <p <% if(val.image) { %>  class='v-align-bottom' <% } else { %> class='v-align-middle' <% } %> onclick='MTFController.showImageModel(event, \"<%= val.image %>\")' >\
               <% if(val.image){ %> \
                 <span class='inner-image' >\
                   <span>\
@@ -130,7 +130,7 @@ MTFController.getVerticalLayout = function () {
                   </span>\
                 </span> \
                 <% } %> \
-                <span class='inner-span-lhs'><%= val.text %></span>\
+                <span <% if(val.image) { %>  class='text-highlight-lhs-rhs' <% } %>><%= val.text %></span>\
                 <% if(val.audio){ %> \
                   <span class='mtf-vert-opt-audio-image' >\
                     <img src='<%=MTFController.pluginInstance.getAudioIcon('renderer/assets/audio.png') %>' onclick=MTFController.pluginInstance.playAudio({src:'<%= val.audio %>'}) \>\
@@ -160,7 +160,7 @@ MTFController.getVerticalLayout = function () {
         <div class='mtf-vert-ques-option'>\
           <div class='mtf-vert-ques-text'>\
             <div class='mtf-vert-ques-text-inner cont-dragula' id='right<%= (key+1) %>' mapIndex='<%= val.mapIndex %>'><% if(MTFController.selAns[key].selText < 1){ %>\
-              <p onclick='MTFController.showImageModel(event, \"<%= val.image %>\")' >\
+              <p <% if(val.image) { %>  class='v-align-bottom' <% } else { %> class='v-align-middle' <% } %> onclick='MTFController.showImageModel(event, \"<%= val.image %>\")' >\
               <% if(val.image){ %> \
                 <span class='inner-image' >\
                   <span>\
@@ -173,7 +173,7 @@ MTFController.getVerticalLayout = function () {
                     <img  src='<%=MTFController.pluginInstance.getAudioIcon('renderer/assets/audio.png') %>' onclick=MTFController.pluginInstance.playAudio({src:'<%= val.audio %>'}) \>\
                   </span>\
                 <% } %>\
-                <span class='inner-span'><%= val.text %></span>\
+                <span <% if(val.image) { %>  class='text-highlight-lhs-rhs' <% } %> ><%= val.text %></span>\
               </p> \
               <% } %>\
             </div>\

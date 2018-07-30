@@ -33,7 +33,7 @@ header.mtf-header {
     width: 100%;
     display: block;
     margin-top: 2%;
-    height: 18vh;
+    height: 23vh;
 }
 
 .mtf-hori-option {
@@ -87,7 +87,6 @@ header.mtf-header {
 
 .mtf-hori-ques-text-inner p {
     display:table-cell;
-    vertical-align: middle;
     position: relative;
     text-align: center;
     width:100%;
@@ -113,7 +112,7 @@ header.mtf-header {
 .mtf-hori-ques-text-inner p .inner-image span img{
     display:table-cell;
     height:auto;
-    max-height:18vh;
+    max-height:23vh;
     max-width:100%;
     margin:auto;
 }
@@ -156,7 +155,7 @@ header.mtf-header {
 }
 
 .height4option {
-    height: 28%;
+    height: 32%;
 }
 
 .height5option {
@@ -336,6 +335,7 @@ header.mtf-header {
 }
 
 .mtf-vert-ques-text-inner {
+    overflow:hidden;
     position: relative;
     display: table;
     width:100%;
@@ -345,9 +345,8 @@ header.mtf-header {
 }
 
 .mtf-vert-ques-text-inner p {
-    position: relative;
+    position: absolute;
     display:table-cell;
-    vertical-align: middle;
     text-align: center;
     height: 100%;
     width: 100%;
@@ -357,10 +356,9 @@ header.mtf-header {
     position: absolute;
     top:0;
     left:0;
-    position: absolute;
     margin:auto;
     width:100%;
-    height:18vh;
+    height:100%;
 }
 
 .mtf-vert-ques-text-inner p .inner-image span{
@@ -382,28 +380,11 @@ header.mtf-header {
 }
 
 .height4option .mtf-vert-ques-text-inner p .inner-image span img{
-    height:13vh;
+    height:14.8vh;
 }
 
 .height5option .mtf-vert-ques-text-inner p .inner-image span img{
     height:10vh;
-}
-
-.inner-span-lhs{ 
-    padding:2px;
-    border-radius:4px;
-    border:1px solid grey;
-    background:grey;
-    opacity:0.9;
-    color:white;
-}
-
-.inner-span{ 
-    padding:2px;
-    border-radius:4px;
-    border:1px solid white;
-    background:white;
-    opacity:0.9;
 }
 
 .mtf-vert-ques-image {
@@ -472,4 +453,21 @@ header.mtf-header {
     top: -20px;
     color: white;
     font-size: 20px;
+}
+
+.v-align-bottom {
+    vertical-align: bottom;
+}
+
+.v-align-middle {
+    vertical-align: middle;
+}
+
+.text-highlight-lhs-rhs {
+    color:black;
+    background:white;
+    padding:2px;
+    border:1px solid white;
+    border-radius:4px;
+    opacity:0.9
 }
