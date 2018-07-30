@@ -12,6 +12,27 @@ MTFController.initTemplate = function (pluginInstance) {
   MTFController.pluginInstance = pluginInstance;
 };
 
+MTFController.getQuestionTemplate = function () {
+  return "<div class='mtf-layout' id='mtf-container'>" + 
+  MTFController.getQuestionStemTemplate() + "</div>"
+    ;
+};
+
+MTFController.getQuestionStemTemplate = function(){
+  return 
+  "\
+  <div class='mtf-question-stem-container'>\
+    <div class='mtf-question-stem-content'>\
+      <% if(question.data.question.image){ %> \
+      <div class='question-image'>\
+        <img class='mtf-question-image' onclick='MTFController.showImageModel(event, \"<%= question.data.question.image %>\")' src='<%= question.data.question.image %>' \> \
+      </div>\
+      <%}else{ %> \
+      <% } %> \
+    </div>\
+  </div>\
+  "
+};
 /**
  * returns question layout for mtf
  * @memberof org.ekstep.questionunit.mtf.mtftemplate
