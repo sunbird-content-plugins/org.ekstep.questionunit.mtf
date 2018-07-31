@@ -19,7 +19,12 @@ org.ekstep.questionunitmtf.RendererPlugin = org.ekstep.contentrenderer.questionU
   setQuestionTemplate: function () {
     MTFController.initTemplate(this);// eslint-disable-line no-undef
   },
+
   preQuestionShow: function (event) {
+    this._super(event);
+  },
+
+  preQuestionShow_old: function (event) {
     this._super(event);
     var templateTypeContent;
     if (this._question.config.layout == this._constant.vertial) { // eslint-disable-line no-undef
