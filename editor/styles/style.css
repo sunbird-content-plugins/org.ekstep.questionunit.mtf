@@ -205,3 +205,45 @@ td.mtf-pair-destractor-td{
 .ck-error{
   border: 1px solid red;
 }
+/* options */
+
+.mtf-options .question-selected-media-container {
+  height:60px;
+}
+
+.mtf-options .selected-media-container {
+ margin-left:2%;
+}
+
+.mtf-options .selected-image-container {
+ float: left;
+ margin-right: 2%;
+ width: 46%;
+}
+
+.mtf-options .selected-audio-container {
+ float: left;
+ margin-right: 2%;
+ width: 46%;
+}
+
+.mtf-options .imgWidth{
+ width:100%;
+}
+
+.mtf-options .auto-play-container {
+ text-align: right;
+}
+
+.mtf-options .audio-container {
+ width: 80%;
+}
+
+.mtf-options .selected-audio {
+ max-width: 100%;
+ display:none;
+}
+
+.mtf-options .delete-media-container {
+ width: 20%;
+}
