@@ -22,6 +22,7 @@ org.ekstep.questionunitmtf.RendererPlugin = org.ekstep.contentrenderer.questionU
 
   preQuestionShow: function (event) {
     this._super(event);
+    this._question.template = MTFController.getQuestionTemplate(this._question.config.layout, this._constant);
   },
 
   preQuestionShow_old: function (event) {
@@ -99,20 +100,7 @@ org.ekstep.questionunitmtf.RendererPlugin = org.ekstep.contentrenderer.questionU
   },
   postQuestionShow: function (event) {
     var instance = this;
-    var drake = dragula({
-      isContainer: function (elem) {
-        return instance.dragulaIsContainer(elem);
-      },
-      accepts: function (elem, target, source, sibling) {
-        if ($(target).children().length > 0) {
-          return false;
-        }
-        return true;
-      }
-    });
-    drake.on('drop', function (elem, target, source, sibling) {
-      instance.onDropElement(elem, target, source, sibling, instance._question);
-    });
+    
   },
   evaluateQuestion: function (event) {
     var instance = this;
