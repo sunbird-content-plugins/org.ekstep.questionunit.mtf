@@ -8,9 +8,17 @@
     width:100%;
     height:100%;
     position: relative;
-    background:#48DCB6;
+    
     background-size: 100% 100%;
 }
+
+.mtf-container .mtf-content-container.Horizontal{
+    background:#48DCB6;
+}
+.mtf-container .mtf-content-container.Vertical{
+    background:#F9A817;
+}
+
 .mtf-container .mtf-content-container .mtf-header{
     width:100%;
     height:24%;

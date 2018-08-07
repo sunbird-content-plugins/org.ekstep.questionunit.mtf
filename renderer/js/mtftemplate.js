@@ -15,8 +15,9 @@ MTFController.initTemplate = function (pluginInstance) {
 
 MTFController.getQuestionTemplate = function(selectedLayout, availableLayout){
 
+  MTFController.selectedLayout = selectedLayout;
   var wrapperStart = '<div onload="MTFController.onDomReady()" class="mtf-container">\
-                        <div class="mtf-content-container">';
+                        <div class="mtf-content-container <%= MTFController.selectedLayout %>">';
   var wrapperEnd =        '</div>\
                         </div>\
                       </div><script>MTFController.onDomReady()</script>';
@@ -62,7 +63,7 @@ MTFController.getHorizontalLayout = function(){
     </div>\
     <div class="lhs-rhs-container rhs-container">\
         <% _.each(question.data.option.optionsRHS,function(val,key){ %>\
-            <div class="rhs-block lhs-rhs-block">\
+            <div data-mapindex=<%= val.mapIndex %> class="rhs-block lhs-rhs-block">\
                 <img class="background-image" src="<%= MTFController.pluginInstance.getAudioIcon("renderer/assets/shape4.png") %>" />\
                 <% if(val.audio){ %> \
                   <img onclick=MTFController.pluginInstance.playAudio({src:"<%= val.audio %>"}) class="audio-image" src="<%= MTFController.pluginInstance.getAudioIcon("renderer/assets/audio2.png") %>" />\
@@ -92,7 +93,7 @@ MTFController.getVerticalLayout = function(){
     </div>\
     <div class="lhs-rhs-container rhs-container">\
       <% _.each(question.data.option.optionsRHS,function(val,key){ %>\
-        <div class="lhs-rhs-block rhs-block">\
+        <div data-mapindex=<%= val.mapIndex %> class="lhs-rhs-block rhs-block">\
         <img class="background-image" src="<%= MTFController.pluginInstance.getAudioIcon("renderer/assets/shape2.png") %>" />\
         <span><%= val.text %></span>\
         <img onclick="MTFController.showImageModel(event, \'<%= val.image %>\')" class="option-image" src="<%= val.image %>" />\
@@ -107,6 +108,7 @@ MTFController.getVerticalLayout = function(){
             
 
 MTFController.isQuestionTextOverflow = function() {
+  setTimeout(function(){
     $('.mtf-question-text').css('display', 'block');
     if($('.mtf-header').height() < $('.mtf-question-container').height()){
         $('.expand-button').css('display','block');
@@ -114,6 +116,7 @@ MTFController.isQuestionTextOverflow = function() {
       $('.expand-button').css('display','none');
     }
     $('.mtf-question-text').css('display', '-webkit-box');
+  }, 1000)
 }
 
 MTFController.toggleQuestionText = function(){
