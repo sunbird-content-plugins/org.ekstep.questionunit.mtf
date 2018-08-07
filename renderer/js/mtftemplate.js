@@ -22,7 +22,7 @@ MTFController.getQuestionTemplate = function(selectedLayout, availableLayout){
                       </div><script>MTFController.onDomReady()</script>';
   var getLayout;
   if(availableLayout.horizontal == selectedLayout) {
-    getLayout = MTFController.getHorizontalLayout;
+    getLayout = MTFController.getVerticalLayout;
   } else {
     getLayout = MTFController.getVerticalLayout;
   }
@@ -77,12 +77,13 @@ MTFController.getHorizontalLayout = function(){
 
 MTFController.getVerticalLayout = function(){
   return '\
-  <div class="mtf-options-vertical-container">\
+  <div class="mtf-options-vertical-container options-<%= question.data.option.optionsLHS.length %>">\
     <div class="lhs-rhs-container lhs-container">\
       <% _.each(question.data.option.optionsLHS,function(val,key){ %>\
         <div class="lhs-rhs-block lhs-block">\
             <img class="background-image" src="<%= MTFController.pluginInstance.getAudioIcon("renderer/assets/shape1.png") %>" />\
-            <img class="option-image" src="<%= MTFController.pluginInstance.getAudioIcon("<%= val.image %>") %>" />\
+            <span><%= val.text %></span>\
+            <img class="option-image" src="<%= val.image %>" />\
             <% if(val.audio){ %> \
               <img onclick=MTFController.pluginInstance.playAudio({src:"<%= val.audio %>"}) class="audio-image" src="<%= MTFController.pluginInstance.getAudioIcon("renderer/assets/audio3.png") %>" />\
             <% } %>\
@@ -93,7 +94,8 @@ MTFController.getVerticalLayout = function(){
       <% _.each(question.data.option.optionsRHS,function(val,key){ %>\
         <div class="lhs-rhs-block rhs-block">\
         <img class="background-image" src="<%= MTFController.pluginInstance.getAudioIcon("renderer/assets/shape2.png") %>" />\
-        <img class="option-image" src="<%= MTFController.pluginInstance.getAudioIcon("<%= val.image %>") %>" />\
+        <span><%= val.text %></span>\
+        <img class="option-image" src="<%= val.image %>" />\
         <% if(val.audio){ %> \
           <img onclick=MTFController.pluginInstance.playAudio({src:"<%= val.audio %>"}) class="audio-image" src="<%= MTFController.pluginInstance.getAudioIcon("renderer/assets/audio3.png") %>" />\
         <% } %>\

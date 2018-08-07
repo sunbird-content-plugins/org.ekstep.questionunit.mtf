@@ -14,7 +14,6 @@
 .mtf-container .mtf-content-container .mtf-header{
     width:100%;
     height:24%;
-    background:yellow;
     overflow:hidden;
     max-height:80%;
     top:0;
@@ -62,7 +61,7 @@
   position: sticky;
   margin-left:100%; 
   cursor:pointer;
-  background:skyblue;
+  background:#e3e3e3;
   border-radius: 9px;
   width:8.89%;
   height: 4.94%;
@@ -93,7 +92,16 @@
     width:100%;
     padding:2.7% 0%;
     font-size:14px;
+    display:table;
 }
+
+.mtf-container .mtf-content-container .mtf-options-container .mtf-options-horizontal-container{
+    vertical-align: middle;
+    display: table-cell;
+    width:100%;
+    height:100%;
+}
+
 .mtf-container .mtf-content-container .mtf-options-container .mtf-options-horizontal-container .lhs-rhs-container{
     width:50%;
     float:left;
@@ -118,19 +126,19 @@
     width:100%;
 }
 .mtf-container .mtf-content-container .mtf-options-container .mtf-options-horizontal-container .lhs-rhs-container .lhs-rhs-block img.audio-image{
-    top:30%;
+    top:35%;
     z-index: 0;
     cursor: pointer;
     position: absolute;
-    height: 30%;
+    height: 25%;
 }
 
 .mtf-container .mtf-content-container .mtf-options-container .mtf-options-horizontal-container .lhs-rhs-container .lhs-block img.audio-image{
-    left:3.5%;
+    left:2.5%;
 }
 
 .mtf-container .mtf-content-container .mtf-options-container .mtf-options-horizontal-container .lhs-rhs-container .rhs-block img.audio-image{
-    right:3.5%;
+    right:2.5%;
 }
 
 .mtf-container .mtf-content-container .mtf-options-container .mtf-options-horizontal-container .lhs-rhs-container .lhs-rhs-block span.option-text{
@@ -156,6 +164,10 @@
     width:84.5%;
     margin:auto;
     height:100%;
+}
+
+.mtf-container .mtf-content-container .mtf-options-container .mtf-options-vertical-container.options-3{
+    margin:0% 20%;
 }
 
 .mtf-container .mtf-content-container .mtf-options-container .mtf-options-vertical-container .lhs-rhs-container{
@@ -189,6 +201,19 @@
     margin:auto;
     position: absolute;
 }
+
+.mtf-container .mtf-content-container .mtf-options-container .mtf-options-vertical-container .lhs-rhs-container .lhs-rhs-block span{
+    position: absolute;
+    top:0;
+    bottom: 0;
+    right:0;
+    left:0;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    font-size: 8.64vh;
+    font-weight: bold;
+  }
 
 .mtf-container .mtf-content-container .mtf-options-container .mtf-options-vertical-container .lhs-rhs-container .lhs-rhs-block img.audio-image{
     width:22%;
