@@ -1,7 +1,7 @@
 var MTFController = MTFController || {};
 
 MTFController.constant = {
-  
+  qsMTFElement: ".mtf-container"
 };
 
 /**
@@ -83,7 +83,7 @@ MTFController.getVerticalLayout = function(){
         <div class="lhs-rhs-block lhs-block">\
             <img class="background-image" src="<%= MTFController.pluginInstance.getAudioIcon("renderer/assets/shape1.png") %>" />\
             <span><%= val.text %></span>\
-            <img class="option-image" src="<%= val.image %>" />\
+            <img onclick="MTFController.showImageModel(event, \'<%= val.image %>\')" class="option-image" src="<%= val.image %>" />\
             <% if(val.audio){ %> \
               <img onclick=MTFController.pluginInstance.playAudio({src:"<%= val.audio %>"}) class="audio-image" src="<%= MTFController.pluginInstance.getAudioIcon("renderer/assets/audio3.png") %>" />\
             <% } %>\
@@ -95,7 +95,7 @@ MTFController.getVerticalLayout = function(){
         <div class="lhs-rhs-block rhs-block">\
         <img class="background-image" src="<%= MTFController.pluginInstance.getAudioIcon("renderer/assets/shape2.png") %>" />\
         <span><%= val.text %></span>\
-        <img class="option-image" src="<%= val.image %>" />\
+        <img onclick="MTFController.showImageModel(event, \'<%= val.image %>\')" class="option-image" src="<%= val.image %>" />\
         <% if(val.audio){ %> \
           <img onclick=MTFController.pluginInstance.playAudio({src:"<%= val.audio %>"}) class="audio-image" src="<%= MTFController.pluginInstance.getAudioIcon("renderer/assets/audio3.png") %>" />\
         <% } %>\
@@ -142,6 +142,30 @@ MTFController.onDomReady = function(){
         $(".rhs-container").sortable();
         $(".rhs-container").disableSelection();
     }) 
+}
+
+/**
+ * image will be shown in popup
+ * @memberof org.ekstep.questionunit.mtf.mtftemplate
+ */
+MTFController.showImageModel = function (event, imageSrc) {
+  if (imageSrc) {
+    var modelTemplate = "<div class='popup' id='image-model-popup' onclick='MTFController.hideImageModel()'><div class='popup-overlay' onclick='MTFController.hideImageModel()'></div> \
+  <div class='popup-full-body'> \
+  <div class='font-lato assess-popup assess-goodjob-popup'> \
+    <img class='qc-question-fullimage' src=<%= src %> /> \
+    <div onclick='MTFController.hideImageModel()' class='qc-popup-close-button'>&times;</div> \
+  </div></div>";
+    var template = _.template(modelTemplate);
+    var templateData = template({
+      src: imageSrc
+    })
+    $(MTFController.constant.qsMTFElement).append(templateData);
+  }
+}
+
+MTFController.hideImageModel = function () {
+  $("#image-model-popup").remove();
 }
 
 //# sourceURL=MTFController.js
