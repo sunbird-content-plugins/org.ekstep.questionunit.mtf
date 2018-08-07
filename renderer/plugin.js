@@ -22,6 +22,18 @@ org.ekstep.questionunitmtf.RendererPlugin = org.ekstep.contentrenderer.questionU
 
   preQuestionShow: function (event) {
     this._super(event);
+    var inst = this;
+    _.each(this._question.data.option.optionsLHS, function(lhs){
+      if(lhs.image) {
+        inst._question.config.layout = "Vertical";
+      }
+    })
+    _.each(this._question.data.option.optionsRHS, function(rhs){
+      if(rhs.image) {
+        inst._question.config.layout = "Vertical";
+      }
+    })
+    this._question.template = MTFController.getQuestionTemplate(this._question.config.layout, this._constant);
   },
 
   preQuestionShow_old: function (event) {
@@ -83,26 +95,23 @@ org.ekstep.questionunitmtf.RendererPlugin = org.ekstep.contentrenderer.questionU
       instance._dragulaContainers.push(lhs);
       instance._dragulaContainers.push(rhs);
     });
+
+    if(this._question.data.question.image && this._question.data.question.image) {
+      MTFController.questionTextWidth = "question-text-with-media"
+    } else if (this._question.data.question.image) {
+      MTFController.questionTextWidth = "question-text-with-image"
+    } else if (this._question.data.question.audio) {
+      MTFController.questionTextWidth = "question-text-with-audio"
+    } else {
+      MTFController.questionTextWidth = "question-text-no-media"
+    }
   },
   dragulaIsContainer: function (el) {
     return el.classList.contains('cont-dragula');
   },
   postQuestionShow: function (event) {
     var instance = this;
-    var drake = dragula({
-      isContainer: function (elem) {
-        return instance.dragulaIsContainer(elem);
-      },
-      accepts: function (elem, target, source, sibling) {
-        if ($(target).children().length > 0) {
-          return false;
-        }
-        return true;
-      }
-    });
-    drake.on('drop', function (elem, target, source, sibling) {
-      instance.onDropElement(elem, target, source, sibling, instance._question);
-    });
+    
   },
   evaluateQuestion: function (event) {
     var instance = this;

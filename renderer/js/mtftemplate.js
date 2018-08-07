@@ -1,224 +1,147 @@
 var MTFController = MTFController || {};
 
 MTFController.constant = {
-  qsMTFElement: "#mtf-container",
+  
 };
 
 /**
  * enables accessing plugin instance inside MTFController
- * @memberof org.ekstep.questionunit.mtf.mtftemplate
+ * @memberof org.ekstep.questionun  it.mtf.mtftemplate
  */
 MTFController.initTemplate = function (pluginInstance) {
   MTFController.pluginInstance = pluginInstance;
 };
 
-MTFController.getQuestionTemplate = function () {
-  return "<div class='mtf-layout' id='mtf-container'>" + 
-  MTFController.getQuestionStemTemplate() + "</div>"
-    ;
-};
 
-MTFController.getQuestionStemTemplate = function(){
-  return 
-  "\
-  <div class='mtf-question-stem-container'>\
-    <div class='mtf-question-stem-content'>\
-      <% if(question.data.question.image){ %> \
-      <div class='question-image'>\
-        <img class='mtf-question-image' onclick='MTFController.showImageModel(event, \"<%= question.data.question.image %>\")' src='<%= question.data.question.image %>' \> \
-      </div>\
-      <%}else{ %> \
-      <% } %> \
-    </div>\
-  </div>\
-  "
-};
-/**
- * returns question layout for mtf
- * @memberof org.ekstep.questionunit.mtf.mtftemplate
- */
-MTFController.getQuestionContent = function () {
-  return "<header class='mtf-header'>\
-  <% if(question.data.question.image){ %> \
-    <div class='question-image'>\
-      <img class='mtf-question-image' onclick='MTFController.showImageModel(event, \"<%= question.data.question.image %>\")' src='<%= question.data.question.image %>' \> \
-    </div>\
-    <%}else{ %> \
-    <% } %> \
-    <% if(question.data.question.text.length<85){ %> \
-      <span class='collapse-ques-text'><%= question.data.question.text %></span> \
-    <%}else{ %> \
-      <div id='question-text-mtf' class='collapse-ques-text' onclick='MTFController.expandQuestion(event)'><%= question.data.question.text %></div> \
-    <% } %> \
-    <% if(question.data.question.audio){ %> \
-      <div class='mtf-question-audio'>\
-        <img class='qc-question-audio-image' src='<%=MTFController.pluginInstance.getAudioIcon('renderer/assets/audio.png') %>'  onclick=MTFController.pluginInstance.playAudio({src:'<%= question.data.question.audio %>'}) > \
-      </div>\
-    <% } %> \
-  </header>";
-}
+MTFController.getQuestionTemplate = function(selectedLayout, availableLayout){
 
-/**
- * returns horizontal LHS RHS layout for mtf
- * @memberof org.ekstep.questionunit.mtf.mtftemplate
- */
-MTFController.getHorizontalLayout = function () {
-  return "<div class='mtf-hori-container'>\
-    <% _.each(question.data.option.optionsLHS,function(val,key){ %>\
-      <div class='mtf-hori-option <%= MTFController.optionsWidth %>'>\
-        <div class='mtf-hori-ques-option' >\
-          <div class='mtf-hori-ques-text'>\
-            <div  class='mtf-hori-ques-text-inner'>\
-            <p onclick='MTFController.showImageModel(event, \"<%= val.image %>\")' style=\"background-size:100% 100%; background-image:url(<%= val.image %>);\">\
-              \<%= val.text %>\
-              <% if(val.audio){ %> \
-                <span class='mtf-hori-opt-audio-image' >\
-                  <img src='<%=MTFController.pluginInstance.getAudioIcon('renderer/assets/audio.png') %>' onclick=MTFController.pluginInstance.playAudio({src:'<%= val.audio %>'}) \>\
-                </span>\
-                <% } %>\
-            </p>\
-            </div>\
-          </div>\
-        </div>\
-      </div>\
-    <% });%>\
-  </div>\
-  <div class='mtf-hori-container panel panel-body' id='left'>\
-    <% _.each(MTFController.selAns,function(val,key){ %>\
-      <div class='mtf-hori-option <%= MTFController.optionsWidth %>'>\
-        <div class='mtf-hori-ques-option'>\
-          <div class='mtf-hori-ques-text'>\
-            <div class='mtf-hori-ques-text-inner cont-dragula' id='left<%= (key+1) %>' leftindex='<%= val.index %>'><% if(val.selText.length > 0){ %> <p><%= val.selText  %> </p> <% }else{ %><%= val.selText %><% } %></div>\
-          </div>\
-        </div>\
-      </div>\
-    <% });%>\
-  </div>\
-  <div class='mtf-hori-container panel panel-body'>\
-    <% _.each(question.data.option.optionsRHS,function(val,key){ %>\
-      <div class='mtf-hori-option <%= MTFController.optionsWidth %>'>\
-        <div class='mtf-hori-ques-option'>\
-          <div class='mtf-hori-ques-text'>\
-            <div class='mtf-hori-ques-text-inner cont-dragula' id='right<%= (key+1) %>' mapIndex='<%= val.mapIndex %>'><% if(MTFController.selAns[key].selText < 1){ %>\
-              <p onclick='MTFController.showImageModel(event, \"<%= val.image %>\")' style=\"background-size:100% 100%; background-image:url('<%= val.image %>');\">\
-              <%= val.text %>\
-              <% if(val.audio){ %> \
-                <span class='mtf-hori-opt-audio-image' >\
-                  <img  src='<%=MTFController.pluginInstance.getAudioIcon('renderer/assets/audio.png') %>' onclick=MTFController.pluginInstance.playAudio({src:'<%= val.audio %>'}) \>\
-                </span>\
-                <% } %>\
-              </p> \
-              <% } %>\
-            </div>\
-          </div>\
-        </div>\
-      </div>\
-    <% });%>\
-  </div>";
-}
-
-/**
- * returns vertical LHS RHS layout for mtf
- * @memberof org.ekstep.questionunit.mtf.mtftemplate
- */
-MTFController.getVerticalLayout = function () {
-  return "<div class='mtf-vert-container' >\
-    <% _.each(question.data.option.optionsLHS,function(val,key){ %>\
-      <div class='mtf-vert-option <%= MTFController.optionsHeight %>'>\
-        <div class='mtf-vert-ques-option'>\
-          <div class='mtf-vert-ques-text'>\
-            <div class='mtf-vert-ques-text-inner' >\
-              <p onclick='MTFController.showImageModel(event, \"<%= val.image %>\")' style=\"background-size:100% 100%; background-image:url(<%= val.image %>);\">\
-                \<%= val.text %>\
-                <% if(val.audio){ %> \
-                  <span class='mtf-vert-opt-audio-image' >\
-                    <img src='<%=MTFController.pluginInstance.getAudioIcon('renderer/assets/audio.png') %>' onclick=MTFController.pluginInstance.playAudio({src:'<%= val.audio %>'}) \>\
-                  </span>\
-                <% } %>\
-              </p>\
-            </div>\
-          </div>\
-        </div>\
-      </div>\
-    <% });%>\
-  </div>\
-  <div class='mtf-vert-container panel panel-body' id='left'>\
-    <% _.each(MTFController.selAns,function(val,key){ %>\
-      <div class='mtf-vert-option <%= MTFController.optionsHeight %>'>\
-        <div class='mtf-vert-ques-option'>\
-          <div class='mtf-vert-ques-text'>\
-            <div class='mtf-vert-ques-text-inner cont-dragula' id='left<%= (key+1) %>' leftindex='<%= val.index %>'><% if(val.selText.length > 0){ %> <p><%= val.selText  %> </p> <% }else{ %><%= val.selText %><% } %></div>\
-          </div>\
-        </div>\
-      </div>\
-    <% });%>\
-  </div>\
-  <div class='mtf-vert-container panel panel-body'>\
-    <% _.each(question.data.option.optionsRHS,function(val,key){ %>\
-      <div class='mtf-vert-option <%= MTFController.optionsHeight %>'>\
-        <div class='mtf-vert-ques-option'>\
-          <div class='mtf-vert-ques-text'>\
-            <div class='mtf-vert-ques-text-inner cont-dragula' id='right<%= (key+1) %>' mapIndex='<%= val.mapIndex %>'><% if(MTFController.selAns[key].selText < 1){ %>\
-              <p onclick='MTFController.showImageModel(event, \"<%= val.image %>\")' style=\"background-size:100% 100%; background-image:url('<%= val.image %>');\">\
-                <% if(val.audio){ %> \
-                  <span class='mtf-vert-opt-audio-image' >\
-                    <img  src='<%=MTFController.pluginInstance.getAudioIcon('renderer/assets/audio.png') %>' onclick=MTFController.pluginInstance.playAudio({src:'<%= val.audio %>'}) \>\
-                  </span>\
-                <% } %>\
-                <%= val.text %>\
-              </p> \
-              <% } %>\
-            </div>\
-          </div>\
-        </div>\
-      </div>\
-    <% });%>\
-  </div>";
-}
-
-/**
- * image will be shown in popup
- * @memberof org.ekstep.questionunit.mtf.mtftemplate
- */
-MTFController.showImageModel = function (event, imageSrc) {
-  if (imageSrc) {
-    var modelTemplate = "<div class='popup' id='image-model-popup' onclick='MTFController.hideImageModel()'><div class='popup-overlay' onclick='MTFController.hideImageModel()'></div> \
-  <div class='popup-full-body'> \
-  <div class='font-lato assess-popup assess-goodjob-popup'> \
-    <img class='qc-question-fullimage' src=<%= src %> /> \
-    <div onclick='MTFController.hideImageModel()' class='qc-popup-close-button'>&times;</div> \
-  </div></div>";
-    var template = _.template(modelTemplate);
-    var templateData = template({
-      src: imageSrc
-    })
-    $(MTFController.constant.qsMTFElement).append(templateData);
+  var wrapperStart = '<div onload="MTFController.onDomReady()" class="mtf-container">\
+                        <div class="mtf-content-container">';
+  var wrapperEnd =        '</div>\
+                        </div>\
+                      </div><script>MTFController.onDomReady()</script>';
+  var getLayout;
+  if(availableLayout.horizontal == selectedLayout) {
+    getLayout = MTFController.getHorizontalLayout;
+  } else {
+    getLayout = MTFController.getVerticalLayout;
   }
-},
 
-  /**
-   * onclick overlay or X button the popup will be hide
-   * @memberof org.ekstep.questionunit.mtf.mtftemplate
-   */
-  MTFController.hideImageModel = function () {
-    $("#image-model-popup").remove();
-  },
+  return wrapperStart + MTFController.getQuestionStemTemplate() + getLayout() + wrapperEnd;
+}
 
-  /**
-   * question text if long then handle using ellipse
-   * @memberof org.ekstep.questionunit.mtf.mtftemplate
-   * @param {Object} event from question set.
-   */
-  MTFController.expandQuestion = function (event) {
-    if ($(event.target.parentElement).hasClass('collapse-ques-text')) {
-      $(event.target.parentElement).removeClass("collapse-ques-text");
-      $(event.target.parentElement).addClass("qc-expand-ques-text");
-      $("#mtf-header").css('height', '65vh');
+MTFController.getQuestionStemTemplate = function(){ 
+  return '\
+  <div class="mtf-header" >\
+      <div class="mtf-question-container">\
+          <div class="mtf-question-text">\
+          <%= question.data.question.text %>\
+          </div>\
+          <div class="expand-button" onclick="MTFController.toggleQuestionText()">\
+              <img src="<%= MTFController.pluginInstance.getAudioIcon("renderer/assets/down_arrow.png") %>" />\
+          </div>\
+      </div>\
+  </div>\
+  <div class="mtf-options-container-margin" ></div>\
+  <div class="mtf-options-container">\
+  ';
+}
+MTFController.getHorizontalLayout = function(){
+  return '\
+  <div class="mtf-options-horizontal-container">\
+    <div class="lhs-rhs-container lhs-container">\
+        <% _.each(question.data.option.optionsLHS,function(val,key){ %>\
+            <div class="lhs-block lhs-rhs-block">\
+              <img class="background-image" src="<%= MTFController.pluginInstance.getAudioIcon("renderer/assets/shape3.png") %>" />\
+              <% if(val.audio){ %> \
+                <img onclick=MTFController.pluginInstance.playAudio({src:"<%= val.audio %>"}) class="audio-image" src="<%= MTFController.pluginInstance.getAudioIcon("renderer/assets/audio2.png") %>" />\
+              <% } %>\
+              <span class="option-text"><%= val.text %></span>\
+            </div>\
+        <% });%>\
+    </div>\
+    <div class="lhs-rhs-container rhs-container">\
+        <% _.each(question.data.option.optionsRHS,function(val,key){ %>\
+            <div class="rhs-block lhs-rhs-block">\
+                <img class="background-image" src="<%= MTFController.pluginInstance.getAudioIcon("renderer/assets/shape4.png") %>" />\
+                <% if(val.audio){ %> \
+                  <img onclick=MTFController.pluginInstance.playAudio({src:"<%= val.audio %>"}) class="audio-image" src="<%= MTFController.pluginInstance.getAudioIcon("renderer/assets/audio2.png") %>" />\
+                <% } %>\
+                <span class="option-text"><%= val.text %></span>\
+            </div>\
+        <% });%>\
+    </div>\
+</div>';
+}
+
+
+MTFController.getVerticalLayout = function(){
+  return '\
+  <div class="mtf-options-vertical-container options-<%= question.data.option.optionsLHS.length %>">\
+    <div class="lhs-rhs-container lhs-container">\
+      <% _.each(question.data.option.optionsLHS,function(val,key){ %>\
+        <div class="lhs-rhs-block lhs-block">\
+            <img class="background-image" src="<%= MTFController.pluginInstance.getAudioIcon("renderer/assets/shape1.png") %>" />\
+            <span><%= val.text %></span>\
+            <img class="option-image" src="<%= val.image %>" />\
+            <% if(val.audio){ %> \
+              <img onclick=MTFController.pluginInstance.playAudio({src:"<%= val.audio %>"}) class="audio-image" src="<%= MTFController.pluginInstance.getAudioIcon("renderer/assets/audio3.png") %>" />\
+            <% } %>\
+        </div>\
+      <% }); %>\
+    </div>\
+    <div class="lhs-rhs-container rhs-container">\
+      <% _.each(question.data.option.optionsRHS,function(val,key){ %>\
+        <div class="lhs-rhs-block rhs-block">\
+        <img class="background-image" src="<%= MTFController.pluginInstance.getAudioIcon("renderer/assets/shape2.png") %>" />\
+        <span><%= val.text %></span>\
+        <img class="option-image" src="<%= val.image %>" />\
+        <% if(val.audio){ %> \
+          <img onclick=MTFController.pluginInstance.playAudio({src:"<%= val.audio %>"}) class="audio-image" src="<%= MTFController.pluginInstance.getAudioIcon("renderer/assets/audio3.png") %>" />\
+        <% } %>\
+        </div>\
+      <% }); %>\
+      </div>\
+  </div>'
+}
+            
+
+MTFController.isQuestionTextOverflow = function() {
+    $('.mtf-question-text').css('display', 'block');
+    if($('.mtf-header').height() < $('.mtf-question-container').height()){
+        $('.expand-button').css('display','block');
     } else {
-      $(event.target.parentElement).addClass("collapse-ques-text");
-      $(event.target.parentElement).removeClass("qc-expand-ques-text");
-      $("#mtf-header").css('height', '17.7vh');
+      $('.expand-button').css('display','none');
     }
-  };
+    $('.mtf-question-text').css('display', '-webkit-box');
+}
+
+MTFController.toggleQuestionText = function(){
+    if($('.mtf-header').css('overflow') == 'visible'){
+        $('.mtf-header').css('overflow', 'hidden');
+        $('.mtf-question-text').css('overflow', 'hidden');
+        $('.mtf-question-text').css('display', '-webkit-box');
+        $('.mtf-question-text').css('height', '12.345%');
+        $(".expand-button").css('bottom','unset');
+        $(".expand-button").css('top','0%');
+        $(".expand-button").toggleClass('flip');
+    } else {
+        $('.mtf-header').css('overflow', 'visible');
+        $('.mtf-question-text').css('overflow', 'unset');
+        $('.mtf-question-text').css('display', 'block');
+        $('.mtf-question-text').css('height', 'auto');
+        $(".expand-button").toggleClass('flip');
+        $(".expand-button").css('bottom','5%');
+        $(".expand-button").css('top','unset');
+    }
+}
+
+MTFController.onDomReady = function(){
+    MTFController.isQuestionTextOverflow();
+    $(document).ready(function(){
+        $(".rhs-container").sortable();
+        $(".rhs-container").disableSelection();
+    }) 
+}
 
 //# sourceURL=MTFController.js
