@@ -22,7 +22,7 @@ MTFController.getQuestionTemplate = function(selectedLayout, availableLayout){
                       </div><script>MTFController.onDomReady()</script>';
   var getLayout;
   if(availableLayout.horizontal == selectedLayout) {
-    getLayout = MTFController.getVerticalLayout;
+    getLayout = MTFController.getHorizontalLayout;
   } else {
     getLayout = MTFController.getVerticalLayout;
   }
