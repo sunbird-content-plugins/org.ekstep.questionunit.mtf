@@ -124,7 +124,7 @@ MTFController.toggleQuestionText = function(){
         $('.mtf-header').css('overflow', 'hidden');
         $('.mtf-question-text').css('overflow', 'hidden');
         $('.mtf-question-text').css('display', '-webkit-box');
-        $('.mtf-question-text').css('height', '12.345%');
+        $('.mtf-question-text').css('height', '12.345vh');
         $(".expand-button").css('bottom','unset');
         $(".expand-button").css('top','0%');
         $(".expand-button").toggleClass('flip');
