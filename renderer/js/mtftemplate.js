@@ -87,11 +87,11 @@ MTFController.getHorizontalLayout = function () {
         <div class='mtf-hori-ques-option'>\
           <div class='mtf-hori-ques-text'>\
             <div class='mtf-hori-ques-text-inner cont-dragula' id='right<%= (key+1) %>' mapIndex='<%= val.mapIndex %>'><% if(MTFController.selAns[key].selText < 1){ %>\
-              <p <% if(val.image) { %>  class='v-align-bottom' <% } else { %> class='v-align-middle' <% } %> onclick='MTFController.showImageModel(event, \"<%= val.image %>\")' >\
+              <p <% if(val.image) { %>  class='v-align-bottom mtf-hori-drag-item' <% } else { %> class='v-align-middle mtf-hori-drag-item' <% } %> onclick='MTFController.showImageModel(event, \"<%= val.image %>\")' >\
               <% if(val.image){ %> \
                 <span class='inner-image' >\
                   <span>\
-                    <img src='<%= val.image %>' /> \
+                    <img class='mtf-horizontal-drag-image' src='<%= val.image %>' /> \
                   </span>\
                 </span> \
                 <% } %> \
@@ -160,11 +160,11 @@ MTFController.getVerticalLayout = function () {
         <div class='mtf-vert-ques-option'>\
           <div class='mtf-vert-ques-text'>\
             <div class='mtf-vert-ques-text-inner cont-dragula' id='right<%= (key+1) %>' mapIndex='<%= val.mapIndex %>'><% if(MTFController.selAns[key].selText < 1){ %>\
-              <p <% if(val.image) { %>  class='v-align-bottom' <% } else { %> class='v-align-middle' <% } %> onclick='MTFController.showImageModel(event, \"<%= val.image %>\")' >\
+              <p  <% if(val.image) { %>  class='mtf-vert-drag-item v-align-bottom' <% } else { %> class='mtf-vert-drag-item v-align-middle' <% } %> onclick='MTFController.showImageModel(event, \"<%= val.image %>\")' >\
               <% if(val.image){ %> \
                 <span class='inner-image' >\
                   <span>\
-                    <img src='<%= val.image %>' /> \
+                    <img class='mtf-vertical-drag-image <%= MTFController.optionsHeight %>' src='<%= val.image %>' /> \
                   </span>\
                 </span> \
                 <% } %> \
