@@ -1,7 +1,9 @@
 var MTFController = MTFController || {};
 
 MTFController.constant = {
-  qsMTFElement: ".mtf-container"
+  qsMTFElement: ".mtf-container",
+  bgColors: ["#5DC4F5", "#FF7474", "#F9A817", "#48DCB6", "#5B6066"],
+  bgColor: "#5DC4F5"
 };
 
 /**
@@ -10,19 +12,24 @@ MTFController.constant = {
  */
 MTFController.initTemplate = function (pluginInstance) {
   MTFController.pluginInstance = pluginInstance;
+  MTFController.constant.bgColor = MTFController.constant.bgColors[_.random(0, MTFController.constant.bgColors.length - 1)];
+  MTFController.bgLeftCircleTop = _.random(-6, 6) * 10;
 };
 
 
-MTFController.getQuestionTemplate = function(selectedLayout, availableLayout){
+MTFController.getQuestionTemplate = function (selectedLayout, availableLayout) {
 
   MTFController.selectedLayout = selectedLayout;
-  var wrapperStart = '<div onload="MTFController.onDomReady()" class="mtf-container">\
+  var wrapperStart = '<div onload="MTFController.onDomReady()" class="mtf-container" style="background-color:<%= MTFController.constant.bgColor %>">\
+                        <div class="mtf-bg-graphics">\
+                          <div class="bg-circle circle-left" style="top:<%= _.random(-6, 6)*10%>vh" ></div ><div class="bg-circle circle-right" style="top:<%= _.random(-6, 6)*10%>vh"></div>\
+                        </div >\
                         <div class="mtf-content-container <%= MTFController.selectedLayout %>">';
-  var wrapperEnd =        '</div>\
+  var wrapperEnd = '</div>\
                         </div>\
                       </div><script>MTFController.onDomReady()</script>';
   var getLayout;
-  if(availableLayout.horizontal == selectedLayout) {
+  if (availableLayout.horizontal == selectedLayout) {
     getLayout = MTFController.getHorizontalLayout;
   } else {
     getLayout = MTFController.getVerticalLayout;
@@ -31,7 +38,7 @@ MTFController.getQuestionTemplate = function(selectedLayout, availableLayout){
   return wrapperStart + MTFController.getQuestionStemTemplate() + getLayout() + wrapperEnd;
 }
 
-MTFController.getQuestionStemTemplate = function(){ 
+MTFController.getQuestionStemTemplate = function () {
   return '\
   <div class="mtf-header" >\
       <div class="mtf-question-container">\
@@ -47,7 +54,7 @@ MTFController.getQuestionStemTemplate = function(){
   <div class="mtf-options-container">\
   ';
 }
-MTFController.getHorizontalLayout = function(){
+MTFController.getHorizontalLayout = function () {
   return '\
   <div class="mtf-options-horizontal-container">\
     <div class="lhs-rhs-container lhs-container">\
@@ -76,7 +83,7 @@ MTFController.getHorizontalLayout = function(){
 }
 
 
-MTFController.getVerticalLayout = function(){
+MTFController.getVerticalLayout = function () {
   return '\
   <div class="mtf-options-vertical-container options-<%= question.data.option.optionsLHS.length %>">\
     <div class="lhs-rhs-container lhs-container">\
@@ -105,46 +112,46 @@ MTFController.getVerticalLayout = function(){
       </div>\
   </div>'
 }
-            
 
-MTFController.isQuestionTextOverflow = function() {
-  setTimeout(function(){
+
+MTFController.isQuestionTextOverflow = function () {
+  setTimeout(function () {
     $('.mtf-question-text').css('display', 'block');
-    if($('.mtf-header').height() < $('.mtf-question-container').height()){
-        $('.expand-button').css('display','block');
+    if ($('.mtf-header').height() < $('.mtf-question-container').height()) {
+      $('.expand-button').css('display', 'block');
     } else {
-      $('.expand-button').css('display','none');
+      $('.expand-button').css('display', 'none');
     }
     $('.mtf-question-text').css('display', '-webkit-box');
   }, 1000)
 }
 
-MTFController.toggleQuestionText = function(){
-    if($('.mtf-header').css('overflow') == 'visible'){
-        $('.mtf-header').css('overflow', 'hidden');
-        $('.mtf-question-text').css('overflow', 'hidden');
-        $('.mtf-question-text').css('display', '-webkit-box');
-        $('.mtf-question-text').css('height', '12.345vh');
-        $(".expand-button").css('bottom','unset');
-        $(".expand-button").css('top','0%');
-        $(".expand-button").toggleClass('flip');
-    } else {
-        $('.mtf-header').css('overflow', 'visible');
-        $('.mtf-question-text').css('overflow', 'unset');
-        $('.mtf-question-text').css('display', 'block');
-        $('.mtf-question-text').css('height', 'auto');
-        $(".expand-button").toggleClass('flip');
-        $(".expand-button").css('bottom','5%');
-        $(".expand-button").css('top','unset');
-    }
+MTFController.toggleQuestionText = function () {
+  if ($('.mtf-header').css('overflow') == 'visible') {
+    $('.mtf-header').css('overflow', 'hidden');
+    $('.mtf-question-text').css('overflow', 'hidden');
+    $('.mtf-question-text').css('display', '-webkit-box');
+    $('.mtf-question-text').css('height', '12.345vh');
+    $(".expand-button").css('bottom', 'unset');
+    $(".expand-button").css('top', '0%');
+    $(".expand-button").toggleClass('flip');
+  } else {
+    $('.mtf-header').css('overflow', 'visible');
+    $('.mtf-question-text').css('overflow', 'unset');
+    $('.mtf-question-text').css('display', 'block');
+    $('.mtf-question-text').css('height', 'auto');
+    $(".expand-button").toggleClass('flip');
+    $(".expand-button").css('bottom', '5%');
+    $(".expand-button").css('top', 'unset');
+  }
 }
 
-MTFController.onDomReady = function(){
-    MTFController.isQuestionTextOverflow();
-    $(document).ready(function(){
-        $(".rhs-container").sortable();
-        $(".rhs-container").disableSelection();
-    }) 
+MTFController.onDomReady = function () {
+  MTFController.isQuestionTextOverflow();
+  $(document).ready(function () {
+    $(".rhs-container").sortable();
+    $(".rhs-container").disableSelection();
+  })
 }
 
 /**
