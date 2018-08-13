@@ -48,7 +48,7 @@
 .mtf-container .mtf-content-container .mtf-header .mtf-question-container .mtf-question-text{
     position: relative;
     text-align: justify;
-    height:12.345%;
+    height:12.345vh;
     overflow: hidden;
     display:-webkit-box;
     text-overflow: ellipsis;
