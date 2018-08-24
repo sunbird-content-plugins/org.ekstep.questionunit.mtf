@@ -1,19 +1,23 @@
 var MTFController = MTFController || {};
 
 MTFController.constant = {
-  qsMTFElement: ".mtf-container"
+  qsMTFElement: ".mtf-container",
+  bgColors: ["#5DC4F5", "#FF7474", "#F9A817", "#48DCB6", "#5B6066"],
+  bgColor: "#5DC4F5"
 };
 
 /**
  * enables accessing plugin instance inside MTFController
- * @memberof org.ekstep.questionun  it.mtf.mtftemplate
+ * @memberof org.ekstep.questionunit.mtf.mtftemplate
  */
 MTFController.initTemplate = function (pluginInstance) {
   MTFController.pluginInstance = pluginInstance;
+  MTFController.constant.bgColor = MTFController.constant.bgColors[_.random(0, MTFController.constant.bgColors.length - 1)];
+  MTFController.bgLeftCircleTop = _.random(-6, 6) * 10;
 };
 
 
-MTFController.getQuestionTemplate = function(selectedLayout, availableLayout){
+MTFController.getQuestionTemplate = function (selectedLayout, availableLayout) {
 
   MTFController.selectedLayout = selectedLayout;
   var wrapperStart = '<div onload="MTFController.onDomReady()" class="mtf-container plugin-content-container">\
@@ -25,7 +29,7 @@ MTFController.getQuestionTemplate = function(selectedLayout, availableLayout){
   var wrapperEnd =        '</div></div>\
                       </div><script>MTFController.onDomReady()</script>';
   var getLayout;
-  if(availableLayout.horizontal == selectedLayout) {
+  if (availableLayout.horizontal == selectedLayout) {
     getLayout = MTFController.getHorizontalLayout;
   } else {
     getLayout = MTFController.getVerticalLayout;
@@ -64,7 +68,7 @@ MTFController.getHorizontalLayout = function(){
 }
 
 
-MTFController.getVerticalLayout = function(){
+MTFController.getVerticalLayout = function () {
   return '\
   <div class="mtf-options-vertical-container options-<%= question.data.option.optionsLHS.length %>">\
     <div class="lhs-rhs-container lhs-container">\
