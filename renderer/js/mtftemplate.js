@@ -16,10 +16,13 @@ MTFController.initTemplate = function (pluginInstance) {
 MTFController.getQuestionTemplate = function(selectedLayout, availableLayout){
 
   MTFController.selectedLayout = selectedLayout;
-  var wrapperStart = '<div onload="MTFController.onDomReady()" class="mtf-container">\
+  var wrapperStart = '<div onload="MTFController.onDomReady()" class="mtf-container plugin-content-container">\
                         <div class="mtf-content-container <%= MTFController.selectedLayout %>">';
-  var wrapperEnd =        '</div>\
-                        </div>\
+  var wrapperStartQuestionComponent = '<div class="mtf-header">';
+  var wrapperEndQuestionComponent = '</div>';
+  var wrapperStartOptionComponent = '<div class="mtf-options-container-margin" ></div>\
+  <div class="mtf-options-container">'
+  var wrapperEnd =        '</div></div>\
                       </div><script>MTFController.onDomReady()</script>';
   var getLayout;
   if(availableLayout.horizontal == selectedLayout) {
@@ -28,25 +31,10 @@ MTFController.getQuestionTemplate = function(selectedLayout, availableLayout){
     getLayout = MTFController.getVerticalLayout;
   }
 
-  return wrapperStart + MTFController.getQuestionStemTemplate() + getLayout() + wrapperEnd;
+  return org.ekstep.questionunit.backgroundComponent.getBackgroundGraphics() + wrapperStart  + wrapperStartQuestionComponent + org.ekstep.questionunit.questionComponent.generateQuestionComponent() + wrapperEndQuestionComponent + wrapperStartOptionComponent + getLayout() + wrapperEnd;
 }
 
-MTFController.getQuestionStemTemplate = function(){ 
-  return '\
-  <div class="mtf-header" >\
-      <div class="mtf-question-container">\
-          <div class="mtf-question-text">\
-          <%= question.data.question.text %>\
-          </div>\
-          <div class="expand-button" onclick="MTFController.toggleQuestionText()">\
-              <img src="<%= MTFController.pluginInstance.getAudioIcon("renderer/assets/down_arrow.png") %>" />\
-          </div>\
-      </div>\
-  </div>\
-  <div class="mtf-options-container-margin" ></div>\
-  <div class="mtf-options-container">\
-  ';
-}
+
 MTFController.getHorizontalLayout = function(){
   return '\
   <div class="mtf-options-horizontal-container">\
@@ -106,69 +94,11 @@ MTFController.getVerticalLayout = function(){
   </div>'
 }
             
-
-MTFController.isQuestionTextOverflow = function() {
-  setTimeout(function(){
-    $('.mtf-question-text').css('display', 'block');
-    if($('.mtf-header').height() < $('.mtf-question-container').height()){
-        $('.expand-button').css('display','block');
-    } else {
-      $('.expand-button').css('display','none');
-    }
-    $('.mtf-question-text').css('display', '-webkit-box');
-  }, 1000)
-}
-
-MTFController.toggleQuestionText = function(){
-    if($('.mtf-header').css('overflow') == 'visible'){
-        $('.mtf-header').css('overflow', 'hidden');
-        $('.mtf-question-text').css('overflow', 'hidden');
-        $('.mtf-question-text').css('display', '-webkit-box');
-        $('.mtf-question-text').css('height', '12.345vh');
-        $(".expand-button").css('bottom','unset');
-        $(".expand-button").css('top','0%');
-        $(".expand-button").toggleClass('flip');
-    } else {
-        $('.mtf-header').css('overflow', 'visible');
-        $('.mtf-question-text').css('overflow', 'unset');
-        $('.mtf-question-text').css('display', 'block');
-        $('.mtf-question-text').css('height', 'auto');
-        $(".expand-button").toggleClass('flip');
-        $(".expand-button").css('bottom','5%');
-        $(".expand-button").css('top','unset');
-    }
-}
-
 MTFController.onDomReady = function(){
-    MTFController.isQuestionTextOverflow();
     $(document).ready(function(){
         $(".rhs-container").sortable();
         $(".rhs-container").disableSelection();
     }) 
-}
-
-/**
- * image will be shown in popup
- * @memberof org.ekstep.questionunit.mtf.mtftemplate
- */
-MTFController.showImageModel = function (event, imageSrc) {
-  if (imageSrc) {
-    var modelTemplate = "<div class='popup' id='image-model-popup' onclick='MTFController.hideImageModel()'><div class='popup-overlay' onclick='MTFController.hideImageModel()'></div> \
-  <div class='popup-full-body'> \
-  <div class='font-lato assess-popup assess-goodjob-popup'> \
-    <img class='qc-question-fullimage' src=<%= src %> /> \
-    <div onclick='MTFController.hideImageModel()' class='qc-popup-close-button'>&times;</div> \
-  </div></div>";
-    var template = _.template(modelTemplate);
-    var templateData = template({
-      src: imageSrc
-    })
-    $(MTFController.constant.qsMTFElement).append(templateData);
-  }
-}
-
-MTFController.hideImageModel = function () {
-  $("#image-model-popup").remove();
 }
 
 //# sourceURL=MTFController.js

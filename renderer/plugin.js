@@ -36,7 +36,6 @@ org.ekstep.questionunitmtf.RendererPlugin = org.ekstep.contentrenderer.questionU
       }
     })
     this._question.template = MTFController.getQuestionTemplate(this._question.config.layout, this._constant);
-    QSTelemetryLogger.logEvent(QSTelemetryLogger.EVENT_TYPES.ASSESSEND, result);
     //shuffle rhs answers
     this._question.data.option.optionsRHS = _.shuffle(this._question.data.option.optionsRHS);
   },
