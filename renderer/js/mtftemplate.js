@@ -1,9 +1,7 @@
 var MTFController = MTFController || {};
 
 MTFController.constant = {
-  qsMTFElement: ".mtf-container",
-  bgColors: ["#5DC4F5", "#FF7474", "#F9A817", "#48DCB6", "#5B6066"],
-  bgColor: "#5DC4F5"
+  qsMTFElement: ".mtf-container"
 };
 
 /**
