@@ -21,7 +21,8 @@
     position: absolute;
     z-index: 1;
     color:#283644;
-    line-height: 119%;
+    line-height: 6.7vh;
+    font-size:4.45vh
 }
 
 
@@ -38,7 +39,7 @@
     height:76%;
     width:100%;
     padding:2.7% 0%;
-    font-size:14px;
+    font-size:4vh;
     display:table;
 }
 
@@ -55,7 +56,7 @@
 }
 
 .mtf-container .mtf-content-container .mtf-options-container .mtf-options-horizontal-container .lhs-rhs-container .lhs-rhs-block {
-    height:19%;
+    height:14vh;
     width:100%;
     margin-bottom:0%;
     position: relative;
@@ -158,7 +159,7 @@
     justify-content: center;
     display: flex;
     align-items: center;
-    font-size: 8.64vh;
+    font-size: 6.64vh;
   }
 
 .mtf-container .mtf-content-container .mtf-options-container .mtf-options-vertical-container .lhs-rhs-container .lhs-rhs-block img.audio-image{
