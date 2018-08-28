@@ -1,9 +1,7 @@
 var MTFController = MTFController || {};
 
 MTFController.constant = {
-  qsMTFElement: ".mtf-container",
-  bgColors: ["#5DC4F5", "#FF7474", "#F9A817", "#48DCB6", "#5B6066"],
-  bgColor: "#5DC4F5"
+  qsMTFElement: ".mtf-container"
 };
 
 /**
@@ -12,8 +10,6 @@ MTFController.constant = {
  */
 MTFController.initTemplate = function (pluginInstance) {
   MTFController.pluginInstance = pluginInstance;
-  MTFController.constant.bgColor = MTFController.constant.bgColors[_.random(0, MTFController.constant.bgColors.length - 1)];
-  MTFController.bgLeftCircleTop = _.random(-6, 6) * 10;
 };
 
 
