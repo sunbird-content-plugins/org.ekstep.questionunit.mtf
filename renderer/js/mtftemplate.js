@@ -12,8 +12,6 @@ MTFController.constant = {
  */
 MTFController.initTemplate = function (pluginInstance) {
   MTFController.pluginInstance = pluginInstance;
-  MTFController.constant.bgColor = MTFController.constant.bgColors[_.random(0, MTFController.constant.bgColors.length - 1)];
-  MTFController.bgLeftCircleTop = _.random(-6, 6) * 10;
 };
 
 
