@@ -66,7 +66,13 @@ org.ekstep.questionunitmtf.RendererPlugin = org.ekstep.contentrenderer.questionU
         correctAnswer = false;
       }
     })
-    var partialScore = (correctAnswersCount / totalLHS) * this._question.config.max_score;
+    var partialScore
+    if(this._question.config.partial_scoring){
+      partialScore = (correctAnswersCount / totalLHS) * this._question.config.max_score;
+    }else{
+      partialScore = 0;
+    }
+    
     var result = {
       eval: correctAnswer,
       state: {
@@ -84,50 +90,6 @@ org.ekstep.questionunitmtf.RendererPlugin = org.ekstep.contentrenderer.questionU
       callback(result);
     }
     EkstepRendererAPI.dispatchEvent('org.ekstep.questionset:saveQuestionState', result.state);
-  },
-  evaluateQuestion_old: function (event) {
-    var instance = this;
-    var callback = event.target;
-    var correctAnswer = true;
-    var telemetryValues = [];
-    var tempCount = 0;
-    var qLhsData = this._question.data.option.optionsLHS;
-    if (!_.isUndefined(instance._selectedAnswers)) {
-      _.each(qLhsData, function (val, key) {
-        var telObj = {};
-        if (!_.isUndefined(instance._selectedAnswers[key])) {
-          telObj[qLhsData[key].text] = instance._selectedAnswers[key].selText;
-          telemetryValues.push(telObj);
-          var t = instance._selectedAnswers[key].mapIndex;
-          if (qLhsData[key].index != Number(t)) {
-            correctAnswer = false;
-          } else {
-            tempCount++;
-          }
-        } else {
-          correctAnswer = false;
-        }
-      });
-    }
-    var partialScore = (tempCount / qLhsData.length) * this._question.config.max_score;
-    var result = {
-      eval: correctAnswer,
-      state: {
-        val: {
-          "lhs": instance._selectedAnswers,
-          "rhs": this._question.data.option.optionsRHS
-        }
-      },
-      score: partialScore,
-      values: telemetryValues,
-      noOfCorrectAns: tempCount,
-      totalAns: qLhsData.length
-    };
-    if (_.isFunction(callback)) {
-      callback(result);
-    }
-    EkstepRendererAPI.dispatchEvent('org.ekstep.questionset:saveQuestionState', result.state);
-    QSTelemetryLogger.logEvent(QSTelemetryLogger.EVENT_TYPES.ASSESSEND, result);
   },
   logTelemetryItemResponse: function (data) {
     QSTelemetryLogger.logEvent(QSTelemetryLogger.EVENT_TYPES.RESPONSE, {"type": "INPUT", "values": data});
