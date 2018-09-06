@@ -12,6 +12,7 @@ org.ekstep.questionunitmtf.RendererPlugin = org.ekstep.contentrenderer.questionU
   _render: true,
   _selectedAnswers: [],
   _dragulaContainers: [],
+  _drake:undefined,
   _constant: {
     horizontal: "Horizontal",
     vertial : "Vertical"
@@ -94,7 +95,10 @@ org.ekstep.questionunitmtf.RendererPlugin = org.ekstep.contentrenderer.questionU
   },
   postQuestionShow: function (event) {
     var instance = this;
-    var drake = dragula({
+    if(!_.isUndefined(instance._drake)){
+       instance._drake.destroy();
+    }
+    instance._drake = dragula({
       isContainer: function (elem) {
         return instance.dragulaIsContainer(elem);
       },
@@ -105,7 +109,7 @@ org.ekstep.questionunitmtf.RendererPlugin = org.ekstep.contentrenderer.questionU
         return true;
       }
     });
-    drake.on('drop', function (elem, target, source, sibling) {
+    instance._drake.on('drop', function (elem, target, source, sibling) {
       instance.onDropElement(elem, target, source, sibling, instance._question);
     });
   },
