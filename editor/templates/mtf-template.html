@@ -56,14 +56,12 @@
                                                 <div class="ui grid">
                                                     <div class="twelve wide column">
                                                         <div class="form-group segment textBoxDiv">
-                                                            <input type="text" class="form-control textbox" ng-class="{'has-success':mtfForm['option.optionsLHS_' + $index].$valid, 'has-error': submitted && mtfForm['option.optionsLHS_' + $index].$error.required}"
+                                                            <div class="form-control textbox" ng-class="{'has-success':mtfForm['option.optionsLHS_' + $index].$valid, 'has-error': submitted && mtfForm['option.optionsLHS_' + $index].$error.required}"
                                                                 placeholder="Enter answer" name="option.optionsLHS_{{$index}}"
-                                                                id="mtf-optionLHS" ng-model="mtfFormData.option.optionsLHS[$index].text"
-                                                                maxlength="25" ng-init="focused = false" ng-focus="focused = true;generateTelemetry({type: 'TOUCH', id: 'input', target: {id: 'questionunit-mtf-lhs-answer', ver: '', type: 'input'}})"
-                                                                ng-blur="focused = false" ng-required="!(mtfFormData.option.optionsLHS[$index].text.length)"
-                                                            />
-                                                            <span class="maxLengthText">{{mtfFormData.option.optionsLHS[$index].text.length}}
-                                                                <span class="length-divider">/</span>25</span>
+                                                                id="mtfoptionLHS_" ng-model="mtfFormData.option.optionsLHS[$index].text"
+                                                                maxlength="25" ng-focus="focused = true;generateTelemetry({type: 'TOUCH', id: 'input', target: {id: 'questionunit-mtf-lhs-answer', ver: '', type: 'input'}})"
+                                                                ng-blur="focused = false" ng-required="!(mtfFormData.option.optionsLHS[$index].text.length)" contenteditable="true" ng-init="bindCkEditor($index,'mtfoptionLHS_')"
+                                                            ></div>
                                                         </div>
                                                     </div>
                                                     <div class="twelve wide column">
@@ -103,14 +101,12 @@
                                                 <div class="ui grid">
                                                     <div class="twelve wide column">
                                                         <div class="form-group segment textBoxDiv">
-                                                            <input type="text" class="form-control textbox" ng-class="{'has-success':mtfForm['option.optionsRHS_' + $index].$valid, 'has-error': submitted && mtfForm['option.optionsRHS_' + $index].$error.required}"
+                                                            <div class="form-control textbox" ng-class="{'has-success':mtfForm['option.optionsRHS_' + $index].$valid, 'has-error': submitted && mtfForm['option.optionsRHS_' + $index].$error.required}"
                                                                 placeholder="Enter answer" name="option.optionsRHS_{{$index}}"
                                                                 ng-model="mtfFormData.option.optionsRHS[$index].text" maxlength="25"
-                                                                ng-init="focused = false" ng-focus="focused = true;generateTelemetry({type: 'TOUCH', id: 'input', target: {id: 'questionunit-mtf-rhs-answer', ver: '', type: 'input'}})"
-                                                                id="mtf-optionRHS-input" ng-blur="focused = false" ng-required="!(mtfFormData.option.optionsRHS[$index].text.length)"
-                                                            />
-                                                            <span class="maxLengthText">{{mtfFormData.option.optionsRHS[$index].text.length}}
-                                                                <span class="length-divider">/</span>25</span>
+                                                                 ng-focus="focused = true;generateTelemetry({type: 'TOUCH', id: 'input', target: {id: 'questionunit-mtf-rhs-answer', ver: '', type: 'input'}})"
+                                                                id="mtfoptionRHS_" ng-blur="focused = false" ng-required="!(mtfFormData.option.optionsRHS[$index].text.length)" contenteditable="true" ng-init="bindCkEditor($index,'mtfoptionRHS_')"
+                                                            ></div>
                                                         </div>
                                                     </div>
                                                     <div class="twelve wide column">

@@ -87,11 +87,12 @@ angular.module('mtfApp', ['org.ekstep.question']).controller('mtfQuestionFormCon
   };
   $scope.mtfFormData.media = [];
   $scope.editMedia = [];
-  var questionInput = CKEDITOR.replace('mtfQuestion', {// eslint-disable-line no-undef
+  $scope.ckConfig={// eslint-disable-line no-undef
     customConfig: ecEditor.resolvePluginResource('org.ekstep.questionunit', '1.0', "editor/ckeditor-config.js"),
     skin: 'moono-lisa,' + CKEDITOR.basePath + "skins/moono-lisa/",// eslint-disable-line no-undef
     contentsCss: CKEDITOR.basePath + "contents.css"// eslint-disable-line no-undef
-  });
+  };
+  var questionInput = CKEDITOR.replace('mtfQuestion',$scope.ckConfig);
   questionInput.on('change', function () {
     $scope.mtfFormData.question.text = this.getData();
   });
@@ -303,6 +304,31 @@ angular.module('mtfApp', ['org.ekstep.question']).controller('mtfQuestionFormCon
     deleteMedia: $scope.deleteMedia,
     addMedia: $scope.addMedia,
     qtype: 'mtf'
+  }
+
+   $scope.bindCkEditor = function(index,divid) {
+    //replace id with option count
+    $("#"+divid).prop("id",divid+ index);
+    //remove ckeditor instance if already exist
+    $("#cke_"+divid + index).remove();
+    //remove tooltip
+    $scope.ckConfig.title = "Set Answer"; 
+    var optionInput = CKEDITOR.inline(divid + index, $scope.ckConfig);
+    //assign value to input box
+    CKEDITOR.instances[divid+ index].setData($scope.mcqFormData.options[index].text);
+    optionInput.on('change', function() {
+      //on changes get index id and assign to model
+      var id = parseInt(this.name.split(divid)[1]);
+      $scope.mcqFormData.options[id].text = CKEDITOR.instances[this.name].getData();
+      $scope.$safeApply();
+    });
+    optionInput.on('blur', function() {
+      ecEditor.jQuery('.cke_float').hide();
+    });
+    $(".innerScroll").scroll(function() {
+      ecEditor.jQuery('.cke_float').hide();
+    });
+    optionInput.focus();
   }
 
   /**
