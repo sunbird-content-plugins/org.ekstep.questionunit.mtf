@@ -12,6 +12,7 @@ org.ekstep.questionunitmtf.RendererPlugin = org.ekstep.contentrenderer.questionU
   _render: true,
   _selectedAnswers: [],
   _dragulaContainers: [],
+  _drake:undefined,
   _constant: {
     horizontal: "Horizontal",
     vertial : "Vertical"
