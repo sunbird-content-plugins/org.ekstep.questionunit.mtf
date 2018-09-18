@@ -56,11 +56,11 @@
                                                 <div class="ui grid">
                                                     <div class="twelve wide column">
                                                         <div class="form-group segment textBoxDiv">
-                                                            <div class="form-control textbox" ng-class="{'has-success':mtfForm['option.optionsLHS_' + $index].$valid, 'has-error': submitted && mtfForm['option.optionsLHS_' + $index].$error.required}"
+                                                            <div class="form-control qc-mtf-textbox" ng-class="{'has-success':mtfForm['option.optionsLHS_' + $index].$valid, 'has-error': submitted && mtfForm['option. ' + $index].$error.required,'qc-mtf-option-placeholder':mtfFormData.option.optionsLHS[$index].text.length==0}"
                                                                 placeholder="Enter answer" name="option.optionsLHS_{{$index}}"
                                                                 id="mtfoptionLHS_" ng-model="mtfFormData.option.optionsLHS[$index].text"
-                                                                maxlength="25" ng-focus="focused = true;generateTelemetry({type: 'TOUCH', id: 'input', target: {id: 'questionunit-mtf-lhs-answer', ver: '', type: 'input'}})"
-                                                                ng-blur="focused = false" ng-required="!(mtfFormData.option.optionsLHS[$index].text.length)" contenteditable="true" ng-init="bindCkEditor($index,'mtfoptionLHS_')"
+                                                                 ng-focus="focused = true;generateTelemetry({type: 'TOUCH', id: 'input', target: {id: 'questionunit-mtf-lhs-answer', ver: '', type: 'input'}})"
+                                                                ng-blur="focused = false" ng-required="!(mtfFormData.option.optionsLHS[$index].text.length||mtfFormData.option.optionsLHS[$index].image.length ||mtfFormData.option.optionsLHS[$index].audio.length)" contenteditable="true" ng-init="bindCkEditor($index,'mtfoptionLHS_')"
                                                             ></div>
                                                         </div>
                                                     </div>
@@ -101,11 +101,11 @@
                                                 <div class="ui grid">
                                                     <div class="twelve wide column">
                                                         <div class="form-group segment textBoxDiv">
-                                                            <div class="form-control textbox" ng-class="{'has-success':mtfForm['option.optionsRHS_' + $index].$valid, 'has-error': submitted && mtfForm['option.optionsRHS_' + $index].$error.required}"
+                                                            <div class="form-control qc-mtf-textbox" ng-class="{'has-success':mtfForm['option.optionsRHS_' + $index].$valid, 'has-error': submitted && mtfForm['option.' + $index].$error.required,'qc-mtf-option-placeholder':mtfFormData.option.optionsRHS[$index].text.length==0}"
                                                                 placeholder="Enter answer" name="option.optionsRHS_{{$index}}"
-                                                                ng-model="mtfFormData.option.optionsRHS[$index].text" maxlength="25"
+                                                                ng-model="mtfFormData.option.optionsRHS[$index].text"
                                                                  ng-focus="focused = true;generateTelemetry({type: 'TOUCH', id: 'input', target: {id: 'questionunit-mtf-rhs-answer', ver: '', type: 'input'}})"
-                                                                id="mtfoptionRHS_" ng-blur="focused = false" ng-required="!(mtfFormData.option.optionsRHS[$index].text.length)" contenteditable="true" ng-init="bindCkEditor($index,'mtfoptionRHS_')"
+                                                                id="mtfoptionRHS_" ng-blur="focused = false" ng-required="!(mtfFormData.option.optionsRHS[$index].text.length ||mtfFormData.option.optionsRHS[$index].image.length||mtfFormData.option.optionsRHS[$index].audio.length)" contenteditable="true" ng-init="bindCkEditor($index,'mtfoptionRHS_')"
                                                             ></div>
                                                         </div>
                                                     </div>
@@ -113,7 +113,6 @@
                                                         <selected-media-container media-callbacks="callbacks" formdata="mtfFormData.option.optionsRHS[$index]" media-type='RHS' media-index='{{$index}}'></selected-media-container>
                                                     </div>
                                                 </div>
-                                            </div>
                                             <div class="ui secondary segment custom-sec-segment" ng-if="mtfConfiguartion.optionsConfig[0].isImage || mtfConfiguartion[0].optionsConfig.isAudio">
                                                 <div class="ui grid">
                                                     <div class="row">
@@ -132,6 +131,7 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                        </div>
                                         </div>
                                         <div href="" ng-click="deletePair($index);generateTelemetry({type: 'TOUCH', id: 'button', target: {id: 'questionunit-mtf-delete-pair', ver: '', type: 'button'}})"
                                             class="delete-pair-row-RHS" data-tooltip="Delete Pair" data-inverted="">
