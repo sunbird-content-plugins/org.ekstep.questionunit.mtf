@@ -225,7 +225,6 @@ angular.module('mtfApp', ['org.ekstep.question']).controller('mtfQuestionFormCon
   $scope.deletePair = function(id) {
     $scope.mtfFormData.option.optionsLHS.splice(id, 1);
     $scope.mtfFormData.option.optionsRHS.splice(id, 1);
-    //$scope.removeCkeditorIns(id);
   }
   /**
    * invokes the asset browser to pick an image to add to either the question or the options
@@ -316,11 +315,6 @@ angular.module('mtfApp', ['org.ekstep.question']).controller('mtfQuestionFormCon
     deleteMedia: $scope.deleteMedia,
     addMedia: $scope.addMedia,
     qtype: 'mtf'
-  }
-  //onclick delete delete the ckeditor instance
-  $scope.removeCkeditorIns = function(id) {
-    CKEDITOR.instances["mtfoptionLHS_" + id].destroy();
-    CKEDITOR.instances["mtfoptionRHS_" + id].destroy();
   }
   //overriding ckeditor config file to split ckeditor in two line and char count
   $scope.overrideCkeditorConfig = function() {
