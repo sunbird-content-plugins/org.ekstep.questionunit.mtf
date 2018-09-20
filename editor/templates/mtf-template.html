@@ -60,7 +60,6 @@
                                                                 placeholder="Enter answer" name="option.optionsLHS_{{$index}}"
                                                                 id="mtf-optionLHS" ng-model="mtfFormData.option.optionsLHS[$index].text"
                                                                 maxlength="25" ng-init="focused = false" ng-focus="focused = true;generateTelemetry({type: 'TOUCH', id: 'input', target: {id: 'questionunit-mtf-lhs-answer', ver: '', type: 'input'}})"
-<<<<<<< HEAD
                                                                 ng-blur="focused = false" ng-required="!(mtfFormData.option.optionsLHS[$index].text.length||mtfFormData.option.optionsLHS[$index].image.length||mtfFormData.option.optionsLHS[$index].audio.length)"
                                                             />
                                                             <span class="maxLengthText">{{mtfFormData.option.optionsLHS[$index].text.length}}
