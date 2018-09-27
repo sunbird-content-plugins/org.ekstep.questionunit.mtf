@@ -88,7 +88,6 @@ org.ekstep.questionunitmtf.RendererPlugin = org.ekstep.contentrenderer.questionU
         }
       },
       score: questionScore,
-      max_score: this._question.config.max_score,
       values: telemetryValues,
       noOfCorrectAns: correctAnswersCount,
       totalAns: totalLHS
