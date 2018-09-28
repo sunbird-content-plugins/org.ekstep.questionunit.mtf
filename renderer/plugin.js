@@ -114,7 +114,7 @@ org.ekstep.questionunitmtf.RendererPlugin = org.ekstep.contentrenderer.questionU
     var callback = event.target;
     var correctAnswer = true;
     var telemetryValues = [];
-    var tempCount = 0;
+    var correctAnswersCount = 0;    
     var qLhsData = this._question.data.option.optionsLHS;
     if (!_.isUndefined(instance._selectedAnswers)) {
       _.each(qLhsData, function (val, key) {
@@ -126,14 +126,24 @@ org.ekstep.questionunitmtf.RendererPlugin = org.ekstep.contentrenderer.questionU
           if (qLhsData[key].index != Number(t)) {
             correctAnswer = false;
           } else {
-            tempCount++;
+            correctAnswersCount++;
           }
         } else {
           correctAnswer = false;
         }
       });
     }
-    var partialScore = (tempCount / qLhsData.length) * this._question.config.max_score;
+    var questionScore;
+    if(this._question.config.partial_scoring){
+      questionScore = (correctAnswersCount / qLhsData.length) * this._question.config.max_score;
+    }else{
+      if((correctAnswersCount / qLhsData.length) == 1){
+        questionScore = this._question.config.max_score;
+      }else{
+        questionScore = 0
+      }
+    }
+
     var result = {
       eval: correctAnswer,
       state: {
@@ -142,9 +152,10 @@ org.ekstep.questionunitmtf.RendererPlugin = org.ekstep.contentrenderer.questionU
           "rhs": this._question.data.option.optionsRHS
         }
       },
-      score: partialScore,
+      score: questionScore,
+      max_score: this._question.config.max_score,
       values: telemetryValues,
-      noOfCorrectAns: tempCount,
+      noOfCorrectAns: correctAnswersCount,
       totalAns: qLhsData.length
     };
     if (_.isFunction(callback)) {
