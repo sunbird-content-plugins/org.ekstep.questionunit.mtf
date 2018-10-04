@@ -16,7 +16,7 @@
 .mtf-container .mtf-content-container .mtf-header{
     width:100%;
     height:23.33333vh;
-    font-size:5vh;
+    font-size:14px;
     line-height:6.7vh;
     top:0;
     left:0;
@@ -141,8 +141,9 @@
 }
 
 .mtf-container .mtf-content-container .mtf-options-container .mtf-options-vertical-container .lhs-rhs-container .lhs-rhs-block img.option-image{
-    max-width: 92%;
+    max-width: 90%;
     max-height: 75%;
+    border-radius: 4px;
     /* applies v-align middle and margin:auto */
     top:0;
     bottom:0;
@@ -161,25 +162,11 @@
     justify-content: center;
     display: flex;
     align-items: center;
+    font-size: 3.64vh;
     height:83%;
     padding:2px 5px;
     word-break: break-word;
     hyphens: manual;
-    z-index:1;
-  }
-
-  .mtf-container .mtf-content-container .mtf-options-container .mtf-options-vertical-container .lhs-rhs-container .lhs-block span{
-    top: 4vh;
-  }
-
-  /* This style is applied when a RHS or LHS is having text length between 0-15 */
-  .mtf-container .mtf-content-container .mtf-options-container .mtf-options-vertical-container .lhs-rhs-container .lhs-rhs-block span.short-text{
-    font-size: 4.64vh;
-  }
-  
-  /* This style is applied when a RHS or LHS is having text length between 16-25 */
-  .mtf-container .mtf-content-container .mtf-options-container .mtf-options-vertical-container .lhs-rhs-container .lhs-rhs-block span.long-text{
-    font-size: 3.64vh;
   }
 
 .mtf-container .mtf-content-container .mtf-options-container .mtf-options-vertical-container .lhs-rhs-container .lhs-rhs-block img.audio-image{
@@ -212,7 +199,7 @@
 }
 
 .mtf-container .mtf-content-container .mtf-options-container .mtf-options-vertical-container .lhs-rhs-container .lhs-block img.option-image{
-    top:0%;
+    top:6.78%;
 }
 
 .mtf-container .mtf-content-container .mtf-options-container .mtf-options-vertical-container .lhs-rhs-container .rhs-block img.option-image{
