@@ -32,7 +32,6 @@
 .MTFmaxLengthText {
   float: right;
   padding-top: 2%;
-  font-size:0.7em;
 }
 
 .optionError {
@@ -90,10 +89,6 @@
 .ui.segments .segment.textBoxDiv {
   text-align: center;
   font-size: 1.42rem;
-}
-
-.ui.segments .segment.textBoxDiv input{
-  width:100%;
 }
 
 .deleteMedia {
@@ -211,11 +206,6 @@ td.mtf-pair-destractor-td{
   border: 1px solid red;
 }
 /* options */
-
-.mtf-options .input-container{
-  padding-top:1rem;
-  padding-bottom:0;
-}
 
 .mtf-options .question-selected-media-container {
   height:60px;
