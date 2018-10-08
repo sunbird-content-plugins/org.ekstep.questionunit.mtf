@@ -37,8 +37,6 @@ org.ekstep.questionunitmtf.RendererPlugin = org.ekstep.contentrenderer.questionU
       }
     })
     this._question.template = MTFController.getQuestionTemplate(this._question.config.layout, this._constant);
-    //shuffle rhs answers
-    this._super(event);
     //The state will created once an is selected, Only once a quesiton will be shuffled
     if(!this._question.state){
       this._question.data.option.optionsRHS = _.shuffle(this._question.data.option.optionsRHS);
