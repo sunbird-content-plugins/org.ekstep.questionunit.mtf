@@ -68,7 +68,6 @@ org.ekstep.questionunitmtf.RendererPlugin = org.ekstep.contentrenderer.questionU
     var telemetryValues = [];
     var rhs_rearranged = [];
     var totalLHS = instance._question.data.option.optionsLHS.length;
-    instance._selectedRHS = [];
 
     $('.rhs-block').each(function(elemIndex, elem){
       var telObj = {
@@ -80,7 +79,6 @@ org.ekstep.questionunitmtf.RendererPlugin = org.ekstep.contentrenderer.questionU
       telObj['LHS'][elemIndex] = instance._question.data.option.optionsLHS[elemIndex];
       telObj['RHS'][elemMappedIndex] = instance._question.data.option.optionsRHS[elemMappedIndex];
       telemetryValues.push(telObj);
-      instance._selectedRHS.push(instance._question.data.option.optionsRHS[elemMappedIndex]);
       if(elemMappedIndex == elemIndex){
         correctAnswersCount++;
       } else {
@@ -102,7 +100,7 @@ org.ekstep.questionunitmtf.RendererPlugin = org.ekstep.contentrenderer.questionU
       eval: correctAnswer,
       state: {
         val: {
-          "rhs_rendered": instance._selectedRHS,
+          "rhs_rendered": instance._question.data.option.optionsRHS,
           "rhs_rearranged" : rhs_rearranged
         }
       },
