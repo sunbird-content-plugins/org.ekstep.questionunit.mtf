@@ -43,7 +43,18 @@ org.ekstep.questionunitmtf.RendererPlugin = org.ekstep.contentrenderer.questionU
     if(!this._question.state){
       this._question.data.option.optionsRHS = _.shuffle(this._question.data.option.optionsRHS);
     } else {
-      this._question.data.option.optionsRHS = this._question.state.val.rhs_rearranged;
+      //BASED on the rearranged order update in seqeuence
+      var renderedOptions = this._question.state.val.rhs_rendered;
+      var reorderedOptionsIndexes = this._question.state.val.rhs_rearranged;
+      var newOrderedOptions = [];
+      var optionsLength = renderedOptions.length;
+      for(var i = 0;i < optionsLength;i++){
+        var rhsObjIndex = _.findIndex(renderedOptions, function(rhsOpt){
+          return rhsOpt.mapIndex == reorderedOptionsIndexes[i];
+        })
+        newOrderedOptions[i] = renderedOptions[rhsObjIndex];
+      }
+      this._question.data.option.optionsRHS = newOrderedOptions;
     }
     
   },
@@ -57,31 +68,22 @@ org.ekstep.questionunitmtf.RendererPlugin = org.ekstep.contentrenderer.questionU
     var correctAnswer = true;
     var correctAnswersCount = 0;
     var telemetryValues = [];
-    var RHS_rearranged = [];
+    var rhs_rearranged = [];
     var totalLHS = instance._question.data.option.optionsLHS.length;
     instance._selectedRHS = [];
 
-    for(var i = 0;i < instance._question.data.option.optionsRHS.length;i++){
-      RHS_rearranged[i] = {};
-    }
-
-    $('.rhs-block').each(function(expectedOptionMapIndex, elem){
+    $('.rhs-block').each(function(elemIndex, elem){
       var telObj = {
         'LHS':[],
         'RHS':[]
       };
-      var selectedOptionMapIndex = parseInt($(elem).data('mapindex')) - 1;
-
-      for(var i = 0;i < instance._question.data.option.optionsRHS.length;i++){
-        if(instance._question.data.option.optionsRHS[i].mapIndex == selectedOptionMapIndex + 1){
-          RHS_rearranged[expectedOptionMapIndex] = instance._question.data.option.optionsRHS[i];
-        }
-      }
-      telObj['LHS'][expectedOptionMapIndex] = instance._question.data.option.optionsLHS[expectedOptionMapIndex];
-      telObj['RHS'][selectedOptionMapIndex] = instance._question.data.option.optionsRHS[selectedOptionMapIndex];
+      var elemMappedIndex = parseInt($(elem).data('mapindex')) - 1;
+      rhs_rearranged[elemIndex] = elemMappedIndex + 1;
+      telObj['LHS'][elemIndex] = instance._question.data.option.optionsLHS[elemIndex];
+      telObj['RHS'][elemMappedIndex] = instance._question.data.option.optionsRHS[elemMappedIndex];
       telemetryValues.push(telObj);
-      instance._selectedRHS.push(instance._question.data.option.optionsRHS[selectedOptionMapIndex]);
-      if(selectedOptionMapIndex == expectedOptionMapIndex){
+      instance._selectedRHS.push(instance._question.data.option.optionsRHS[elemMappedIndex]);
+      if(elemMappedIndex == elemIndex){
         correctAnswersCount++;
       } else {
         correctAnswer = false;
@@ -102,9 +104,8 @@ org.ekstep.questionunitmtf.RendererPlugin = org.ekstep.contentrenderer.questionU
       eval: correctAnswer,
       state: {
         val: {
-          "lhs": this._question.data.option.optionsRHS,
-          "rhs": instance._selectedRHS,
-          "rhs_rearranged" : RHS_rearranged
+          "rhs_rendered": instance._selectedRHS,
+          "rhs_rearranged" : rhs_rearranged
         }
       },
       score: questionScore,
