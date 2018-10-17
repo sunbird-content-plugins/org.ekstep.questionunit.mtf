@@ -84,6 +84,17 @@ angular.module('mtfApp', ['org.ekstep.question']).controller('mtfQuestionFormCon
     'image': [],
     'audio': []
   };
+
+  $scope.lhsMedia = {
+    'image': [],
+    'audio': []
+  }
+
+  $scope.rhsMedia = {
+    'image': [],
+    'audio': []
+  }
+
   $scope.mtfFormData.media = [];
   $scope.editMedia = [];
   var questionInput = CKEDITOR.replace('mtfQuestion', {// eslint-disable-line no-undef
@@ -267,13 +278,16 @@ angular.module('mtfApp', ['org.ekstep.question']).controller('mtfQuestionFormCon
         telemetryObject.target.id = 'questionunit-mtf-lhs-add-' + data.assetMedia.type;
         $scope.mtfFormData.option.optionsLHS[index][data.assetMedia.type] = org.ekstep.contenteditor.mediaManager.getMediaOriginURL(data.assetMedia.src);
         data.assetMedia.type == 'audio' ? $scope.mtfFormData.option.optionsLHS[index].audioName = data.assetMedia.name : '';
-        $scope.optionsMedia[data.assetMedia.type][index] = media;
+        $scope.lhsMedia[data.assetMedia.type][index] = media;
       } else if (type == 'RHS') {
         telemetryObject.target.id = 'questionunit-mtf-rhs-add-' + data.assetMedia.type;
         $scope.mtfFormData.option.optionsRHS[index][data.assetMedia.type] = org.ekstep.contenteditor.mediaManager.getMediaOriginURL(data.assetMedia.src);
         data.assetMedia.type == 'audio' ? $scope.mtfFormData.option.optionsRHS[index].audioName = data.assetMedia.name : '';
-        $scope.optionsMedia[data.assetMedia.type][index] = media;
+        $scope.rhsMedia[data.assetMedia.type][index] = media;
       }
+
+      $scope.optionsMedia[data.assetMedia.type] = $scope.rhsMedia[data.assetMedia.type].concat($scope.lhsMedia[data.assetMedia.type])
+
       if(!$scope.$$phase) {
         $scope.$digest()
       }
@@ -297,11 +311,11 @@ angular.module('mtfApp', ['org.ekstep.question']).controller('mtfQuestionFormCon
     } else if (type == 'LHS') {
       telemetryObject.target.id = 'questionunit-mtf-lhs-delete-' + mediaType;
       $scope.mtfFormData.option.optionsLHS[index][mediaType] = '';
-      delete $scope.optionsMedia[mediaType][index];
+      delete $scope.lhsMedia[data.assetMedia.type][index];
     } else if (type == 'RHS') {
       telemetryObject.target.id = 'questionunit-mtf-rhs-delete-' + mediaType;
       $scope.mtfFormData.option.optionsRHS[index][mediaType] = '';
-      delete $scope.optionsMedia[mediaType][index];
+      delete $scope.rhsMedia[data.assetMedia.type][index];
     }
     $scope.generateTelemetry(telemetryObject)
   }
