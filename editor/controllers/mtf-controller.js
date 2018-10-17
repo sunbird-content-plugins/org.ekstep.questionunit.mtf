@@ -318,6 +318,7 @@ angular.module('mtfApp', ['org.ekstep.question']).controller('mtfQuestionFormCon
       delete $scope.rhsMedia[data.assetMedia.type][index];
     }
     $scope.generateTelemetry(telemetryObject)
+    $scope.optionsMedia[data.assetMedia.type] = $scope.rhsMedia[data.assetMedia.type].concat($scope.lhsMedia[data.assetMedia.type])
   }
 
   /**
