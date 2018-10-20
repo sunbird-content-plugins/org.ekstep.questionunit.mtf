@@ -12,6 +12,7 @@ org.ekstep.questionunitmtf.RendererPlugin = org.ekstep.contentrenderer.questionU
   _render: true,
   _selectedAnswers: [],
   _dragulaContainers: [],
+  _drake:undefined,
   _constant: {
     horizontal: "Horizontal",
     vertial : "Vertical"
@@ -36,11 +37,28 @@ org.ekstep.questionunitmtf.RendererPlugin = org.ekstep.contentrenderer.questionU
       }
     })
     this._question.template = MTFController.getQuestionTemplate(this._question.config.layout, this._constant);
-    //shuffle rhs answers
-    this._question.data.option.optionsRHS = _.shuffle(this._question.data.option.optionsRHS);
+    //The state will created once an is selected, Only once a quesiton will be shuffled
+    if(!this._question.state){
+      this._question.data.option.optionsRHS = _.shuffle(this._question.data.option.optionsRHS);
+    } else {
+      //BASED on the rearranged order update in seqeuence
+      var renderedOptions = this._question.state.val.rhs_rendered;
+      var reorderedOptionsIndexes = this._question.state.val.rhs_rearranged;
+      var newOrderedOptions = [];
+      var optionsLength = renderedOptions.length;
+      for(var i = 0;i < optionsLength;i++){
+        var rhsObjIndex = _.findIndex(renderedOptions, function(rhsOpt){
+          return rhsOpt.mapIndex == reorderedOptionsIndexes[i];
+        })
+        newOrderedOptions[i] = renderedOptions[rhsObjIndex];
+      }
+      this._question.data.option.optionsRHS = newOrderedOptions;
+    }
+    
   },
   postQuestionShow: function (event) {
     var instance = this;
+    QSTelemetryLogger.logEvent(QSTelemetryLogger.EVENT_TYPES.ASSESS); // eslint-disable-line no-undef
   },
   evaluateQuestion: function(event){
     var instance = this;
@@ -48,40 +66,46 @@ org.ekstep.questionunitmtf.RendererPlugin = org.ekstep.contentrenderer.questionU
     var correctAnswer = true;
     var correctAnswersCount = 0;
     var telemetryValues = [];
+    var rhs_rearranged = [];
     var totalLHS = instance._question.data.option.optionsLHS.length;
-    instance._selectedRHS = [];
-    $('.rhs-block').each(function(expectedOptionMapIndex, elem){
+
+    $('.rhs-block').each(function(elemIndex, elem){
       var telObj = {
         'LHS':[],
         'RHS':[]
       };
-      var selectedOptionMapIndex = parseInt($(elem).data('mapindex')) - 1;
-      telObj['LHS'][expectedOptionMapIndex] = instance._question.data.option.optionsLHS[expectedOptionMapIndex];
-      telObj['RHS'][selectedOptionMapIndex] = instance._question.data.option.optionsRHS[selectedOptionMapIndex];
+      var elemMappedIndex = parseInt($(elem).data('mapindex')) - 1;
+      rhs_rearranged[elemIndex] = elemMappedIndex + 1;
+      telObj['LHS'][elemIndex] = instance._question.data.option.optionsLHS[elemIndex];
+      telObj['RHS'][elemMappedIndex] = instance._question.data.option.optionsRHS[elemMappedIndex];
       telemetryValues.push(telObj);
-      instance._selectedRHS.push(instance._question.data.option.optionsRHS[selectedOptionMapIndex]);
-      if(selectedOptionMapIndex == expectedOptionMapIndex){
+      if(elemMappedIndex == elemIndex){
         correctAnswersCount++;
       } else {
         correctAnswer = false;
       }
     })
-    var partialScore
+    var questionScore;
     if(this._question.config.partial_scoring){
-      partialScore = (correctAnswersCount / totalLHS) * this._question.config.max_score;
+      questionScore = (correctAnswersCount / totalLHS) * this._question.config.max_score;
     }else{
-      partialScore = 0;
+      if((correctAnswersCount / totalLHS) == 1){
+        questionScore = this._question.config.max_score;
+      }else{
+        questionScore = 0
+      }
     }
     
     var result = {
       eval: correctAnswer,
       state: {
         val: {
-          "lhs": this._question.data.option.optionsRHS,
-          "rhs": instance._selectedRHS
+          "rhs_rendered": instance._question.data.option.optionsRHS,
+          "rhs_rearranged" : rhs_rearranged
         }
       },
-      score: partialScore,
+      score: questionScore,
+      max_score: this._question.config.max_score,
       values: telemetryValues,
       noOfCorrectAns: correctAnswersCount,
       totalAns: totalLHS
@@ -90,6 +114,7 @@ org.ekstep.questionunitmtf.RendererPlugin = org.ekstep.contentrenderer.questionU
       callback(result);
     }
     EkstepRendererAPI.dispatchEvent('org.ekstep.questionset:saveQuestionState', result.state);
+    QSTelemetryLogger.logEvent(QSTelemetryLogger.EVENT_TYPES.ASSESSEND, result); // eslint-disable-line no-undef
   },
   logTelemetryItemResponse: function (data) {
     QSTelemetryLogger.logEvent(QSTelemetryLogger.EVENT_TYPES.RESPONSE, {"type": "INPUT", "values": data});
