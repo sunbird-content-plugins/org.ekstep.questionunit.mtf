@@ -72,7 +72,9 @@ MTFController.getVerticalLayout = function () {
         <div class="lhs-rhs-block lhs-block">\
             <img class="background-image" src="<%= MTFController.pluginInstance.getAudioIcon("renderer/assets/shape1.png") %>" />\
             <span><%= val.text %></span>\
-            <img onclick="MTFController.showImageModel(event, \'<%= val.image %>\')" class="option-image" src="<%= val.image %>" />\
+            <% if(val.image){ %> \
+              <img onclick="org.ekstep.questionunit.baseComponent.showImageModel(event, \'<%= MTFController.pluginInstance.getAssetUrl(val.image) %>\')" class="option-image" src="<%= MTFController.pluginInstance.getAssetUrl(val.image) %>" />\
+            <% } %>\
             <% if(val.audio){ %> \
               <img onclick=MTFController.pluginInstance.playAudio({src:"<%= val.audio %>"}) class="audio-image" src="<%= MTFController.pluginInstance.getAudioIcon("renderer/assets/audio3.png") %>" />\
             <% } %>\
@@ -84,7 +86,9 @@ MTFController.getVerticalLayout = function () {
         <div data-mapindex=<%= val.mapIndex %> class="lhs-rhs-block rhs-block">\
         <img class="background-image" src="<%= MTFController.pluginInstance.getAudioIcon("renderer/assets/shape2.png") %>" />\
         <span><%= val.text %></span>\
-        <img onclick="MTFController.showImageModel(event, \'<%= val.image %>\')" class="option-image" src="<%= val.image %>" />\
+        <% if(val.image){ %> \
+          <img onclick="org.ekstep.questionunit.baseComponent.showImageModel(event, \'<%= MTFController.pluginInstance.getAssetUrl(val.image) %>\')" class="option-image" src="<%= MTFController.pluginInstance.getAssetUrl(val.image) %>" />\
+        <% } %>\
         <% if(val.audio){ %> \
           <img onclick=MTFController.pluginInstance.playAudio({src:"<%= val.audio %>"}) class="audio-image" src="<%= MTFController.pluginInstance.getAudioIcon("renderer/assets/audio3.png") %>" />\
         <% } %>\
@@ -94,8 +98,33 @@ MTFController.getVerticalLayout = function () {
   </div>'
 }
             
+MTFController.touchHandler = function(event){
+  var touch = event.changedTouches[0];
+
+  var simulatedEvent = document.createEvent("MouseEvent");
+      simulatedEvent.initMouseEvent({
+      touchstart: "mousedown",
+      touchmove: "mousemove",
+      touchend: "mouseup"
+  }[event.type], true, true, window, 1,
+      touch.screenX, touch.screenY,
+      touch.clientX, touch.clientY, false,
+      false, false, false, 0, null);
+
+  touch.target.dispatchEvent(simulatedEvent);
+  event.preventDefault();
+}
+
+MTFController.touchConvertInit = function() {
+  document.addEventListener("touchstart", MTFController.touchHandler, true);
+  document.addEventListener("touchmove", MTFController.touchHandler, true);
+  document.addEventListener("touchend", MTFController.touchHandler, true);
+  document.addEventListener("touchcancel", MTFController.touchHandler, true);
+}
+
 MTFController.onDomReady = function(){
     $(document).ready(function(){
+        MTFController.touchConvertInit();
         $(".rhs-container").sortable();
         $(".rhs-container").disableSelection();
     }) 
