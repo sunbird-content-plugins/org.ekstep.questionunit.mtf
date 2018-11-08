@@ -21,7 +21,7 @@ MTFController.getQuestionContent = function () {
   <div class='<%= MTFController.questionTextImageWidth %>' > \
   <% if(question.data.question.image){ %> \
     <div class='question-image'>\
-      <img onclick='MTFController.showImageModel(event, \"<%= question.data.question.image %>\")' src='<%= question.data.question.image %>' \> \
+      <img onclick='MTFController.showImageModel(event, \"<%= MTFController.pluginInstance.getAssetUrl(question.data.question.image) %>\")' src='<%= MTFController.pluginInstance.getAssetUrl(question.data.question.image) %>' \> \
     </div> \
     <% } %> \
     <% if(question.data.question.text.length<85){ %>\
