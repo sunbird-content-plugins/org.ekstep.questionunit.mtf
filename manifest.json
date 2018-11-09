@@ -82,6 +82,12 @@
       {
         "type": "js",
         "src": "renderer/js/mtftemplate.js"
+      },
+      {
+        "id":"org.ekstep.questionunit.mtf-1.0-audio.png",
+        "type":"image",
+        "src":"/renderer/assets/audio.png",
+        "assetId": "org.ekstep.questionunit.mtf-1.0-audio.png"
       }
     ]
   },
