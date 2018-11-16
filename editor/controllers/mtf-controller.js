@@ -80,12 +80,17 @@ angular.module('mtfApp', ['org.ekstep.question']).controller('mtfQuestionFormCon
     }
   };
   $scope.questionMedia = {};
-  $scope.optionsMedia = {
-    'image': [],
-    'audio': []
-  };
   $scope.mtfFormData.media = [];
-  $scope.editMedia = [];
+  $scope.optionMedia = {
+    'optionsLHSMedia': {
+      'image': [],
+      'audio': []
+    },
+    'optionsRHSMedia': {
+      'image': [],
+      'audio': []
+    }
+  };
   var questionInput = CKEDITOR.replace('mtfQuestion', {// eslint-disable-line no-undef
     customConfig: ecEditor.resolvePluginResource('org.ekstep.questionunit', '1.0', "editor/ckeditor-config.js"),
     skin: 'moono-lisa,' + CKEDITOR.basePath + "skins/moono-lisa/",// eslint-disable-line no-undef
@@ -116,6 +121,7 @@ angular.module('mtfApp', ['org.ekstep.question']).controller('mtfQuestionFormCon
       }
     })
   });
+  var questionUnitInstance = ecEditor.instantiatePlugin('org.ekstep.questionunit');
   $scope.init = function () {
     /**
      * editor:questionunit.mtf:call form validation.
@@ -147,7 +153,31 @@ angular.module('mtfApp', ['org.ekstep.question']).controller('mtfQuestionFormCon
     var qdata = data.data;
     $scope.mtfFormData.question = qdata.question;
     $scope.mtfFormData.option = qdata.option;
-    $scope.editMedia = qdata.media;
+    _.each(qdata.media, function (obj) {
+      questionUnitInstance.setMedia(obj);
+    })
+    $scope.mtfFormData.media = questionUnitInstance.getAllMedia();
+    !_.isEmpty($scope.mtfFormData.question['image']) ? $scope.questionMedia['image'] = questionUnitInstance.getMedia('src', $scope.mtfFormData.question['image']) : $scope.questionMedia['image'] = {};
+    !_.isEmpty($scope.mtfFormData.question['audio']) ? $scope.questionMedia['audio'] = questionUnitInstance.getMedia('src', $scope.mtfFormData.question['audio']) : $scope.questionMedia['audio'] = {};
+    _.each($scope.optionMedia, function(op, key){
+      $scope.optionMedia[key]['image'] = [];
+      $scope.optionMedia[key]['audio'] = [];
+    });
+
+    _.each($scope.mtfFormData.option.optionsLHS, function(k, v){
+      var optionImage, optionAudio;
+      !_.isEmpty(k['image']) ? optionImage = questionUnitInstance.getMedia('src', k['image']) : optionImage = undefined;
+      $scope.optionMedia.optionsLHSMedia['image'].push(optionImage)
+      !_.isEmpty(k['audio']) ? optionAudio = questionUnitInstance.getMedia('src', k['audio']) : optionAudio = undefined;
+      $scope.optionMedia.optionsLHSMedia['audio'].push(optionAudio);
+    });
+    _.each($scope.mtfFormData.option.optionsRHS, function(k, v){
+      var optionImage, optionAudio;
+      !_.isEmpty(k['image']) ? optionImage = questionUnitInstance.getMedia('src', k['image']) : optionImage = undefined;
+      $scope.optionMedia.optionsRHSMedia['image'].push(optionImage)
+      !_.isEmpty(k['audio']) ? optionAudio = questionUnitInstance.getMedia('src', k['audio']) : optionAudio = undefined;
+      $scope.optionMedia.optionsRHSMedia['audio'].push(optionAudio);
+    });
   }
   /**
    * add the pair in mtf
@@ -181,9 +211,7 @@ angular.module('mtfApp', ['org.ekstep.question']).controller('mtfQuestionFormCon
    * @returns {Object} question data.
    */
   $scope.formValidation = function () {
-    var formConfig = {},
-      temp, tempArray = [],
-      formValid;
+    var formConfig = {}, formValid;
     //check form valid and lhs should be more than 3
     formValid = $scope.mtfForm.$valid && $scope.mtfFormData.option.optionsLHS.length > 2;
     $scope.mtfFormData.question.text=_.isUndefined($scope.mtfFormData.question.text)?"":$scope.mtfFormData.question.text;
@@ -193,19 +221,6 @@ angular.module('mtfApp', ['org.ekstep.question']).controller('mtfQuestionFormCon
         $('.questionTextBox').removeClass("ck-error");
       }
     $scope.submitted = true;
-    _.isEmpty($scope.questionMedia.image) ? 0 : tempArray.push($scope.questionMedia.image);
-    _.isEmpty($scope.questionMedia.audio) ? 0 : tempArray.push($scope.questionMedia.audio);
-    _.each($scope.optionsMedia.image, function (key) {
-      tempArray.push(key);
-    });
-    _.each($scope.optionsMedia.audio, function (key) {
-      tempArray.push(key);
-    });
-    temp = tempArray.filter(function (element) {
-      return element !== undefined;
-    });
-    $scope.editMedia = _.union($scope.editMedia, temp);
-    $scope.mtfFormData.media = $scope.editMedia;
     formConfig.formData = $scope.mtfFormData;
     if (formValid) {
       $scope.selLbl = 'success';
@@ -250,30 +265,35 @@ angular.module('mtfApp', ['org.ekstep.question']).controller('mtfQuestionFormCon
     //Defining the callback function of mediaObject before invoking asset browser
     mediaObject.callback = function (data) {
       var telemetryObject = { type: 'TOUCH', id: 'button', target: { id: '', ver: '', type: 'button' } };
-      var media = {
-        "id": Math.floor(Math.random() * 1000000000), // Unique identifier
-        "src": org.ekstep.contenteditor.mediaManager.getMediaOriginURL(data.assetMedia.src), // Media URL
-        "assetId": data.assetMedia.id, // Asset identifier
-        "type": data.assetMedia.type, // Type of asset (image, audio, etc)
-        "preload": false // true or false
-      };
+      var newMedia = {
+        "type" : type,
+        "value" : data
+      }, oldMedia = {};
 
       if (type == 'q') {
         telemetryObject.target.id = 'questionunit-mtf-add-' + data.assetMedia.type;
-        $scope.mtfFormData.question[data.assetMedia.type] = org.ekstep.contenteditor.mediaManager.getMediaOriginURL(data.assetMedia.src);
-        data.assetMedia.type == 'audio' ? $scope.mtfFormData.question.audioName = data.assetMedia.name :
-          $scope.questionMedia[data.assetMedia.type] = media;
+        !_.isEmpty($scope.mtfFormData.question[mediaType]) ? oldMedia = $scope.questionMedia[mediaType] : oldMedia = undefined;
+        questionUnitInstance.setMedia(newMedia, oldMedia);
+        $scope.mtfFormData.question[mediaType] = org.ekstep.contenteditor.mediaManager.getMediaOriginURL(data.assetMedia.src);
+        data.assetMedia.type == 'audio' ? $scope.mtfFormData.question.audioName = data.assetMedia.name : '';
+        $scope.questionMedia[mediaType] = data.assetMedia;
       } else if (type == 'LHS') {
         telemetryObject.target.id = 'questionunit-mtf-lhs-add-' + data.assetMedia.type;
-        $scope.mtfFormData.option.optionsLHS[index][data.assetMedia.type] = org.ekstep.contenteditor.mediaManager.getMediaOriginURL(data.assetMedia.src);
+        !_.isEmpty($scope.mtfFormData.option.optionsLHS[index][mediaType]) ? oldMedia = $scope.optionMedia.optionsLHSMedia[index][mediaType] : oldMedia = undefined;
+        questionUnitInstance.setMedia(newMedia, oldMedia);
+        $scope.mtfFormData.option.optionsLHS[index][mediaType] = org.ekstep.contenteditor.mediaManager.getMediaOriginURL(data.assetMedia.src);
         data.assetMedia.type == 'audio' ? $scope.mtfFormData.option.optionsLHS[index].audioName = data.assetMedia.name : '';
-        $scope.optionsMedia[data.assetMedia.type][index] = media;
+        $scope.optionMedia.optionsLHSMedia[mediaType][index] = data.assetMedia;
       } else if (type == 'RHS') {
-        telemetryObject.target.id = 'questionunit-mtf-rhs-add-' + data.assetMedia.type;
-        $scope.mtfFormData.option.optionsRHS[index][data.assetMedia.type] = org.ekstep.contenteditor.mediaManager.getMediaOriginURL(data.assetMedia.src);
+        telemetryObject.target.id = 'questionunit-mtf-rhs-add-' + data.assetMedia.type;      
+        !_.isEmpty($scope.mtfFormData.option.optionsRHS[index][mediaType]) ? oldMedia = $scope.optionMedia.optionsRHSMedia[index][mediaType] : oldMedia = undefined;
+        questionUnitInstance.setMedia(newMedia, oldMedia);
+        $scope.mtfFormData.option.optionsRHS[index][mediaType] = org.ekstep.contenteditor.mediaManager.getMediaOriginURL(data.assetMedia.src);
         data.assetMedia.type == 'audio' ? $scope.mtfFormData.option.optionsRHS[index].audioName = data.assetMedia.name : '';
-        $scope.optionsMedia[data.assetMedia.type][index] = media;
+        $scope.optionMedia.optionsRHSMedia[mediaType][index] = data.assetMedia;
       }
+      $scope.mtfFormData.media = questionUnitInstance.getAllMedia();
+
       if(!$scope.$$phase) {
         $scope.$digest()
       }
@@ -292,16 +312,22 @@ angular.module('mtfApp', ['org.ekstep.question']).controller('mtfQuestionFormCon
     var telemetryObject = { type: 'TOUCH', id: 'button', target: { id: '', ver: '', type: 'button' } };
     if (type == 'q') {
       telemetryObject.target.id = 'questionunit-mtf-delete' + mediaType;
+      questionUnitInstance.removeMedia('id', $scope.questionMedia[mediaType].id);
+      $scope.mtfFormData.media = questionUnitInstance.getAllMedia();
       $scope.mtfFormData.question[mediaType] = '';
       delete $scope.questionMedia[mediaType];
     } else if (type == 'LHS') {
       telemetryObject.target.id = 'questionunit-mtf-lhs-delete-' + mediaType;
+      questionUnitInstance.removeMedia('id', $scope.optionMedia.optionsLHSMedia[mediaType][index].id);
+      $scope.mtfFormData.media = questionUnitInstance.getAllMedia();
       $scope.mtfFormData.option.optionsLHS[index][mediaType] = '';
-      delete $scope.optionsMedia[mediaType][index];
+      delete $scope.optionMedia.optionsLHSMedia[mediaType];
     } else if (type == 'RHS') {
       telemetryObject.target.id = 'questionunit-mtf-rhs-delete-' + mediaType;
+      questionUnitInstance.removeMedia('id', $scope.optionMedia.optionsRHSMedia[mediaType][index].id);
+      $scope.mtfFormData.media = questionUnitInstance.getAllMedia();
       $scope.mtfFormData.option.optionsRHS[index][mediaType] = '';
-      delete $scope.optionsMedia[mediaType][index];
+      delete $scope.optionMedia.optionsRHSMedia[mediaType];
     }
     $scope.generateTelemetry(telemetryObject)
   }
