@@ -117,24 +117,32 @@ org.ekstep.questionunitmtf.RendererPlugin = org.ekstep.contentrenderer.questionU
   logTelemetryItemResponse: function (data) {
     QSTelemetryLogger.logEvent(QSTelemetryLogger.EVENT_TYPES.RESPONSE, { "type": "INPUT", "values": data });
   },
+  /**
+   * shuffles the options array
+   */
   shuffleOptions: function (options) {
-    // shuffle the RHS options such that there is nothing matches by default with the LHS.
-    // The permuations are generated when options count is 3, 4 or 5. For others, we just return the shuffled options
-    var validOrders = {
-      3: [[1, 2, 0], [2, 0, 1]],
-      4: [[1, 0, 3, 2], [1, 2, 3, 0], [1, 3, 0, 2], [2, 0, 3, 1], [2, 3, 0, 1], [2, 3, 1, 0], [3, 0, 1, 2], [3, 2, 0, 1], [3, 2, 1, 0]],
-      5: [[1, 0, 3, 4, 2], [1, 0, 4, 2, 3], [1, 2, 0, 4, 3], [1, 2, 3, 4, 0], [1, 2, 4, 0, 3], [1, 3, 0, 4, 2], [1, 3, 4, 0, 2], [1, 3, 4, 2, 0], [1, 4, 0, 2, 3], [1, 4, 3, 0, 2], [1, 4, 3, 2, 0], [2, 0, 1, 4, 3], [2, 0, 3, 4, 1], [2, 0, 4, 1, 3], [2, 3, 0, 4, 1], [2, 3, 1, 4, 0], [2, 3, 4, 0, 1], [2, 3, 4, 1, 0], [2, 4, 0, 1, 3], [2, 4, 1, 0, 3], [2, 4, 3, 0, 1], [2, 4, 3, 1, 0], [3, 0, 1, 4, 2], [3, 0, 4, 1, 2], [3, 0, 4, 2, 1], [3, 2, 0, 4, 1], [3, 2, 1, 4, 0], [3, 2, 4, 0, 1], [3, 2, 4, 1, 0], [3, 4, 0, 1, 2], [3, 4, 0, 2, 1], [3, 4, 1, 0, 2], [3, 4, 1, 2, 0], [4, 0, 1, 2, 3], [4, 0, 3, 1, 2], [4, 0, 3, 2, 1], [4, 2, 0, 1, 3], [4, 2, 1, 0, 3], [4, 2, 3, 0, 1], [4, 2, 3, 1, 0], [4, 3, 0, 1, 2], [4, 3, 0, 2, 1], [4, 3, 1, 0, 2], [4, 3, 1, 2, 0]]
-    };
-    if (validOrders[options.length]) {
-      var shuffled = [];
-      var selected = validOrders[options.length][_.random(0, validOrders[options.length].length - 1)];
-      _.each(selected, function (i) {
-        shuffled.push(options[i]);
-      });
-      return shuffled;
-    }
-    else
-      return _.shuffle(options);
+    var shuffled = [];
+    var selected = this.derange(_.range(0, options.length));
+    _.each(selected, function (i) {
+      shuffled.push(options[i]);
+    });
+    return shuffled;
+  },
+  /**
+   * deranges (shuffles such that no element will remain in its original index) 
+   * the elements the given array. This is a JavaScript implementation of
+   * Sattolo's algorithm [https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#Sattolo's_algorithm]
+   */
+  derange: function (array) {
+    var m = array.length, t, i;
+    _.each(_.range(0, m - 1), function (i, k) {
+      var j = _.random(i + 1, m - 1); // note: i+1
+      t = array[i];
+      array[i] = array[j];
+      array[j] = t;
+    });
+    return array;
   }
+
 });
 //# sourceURL=questionunitMTFPlugin.js
