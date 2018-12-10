@@ -1,7 +1,7 @@
 /**
  *
- * Question Unit plugin to render a MCQ question
- * @class org.ekstep.questionunit.mcq
+ * Question Unit plugin to render a MTF question
+ * @class org.ekstep.questionunit.mtf
  * @extends org.ekstep.contentrenderer.questionUnitPlugin
  * @author Manoj Chandrashekar <manoj.chandrashekar@tarento.com>
  */
@@ -12,135 +12,112 @@ org.ekstep.questionunitmtf.RendererPlugin = org.ekstep.contentrenderer.questionU
   _render: true,
   _selectedAnswers: [],
   _dragulaContainers: [],
-  setQuestionTemplate: function () {
-    this._question.template = QS_MTFTemplate.htmlLayout;
+  _drake: undefined,
+  _constant: {
+    horizontal: "Horizontal",
+    vertial: "Vertical"
   },
+  setQuestionTemplate: function () {
+    MTFController.initTemplate(this);// eslint-disable-line no-undef
+  },
+
   preQuestionShow: function (event) {
     this._super(event);
+    var inst = this;
 
-    var instance = this;
-    QS_MTFTemplate.optionsWidth = undefined;
-    QS_MTFTemplate.selAns = [];
-    this._selectedAnswers = [];
-    //RHS options data shuffle
-    this._question.data.option.optionsRHS = _.shuffle(this._question.data.option.optionsRHS);
+    // If the any of the lhs or rhs had a image then the layout is vertical
+    _.each(this._question.data.option.optionsLHS, function (lhs) {
+      if (lhs.image) {
+        inst._question.config.layout = "Vertical";
+      }
+    })
+    _.each(this._question.data.option.optionsRHS, function (rhs) {
+      if (rhs.image) {
+        inst._question.config.layout = "Vertical";
+      }
+    })
+    this._question.template = MTFController.getQuestionTemplate(this._question.config.layout, this._constant);
+    //The state will created once an is selected, Only once a quesiton will be shuffled
+    if (!this._question.state) {
+      this._question.data.option.optionsRHS = _.shuffle(this._question.data.option.optionsRHS);
+    } else {
+      //BASED on the rearranged order update in seqeuence
+      var renderedOptions = this._question.state.rhs_rendered;
+      var reorderedOptionsIndexes = this._question.state.val.rhs_rearranged;
+      var newOrderedOptions = [];
+      var optionsLength = renderedOptions.length;
+      for (var i = 0; i < optionsLength; i++) {
+        var rhsObjIndex = _.findIndex(renderedOptions, function (rhsOpt) {
+          return rhsOpt.mapIndex == reorderedOptionsIndexes[i];
+        })
+        newOrderedOptions[i] = renderedOptions[rhsObjIndex];
+      }
+      this._question.data.option.optionsRHS = newOrderedOptions;
+    }
 
-    var lhsOptions = this._question.data.option.optionsLHS;
-    for (var lhs = 0; lhs < lhsOptions.length; lhs++) {
-      var emptyBox = {
-        "index": lhsOptions[lhs].index,
-        "selText": ""
-      };
-      QS_MTFTemplate.selAns.push(emptyBox);
-    }
-    if (this._question.state && this._question.state.val) {
-      this._selectedAnswers = this._question.state.val.lhs;
-      QS_MTFTemplate.selAns = this._question.state.val.lhs;
-      this._question.data.option.optionsRHS = this._question.state.val.rhs;
-    }
-    QSTelemetryLogger.logEvent(QSTelemetryLogger.EVENT_TYPES.ASSESS); // eslint-disable-line no-undef
-    if (lhsOptions.length == 3) {
-      QS_MTFTemplate.optionsWidth = 'width33';
-    } else if (lhsOptions.length == 4) {
-      QS_MTFTemplate.optionsWidth = 'width25';
-    } else if (lhsOptions.length == 5) {
-      QS_MTFTemplate.optionsWidth = 'width20';
-    }
-    _.each(lhsOptions, function (v, k) {
-      var lhs = 'left' + (k + 1);
-      var rhs = 'right' + (k + 1);
-      instance._dragulaContainers.push(lhs);
-      instance._dragulaContainers.push(rhs);
-    });
-  },
-  dragulaIsContainer: function (el) {
-    return el.classList.contains('cont-dragula');
   },
   postQuestionShow: function (event) {
     var instance = this;
-    var drake = dragula({
-      isContainer: function (elem) {
-        return instance.dragulaIsContainer(elem);
-      },
-      accepts: function (elem, target, source, sibling) {
-        if ($(target).children().length > 0) {
-          return false;
-        }
-        return true;
-      }
-    });
-    drake.on('drop', function (elem, target, source, sibling) {
-      instance.onDropElement(elem, target, source, sibling, instance._question);
-    });
+    QSTelemetryLogger.logEvent(QSTelemetryLogger.EVENT_TYPES.ASSESS); // eslint-disable-line no-undef
   },
   evaluateQuestion: function (event) {
     var instance = this;
     var callback = event.target;
     var correctAnswer = true;
+    var correctAnswersCount = 0;
     var telemetryValues = [];
-    var tempCount = 0;
-    var qLhsData = this._question.data.option.optionsLHS;
-    if (!_.isUndefined(instance._selectedAnswers)) {
-      _.each(qLhsData, function (val, key) {
-        var telObj = {};
-        if (!_.isUndefined(instance._selectedAnswers[key])) {
-          telObj[qLhsData[key].text] = instance._selectedAnswers[key].selText;
-          telemetryValues.push(telObj);
-          var t = instance._selectedAnswers[key].mapIndex;
-          if (qLhsData[key].index != Number(t)) {
-            correctAnswer = false;
-          } else {
-            tempCount++;
-          }
-        } else {
-          correctAnswer = false;
-        }
-      });
+    var rhs_rearranged = [];
+    var totalLHS = instance._question.data.option.optionsLHS.length;
+
+    $('.rhs-block').each(function (elemIndex, elem) {
+      var telObj = {
+        'LHS': [],
+        'RHS': []
+      };
+      var elemMappedIndex = parseInt($(elem).data('mapindex')) - 1;
+      rhs_rearranged[elemIndex] = elemMappedIndex + 1;
+      telObj['LHS'][elemIndex] = instance._question.data.option.optionsLHS[elemIndex];
+      telObj['RHS'][elemMappedIndex] = instance._question.data.option.optionsRHS[elemMappedIndex];
+      telemetryValues.push(telObj);
+      if (elemMappedIndex == elemIndex) {
+        correctAnswersCount++;
+      } else {
+        correctAnswer = false;
+      }
+    })
+    var questionScore;
+    if (this._question.config.partial_scoring) {
+      questionScore = (correctAnswersCount / totalLHS) * this._question.config.max_score;
+    } else {
+      if ((correctAnswersCount / totalLHS) == 1) {
+        questionScore = this._question.config.max_score;
+      } else {
+        questionScore = 0
+      }
     }
-    var partialScore = (tempCount / qLhsData.length) * this._question.config.max_score;
+
     var result = {
       eval: correctAnswer,
       state: {
         val: {
-          "lhs": instance._selectedAnswers,
-          "rhs": this._question.data.option.optionsRHS
-        }
+          "rhs_rearranged": rhs_rearranged
+        },
+        rhs_rendered: instance._question.data.option.optionsRHS,
       },
-      score: partialScore,
+      score: questionScore,
+      max_score: this._question.config.max_score,
       values: telemetryValues,
-      noOfCorrectAns: tempCount,
-      totalAns: qLhsData.length
+      noOfCorrectAns: correctAnswersCount,
+      totalAns: totalLHS
     };
     if (_.isFunction(callback)) {
       callback(result);
     }
     EkstepRendererAPI.dispatchEvent('org.ekstep.questionset:saveQuestionState', result.state);
-    QSTelemetryLogger.logEvent(QSTelemetryLogger.EVENT_TYPES.ASSESSEND, result);
-  },
-  onDropElement: function (elem, target, source, sibling, question) {
-    var instance = this;
-    if (!_.isUndefined($(source).attr('mapIndex'))) {
-      var rhsData = {};
-      var text = $(target).text();
-      rhsData.mapIndex = $(source).attr('mapIndex');
-      rhsData.selText = text.trim();
-      var existEle = _.contains(instance._selectedAnswers, rhsData);
-      if (!existEle) {
-        instance._selectedAnswers[Number($(target).attr('leftindex')) - 1] = rhsData;
-        var responseData = [{
-          lhs: question.data.option.optionsLHS[($(source).attr('mapIndex') - 1)].text,
-          rhs: text.trim()
-        }];
-        instance.logTelemetryItemResponse(responseData);
-      }
-    } else {
-      instance._selectedAnswers = _.filter(instance._selectedAnswers, function (item) {
-        return item.mapIndex !== $(target).attr('mapIndex')
-      });
-    }
+    QSTelemetryLogger.logEvent(QSTelemetryLogger.EVENT_TYPES.ASSESSEND, result); // eslint-disable-line no-undef
   },
   logTelemetryItemResponse: function (data) {
-    QSTelemetryLogger.logEvent(QSTelemetryLogger.EVENT_TYPES.RESPONSE, {"type": "INPUT", "values": data});
+    QSTelemetryLogger.logEvent(QSTelemetryLogger.EVENT_TYPES.RESPONSE, { "type": "INPUT", "values": data });
   }
 });
 //# sourceURL=questionunitMTFPlugin.js
