@@ -79,12 +79,22 @@ angular.module('mtfApp', ['org.ekstep.question']).controller('mtfQuestionFormCon
       'questionCount': 0
     }
   };
-  $scope.indexPair = 4;
   $scope.questionMedia = {};
   $scope.optionsMedia = {
     'image': [],
     'audio': []
   };
+
+  $scope.lhsMedia = {
+    'image': [],
+    'audio': []
+  }
+
+  $scope.rhsMedia = {
+    'image': [],
+    'audio': []
+  }
+
   $scope.mtfFormData.media = [];
   $scope.editMedia = [];
   var questionInput = CKEDITOR.replace('mtfQuestion', {// eslint-disable-line no-undef
@@ -161,7 +171,7 @@ angular.module('mtfApp', ['org.ekstep.question']).controller('mtfQuestionFormCon
       'audio': '',
       'audioName': '',
       'hint': '',
-      'index': $scope.indexPair
+      'index': $scope.mtfFormData.option.optionsLHS.length + 1
     };
     var optionRHS = {
       'text': '',
@@ -169,7 +179,7 @@ angular.module('mtfApp', ['org.ekstep.question']).controller('mtfQuestionFormCon
       'audio': '',
       'audioName': '',
       'hint': '',
-      'mapIndex': $scope.indexPair++
+      'mapIndex': $scope.mtfFormData.option.optionsRHS.length + 1
     };
     if ($scope.mtfFormData.option.optionsLHS.length < 5) {
       $scope.mtfFormData.option.optionsLHS.push(optionLHS);
@@ -185,8 +195,13 @@ angular.module('mtfApp', ['org.ekstep.question']).controller('mtfQuestionFormCon
     var formConfig = {},
       temp, tempArray = [],
       formValid;
+
+    //Add media to options Media
+    $scope.optionsMedia['image'] = $scope.rhsMedia['image'].concat($scope.lhsMedia['image']);
+    $scope.optionsMedia['audio'] = $scope.rhsMedia['audio'].concat($scope.lhsMedia['audio']);
     //check form valid and lhs should be more than 3
     formValid = $scope.mtfForm.$valid && $scope.mtfFormData.option.optionsLHS.length > 2;
+    $scope.mtfFormData.question.text=_.isUndefined($scope.mtfFormData.question.text)?"":$scope.mtfFormData.question.text;
      if(!($scope.mtfFormData.question.text.length || $scope.mtfFormData.question.image.length || $scope.mtfFormData.question.audio.length)){
         $('.questionTextBox').addClass("ck-error");
       }else{
@@ -224,6 +239,16 @@ angular.module('mtfApp', ['org.ekstep.question']).controller('mtfQuestionFormCon
   $scope.deletePair = function (id) {
     $scope.mtfFormData.option.optionsLHS.splice(id, 1);
     $scope.mtfFormData.option.optionsRHS.splice(id, 1);
+    $scope.updatedMapIndex()
+  }
+
+  $scope.updatedMapIndex = function(){
+    _.each($scope.mtfFormData.option.optionsLHS, function(lhs, id){
+      lhs.index = id+1;
+    })
+    _.each($scope.mtfFormData.option.optionsRHS, function(rhs, id){
+      rhs.mapIndex = id+1;
+    })
   }
 
   /**
@@ -251,18 +276,18 @@ angular.module('mtfApp', ['org.ekstep.question']).controller('mtfQuestionFormCon
       if (type == 'q') {
         telemetryObject.target.id = 'questionunit-mtf-add-' + data.assetMedia.type;
         $scope.mtfFormData.question[data.assetMedia.type] = org.ekstep.contenteditor.mediaManager.getMediaOriginURL(data.assetMedia.src);
-        data.assetMedia.type == 'audio' ? $scope.mtfFormData.question.audioName = data.assetMedia.name :
+        $scope.mtfFormData.question.audioName = data.assetMedia.type == 'audio' ? data.assetMedia.name : '';
           $scope.questionMedia[data.assetMedia.type] = media;
       } else if (type == 'LHS') {
         telemetryObject.target.id = 'questionunit-mtf-lhs-add-' + data.assetMedia.type;
         $scope.mtfFormData.option.optionsLHS[index][data.assetMedia.type] = org.ekstep.contenteditor.mediaManager.getMediaOriginURL(data.assetMedia.src);
-        data.assetMedia.type == 'audio' ? $scope.mtfFormData.option.optionsLHS[index].audioName = data.assetMedia.name : '';
-        $scope.optionsMedia[data.assetMedia.type][index] = media;
+        $scope.mtfFormData.option.optionsLHS[index].audioName = data.assetMedia.type == 'audio' ? data.assetMedia.name : '';
+        $scope.lhsMedia[data.assetMedia.type][index] = media;
       } else if (type == 'RHS') {
         telemetryObject.target.id = 'questionunit-mtf-rhs-add-' + data.assetMedia.type;
         $scope.mtfFormData.option.optionsRHS[index][data.assetMedia.type] = org.ekstep.contenteditor.mediaManager.getMediaOriginURL(data.assetMedia.src);
-        data.assetMedia.type == 'audio' ? $scope.mtfFormData.option.optionsRHS[index].audioName = data.assetMedia.name : '';
-        $scope.optionsMedia[data.assetMedia.type][index] = media;
+        $scope.mtfFormData.option.optionsLHS[index].audioName = data.assetMedia.type == 'audio' ? data.assetMedia.name : '';
+        $scope.rhsMedia[data.assetMedia.type][index] = media;
       }
       if(!$scope.$$phase) {
         $scope.$digest()
@@ -287,11 +312,11 @@ angular.module('mtfApp', ['org.ekstep.question']).controller('mtfQuestionFormCon
     } else if (type == 'LHS') {
       telemetryObject.target.id = 'questionunit-mtf-lhs-delete-' + mediaType;
       $scope.mtfFormData.option.optionsLHS[index][mediaType] = '';
-      delete $scope.optionsMedia[mediaType][index];
+      delete $scope.lhsMedia[data.assetMedia.type][index];
     } else if (type == 'RHS') {
       telemetryObject.target.id = 'questionunit-mtf-rhs-delete-' + mediaType;
       $scope.mtfFormData.option.optionsRHS[index][mediaType] = '';
-      delete $scope.optionsMedia[mediaType][index];
+      delete $scope.rhsMedia[data.assetMedia.type][index];
     }
     $scope.generateTelemetry(telemetryObject)
   }
