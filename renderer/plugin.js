@@ -12,10 +12,10 @@ org.ekstep.questionunitmtf.RendererPlugin = org.ekstep.contentrenderer.questionU
   _render: true,
   _selectedAnswers: [],
   _dragulaContainers: [],
-  _drake:undefined,
+  _drake: undefined,
   _constant: {
     horizontal: "Horizontal",
-    vertial : "Vertical"
+    vertial: "Vertical"
   },
   setQuestionTemplate: function () {
     MTFController.initTemplate(this);// eslint-disable-line no-undef
@@ -26,41 +26,41 @@ org.ekstep.questionunitmtf.RendererPlugin = org.ekstep.contentrenderer.questionU
     var inst = this;
 
     // If the any of the lhs or rhs had a image then the layout is vertical
-    _.each(this._question.data.option.optionsLHS, function(lhs){
-      if(lhs.image) {
+    _.each(this._question.data.option.optionsLHS, function (lhs) {
+      if (lhs.image) {
         inst._question.config.layout = "Vertical";
       }
     })
-    _.each(this._question.data.option.optionsRHS, function(rhs){
-      if(rhs.image) {
+    _.each(this._question.data.option.optionsRHS, function (rhs) {
+      if (rhs.image) {
         inst._question.config.layout = "Vertical";
       }
     })
     this._question.template = MTFController.getQuestionTemplate(this._question.config.layout, this._constant);
     //The state will created once an is selected, Only once a quesiton will be shuffled
-    if(!this._question.state){
-      this._question.data.option.optionsRHS = _.shuffle(this._question.data.option.optionsRHS);
+    if (!this._question.state) {
+      this._question.data.option.optionsRHS = this.shuffleOptions(this._question.data.option.optionsRHS);
     } else {
       //BASED on the rearranged order update in seqeuence
       var renderedOptions = this._question.state.val.rhs_rendered;
       var reorderedOptionsIndexes = this._question.state.val.rhs_rearranged;
       var newOrderedOptions = [];
       var optionsLength = renderedOptions.length;
-      for(var i = 0;i < optionsLength;i++){
-        var rhsObjIndex = _.findIndex(renderedOptions, function(rhsOpt){
+      for (var i = 0; i < optionsLength; i++) {
+        var rhsObjIndex = _.findIndex(renderedOptions, function (rhsOpt) {
           return rhsOpt.mapIndex == reorderedOptionsIndexes[i];
         })
         newOrderedOptions[i] = renderedOptions[rhsObjIndex];
       }
       this._question.data.option.optionsRHS = newOrderedOptions;
     }
-    
+
   },
   postQuestionShow: function (event) {
     var instance = this;
     QSTelemetryLogger.logEvent(QSTelemetryLogger.EVENT_TYPES.ASSESS); // eslint-disable-line no-undef
   },
-  evaluateQuestion: function(event){
+  evaluateQuestion: function (event) {
     var instance = this;
     var callback = event.target;
     var correctAnswer = true;
@@ -69,39 +69,39 @@ org.ekstep.questionunitmtf.RendererPlugin = org.ekstep.contentrenderer.questionU
     var rhs_rearranged = [];
     var totalLHS = instance._question.data.option.optionsLHS.length;
 
-    $('.rhs-block').each(function(elemIndex, elem){
+    $('.rhs-block').each(function (elemIndex, elem) {
       var telObj = {
-        'LHS':[],
-        'RHS':[]
+        'LHS': [],
+        'RHS': []
       };
       var elemMappedIndex = parseInt($(elem).data('mapindex')) - 1;
       rhs_rearranged[elemIndex] = elemMappedIndex + 1;
       telObj['LHS'][elemIndex] = instance._question.data.option.optionsLHS[elemIndex];
       telObj['RHS'][elemMappedIndex] = instance._question.data.option.optionsRHS[elemMappedIndex];
       telemetryValues.push(telObj);
-      if(elemMappedIndex == elemIndex){
+      if (elemMappedIndex == elemIndex) {
         correctAnswersCount++;
       } else {
         correctAnswer = false;
       }
     })
     var questionScore;
-    if(this._question.config.partial_scoring){
+    if (this._question.config.partial_scoring) {
       questionScore = (correctAnswersCount / totalLHS) * this._question.config.max_score;
-    }else{
-      if((correctAnswersCount / totalLHS) == 1){
+    } else {
+      if ((correctAnswersCount / totalLHS) == 1) {
         questionScore = this._question.config.max_score;
-      }else{
+      } else {
         questionScore = 0
       }
     }
-    
+
     var result = {
       eval: correctAnswer,
       state: {
         val: {
           "rhs_rendered": instance._question.data.option.optionsRHS,
-          "rhs_rearranged" : rhs_rearranged
+          "rhs_rearranged": rhs_rearranged
         }
       },
       score: questionScore,
@@ -115,7 +115,34 @@ org.ekstep.questionunitmtf.RendererPlugin = org.ekstep.contentrenderer.questionU
     }
   },
   logTelemetryItemResponse: function (data) {
-    QSTelemetryLogger.logEvent(QSTelemetryLogger.EVENT_TYPES.RESPONSE, {"type": "INPUT", "values": data});
+    QSTelemetryLogger.logEvent(QSTelemetryLogger.EVENT_TYPES.RESPONSE, { "type": "INPUT", "values": data });
+  },
+  /**
+   * shuffles the options array
+   */
+  shuffleOptions: function (options) {
+    var shuffled = [];
+    var selected = this.derange(_.range(0, options.length));
+    _.each(selected, function (i) {
+      shuffled.push(options[i]);
+    });
+    return shuffled;
+  },
+  /**
+   * deranges (shuffles such that no element will remain in its original index) 
+   * the elements the given array. This is a JavaScript implementation of
+   * Sattolo's algorithm [https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#Sattolo's_algorithm]
+   */
+  derange: function (array) {
+    var m = array.length, t, i;
+    _.each(_.range(0, m - 1), function (i, k) {
+      var j = _.random(i + 1, m - 1); // note: i+1
+      t = array[i];
+      array[i] = array[j];
+      array[j] = t;
+    });
+    return array;
   }
+
 });
 //# sourceURL=questionunitMTFPlugin.js
