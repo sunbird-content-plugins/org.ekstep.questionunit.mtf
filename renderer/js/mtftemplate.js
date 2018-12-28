@@ -51,7 +51,7 @@ MTFController.getHorizontalLayout = function(){
     </div>\
     <ul class="lhs-rhs-container rhs-container sortable">\
         <% _.each(question.data.option.optionsRHS,function(val,key){ %>\
-            <li data-mapindex=<%= val.mapIndex %> class="rhs-block lhs-rhs-block">\
+            <li class="rhs-block lhs-rhs-block">\
                 <img class="background-image" src="<%= MTFController.pluginInstance.getAudioIcon("renderer/assets/shape4.png") %>" />\
                 <% if(val.audio){ %> \
                   <img onclick=MTFController.pluginInstance.playAudio({src:"<%= val.audio %>"}) class="audio-image" src="<%= MTFController.pluginInstance.getAudioIcon("renderer/assets/audio2.png") %>" />\
@@ -83,7 +83,7 @@ MTFController.getVerticalLayout = function () {
     </div>\
     <ul class="lhs-rhs-container rhs-container sortable">\
       <% _.each(question.data.option.optionsRHS,function(val,key){ %>\
-        <li data-mapindex=<%= val.mapIndex %> class="lhs-rhs-block rhs-block">\
+        <li class="lhs-rhs-block rhs-block">\
           <img class="background-image" src="<%= MTFController.pluginInstance.getAudioIcon("renderer/assets/shape2.png") %>" />\
           <span data-mapindex=<%= val.mapIndex %> class="option-text"><%= val.text %></span>\
           <% if(val.image){ %> \

@@ -74,7 +74,7 @@ org.ekstep.questionunitmtf.RendererPlugin = org.ekstep.contentrenderer.questionU
         'LHS': [],
         'RHS': []
       };
-      var elemMappedIndex = parseInt($(elem).children()[1].dataset.mapindex) - 1;
+      var elemMappedIndex = parseInt($(elem).children('span')[0].dataset.mapindex) - 1;
       rhs_rearranged[elemIndex] = elemMappedIndex + 1;
       telObj['LHS'][elemIndex] = instance._question.data.option.optionsLHS[elemIndex];
       telObj['RHS'][elemMappedIndex] = instance._question.data.option.optionsRHS[elemMappedIndex];
