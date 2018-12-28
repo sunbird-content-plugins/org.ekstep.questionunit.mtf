@@ -49,17 +49,17 @@ MTFController.getHorizontalLayout = function(){
             </div>\
         <% });%>\
     </div>\
-    <div class="lhs-rhs-container rhs-container">\
+    <ul class="lhs-rhs-container rhs-container sortable">\
         <% _.each(question.data.option.optionsRHS,function(val,key){ %>\
-            <div data-mapindex=<%= val.mapIndex %> class="rhs-block lhs-rhs-block">\
+            <li class="rhs-block lhs-rhs-block">\
                 <img class="background-image" src="<%= MTFController.pluginInstance.getAudioIcon("renderer/assets/shape4.png") %>" />\
                 <% if(val.audio){ %> \
                   <img onclick=MTFController.pluginInstance.playAudio({src:"<%= val.audio %>"}) class="audio-image" src="<%= MTFController.pluginInstance.getAudioIcon("renderer/assets/audio2.png") %>" />\
                 <% } %>\
-                <span class="option-text"><%= val.text %></span>\
-            </div>\
+                <span data-mapindex=<%= val.mapIndex %> class="option-text"><%= val.text %></span>\
+            </li>\
         <% });%>\
-    </div>\
+    </ul>\
 </div>';
 }
 
@@ -81,20 +81,20 @@ MTFController.getVerticalLayout = function () {
         </div>\
       <% }); %>\
     </div>\
-    <div class="lhs-rhs-container rhs-container">\
+    <ul class="lhs-rhs-container rhs-container sortable">\
       <% _.each(question.data.option.optionsRHS,function(val,key){ %>\
-        <div data-mapindex=<%= val.mapIndex %> class="lhs-rhs-block rhs-block">\
-        <img class="background-image" src="<%= MTFController.pluginInstance.getAudioIcon("renderer/assets/shape2.png") %>" />\
-        <span><%= val.text %></span>\
-        <% if(val.image){ %> \
-          <img onclick="org.ekstep.questionunit.baseComponent.showImageModel(event, \'<%= MTFController.pluginInstance.getAssetUrl(val.image) %>\')" class="option-image" src="<%= MTFController.pluginInstance.getAssetUrl(val.image) %>" />\
-        <% } %>\
-        <% if(val.audio){ %> \
-          <img onclick=MTFController.pluginInstance.playAudio({src:"<%= val.audio %>"}) class="audio-image" src="<%= MTFController.pluginInstance.getAudioIcon("renderer/assets/audio3.png") %>" />\
-        <% } %>\
-        </div>\
+        <li class="lhs-rhs-block rhs-block">\
+          <img class="background-image" src="<%= MTFController.pluginInstance.getAudioIcon("renderer/assets/shape2.png") %>" />\
+          <span data-mapindex=<%= val.mapIndex %> class="option-text"><%= val.text %></span>\
+          <% if(val.image){ %> \
+            <img onclick="org.ekstep.questionunit.baseComponent.showImageModel(event, \'<%= MTFController.pluginInstance.getAssetUrl(val.image) %>\')" class="option-image" src="<%= MTFController.pluginInstance.getAssetUrl(val.image) %>" />\
+          <% } %>\
+          <% if(val.audio){ %> \
+            <img onclick=MTFController.pluginInstance.playAudio({src:"<%= val.audio %>"}) class="audio-image" src="<%= MTFController.pluginInstance.getAudioIcon("renderer/assets/audio3.png") %>" />\
+          <% } %>\
+        </li>\
       <% }); %>\
-      </div>\
+    </ul>\
   </div>'
 }
             
@@ -125,9 +125,18 @@ MTFController.touchConvertInit = function() {
 MTFController.onDomReady = function(){
     $(document).ready(function(){
         MTFController.touchConvertInit();
-        $(".rhs-container").sortable();
-        $(".rhs-container").disableSelection();
-    }) 
+        Zepto('.sortable').dragswap({
+            element: 'li', // the child element you are targeting
+            overClass: 'over', // class when element goes over another element
+            moveClass: 'moving', // class when element is moving
+            dropClass: 'drop', // the class to add when the element is dropped
+            dropAnimation: true, // do you want to detect animation end?
+            exclude: '.disabled', // function to get the prefix of the browser
+            dropComplete: function(){
+              console.log("Dropped element",event);
+            } 
+          });
+    });
 }
 
 //# sourceURL=MTFController.js
