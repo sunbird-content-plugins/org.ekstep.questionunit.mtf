@@ -85,6 +85,14 @@
       },
       {
         "type": "js",
+        "src": "renderer/js/zepto.min.js"
+      },
+      {
+        "type": "js",
+        "src": "renderer/js/zepto.dragswap.js"
+      },
+      {
+        "type": "js",
         "src": "renderer/js/mtftemplate.js"
       },
       {
